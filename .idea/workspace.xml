@@ -1,7 +1,214 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/androidTest/java/com/app4web/asdzendo/paemi/ExampleInstrumentedTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/MainActivity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/PAEMIApplication.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/base/FirstFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/base/SecondFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/dashboard/DashboardFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/dashboard/DashboardViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/gallery/GalleryFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/gallery/GalleryViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/home/HomeFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/home/HomeViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/homebottom/BottomFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/homebottom/BottomViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/notifications/NotificationsFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/notifications/NotificationsViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/plan/PlanFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/plan/PlanViewAdapterList.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/plan/dummy/DummyContent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/grid/FragmentRecyclerGridLayout.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/grid/GridRecyclerViewAdapter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/grid/dummy/DummyContent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/list/FragmentRecyclerListLayout.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/list/MyRecyclerViewAdapterList.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/list/dummy/DummyContent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/slideshow/SlideshowFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/slideshow/SlideshowViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_home_black_24dp.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_menu_camera.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_menu_gallery.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_menu_slideshow.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_notifications_black_24dp.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_plus.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/side_nav_bar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_bottom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_dashboard.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_first.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_gallery.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_home.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_notifications.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_plan.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_grid_layout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_grid_layout_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_list_layout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_list_layout_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_second.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_slideshow.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/nav_header_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/menu/activity_main_drawer.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/menu/bottom_nav_menu.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/menu/main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/navigation/mobile_navigation.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values-night/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/dimens.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/test/java/com/app4web/asdzendo/paemi/ExampleUnitTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI/settings.gradle" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1fZZjiDm6tIeKoXmfjib6KVTYyf" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
-    <property name="android.sdk.path" value="N:/_AndroidSDK" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$PROJECT_DIR$/../_AndroidSDK" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="" />
+      <created>1596427711065</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1596427711065</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Start PAEMI">
+      <created>1596427895325</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1596427895326</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Start PAEMI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start PAEMI" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="586" y="93" key="CommitChangelistDialog2" timestamp="1596427894606">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="586" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596427894606" />
+    <state x="739" y="260" key="FileChooserDialogImpl" timestamp="1596427763753">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="739" y="260" key="FileChooserDialogImpl/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596427763753" />
+    <state x="833" y="417" key="Github.ShareDialog" timestamp="1596428032646">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="833" y="417" key="Github.ShareDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596428032646" />
+    <state x="551" y="239" key="Vcs.Push.Dialog.v2" timestamp="1596427984955">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="551" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596427984955" />
   </component>
 </project>

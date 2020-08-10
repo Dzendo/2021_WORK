@@ -1,26 +1,26 @@
-package com.app4web.asdzendo.paemi
+package com.app4web.asdzendo.todo.ui
 
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.app4web.asdzendo.paemi.databinding.ActivityMainBinding
-import com.app4web.asdzendo.paemi.viewmodels.MainActitityViewModel
+import com.app4web.asdzendo.todo.R
+import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
+import com.app4web.asdzendo.todo.viewmodels.ToDoActitityViewModel
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
-       // ToDo
+class ToDoActivity : AppCompatActivity() {
     //private lateinit var appBarConfiguration: AppBarConfiguration
     //private lateinit var mainBinding: ActivityMainBinding
-    private val mainViewModel: MainActitityViewModel by viewModels()
+    private val mainViewModel: ToDoActitityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val mainBinding = DataBindingUtil.setContentView<ActivityMainBinding> (this, R.layout.activity_main)
+        val mainBinding = DataBindingUtil.setContentView<ActivityToDoBinding> (this, R.layout.activity_to_do)
         setSupportActionBar(mainBinding.toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.to_do, menu)
         return true
     }
 

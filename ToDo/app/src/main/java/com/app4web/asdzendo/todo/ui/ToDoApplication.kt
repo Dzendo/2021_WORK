@@ -15,7 +15,7 @@
  *
  */
 
-package com.app4web.asdzendo.paemi
+package com.app4web.asdzendo.todo.ui
 
 import android.app.Application
 //import android.os.Build
@@ -32,7 +32,7 @@ import timber.log.Timber
  * Override application to setup background work via WorkManager
  * Переопределение приложения для настройки фоновой работы через Диспетчер работ
  */
-class PAEMIApplication : Application() {
+class ToDoApplication : Application() {
     //Создайте область сопрограммы для использования в вашем приложении чтобы не блокировать onCreate:
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -56,7 +56,7 @@ class PAEMIApplication : Application() {
     // чтобы избежать проблем, возникающих при инициализации после использования WorkManager.
     private fun delayedInit() = applicationScope.launch {
         Timber.plant(Timber.DebugTree())
-        Timber.i("PAEMItimber APAEMIApplication")
+        Timber.i("ToDotimber ToDoApplication")
       //  setupRecurringWork()
     }
 

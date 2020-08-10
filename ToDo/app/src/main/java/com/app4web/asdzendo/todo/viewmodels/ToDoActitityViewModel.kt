@@ -1,24 +1,23 @@
-package com.app4web.asdzendo.paemi.viewmodels
+package com.app4web.asdzendo.todo.viewmodels
 
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
-class MainActitityViewModel: ViewModel() {
-    init { Timber.i("PAEMItimber MainActitityViewModel")}
+class ToDoActitityViewModel: ViewModel() {
+    init { Timber.i("ToDoItimber TODOActitityViewModel")}
     private val _snackbar: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
             val snackbar: LiveData<Boolean>
                 get() = _snackbar
     fun fabClick() {
         _snackbar.value = true
-        Timber.i("PAEMItimber MainActitityViewModel fabClick() SnackbarTrue()")
+        Timber.i("ToDotimber ToDoActitityViewModel fabClick() SnackbarTrue()")
     }
     fun snackbarFalse() {
         _snackbar.value = false
-        Timber.i("PAEMItimber SnackbarFalse()")
+        Timber.i("ToDoItimber SnackbarFalse()")
     }
 
 }

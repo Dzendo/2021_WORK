@@ -30,98 +30,11 @@
   <component name="ChangeListManager">
     <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/proguard-rules.pro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/androidTest/java/com/app4web/asdzendo/paemi/ExampleInstrumentedTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/MainActivity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/PAEMIApplication.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/base/FirstFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/base/SecondFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/dashboard/DashboardFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/dashboard/DashboardViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/gallery/GalleryFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/gallery/GalleryViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/home/HomeFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/home/HomeViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/homebottom/BottomFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/homebottom/BottomViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/notifications/NotificationsFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/notifications/NotificationsViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/plan/PlanFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/plan/PlanViewAdapterList.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/plan/dummy/DummyContent.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/grid/FragmentRecyclerGridLayout.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/grid/GridRecyclerViewAdapter.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/grid/dummy/DummyContent.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/list/FragmentRecyclerListLayout.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/list/MyRecyclerViewAdapterList.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/recycler/list/dummy/DummyContent.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/slideshow/SlideshowFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/java/com/app4web/asdzendo/paemi/ui/slideshow/SlideshowViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_home_black_24dp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_menu_camera.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_menu_gallery.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_menu_slideshow.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_notifications_black_24dp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/ic_plus.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/drawable/side_nav_bar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_bottom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_dashboard.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_first.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_gallery.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_home.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_notifications.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_plan.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_grid_layout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_grid_layout_list.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_list_layout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_recycler_list_layout_list.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_second.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/fragment_slideshow.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/layout/nav_header_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/menu/activity_main_drawer.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/menu/bottom_nav_menu.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/menu/main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/navigation/mobile_navigation.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values-night/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/colors.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/dimens.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/strings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/main/res/values/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/app/src/test/java/com/app4web/asdzendo/paemi/ExampleUnitTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI2/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/PAEMIApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/PAEMIApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/viewmodels/MainActitityViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/viewmodels/MainActitityViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/res/layout/activity_main.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

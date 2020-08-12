@@ -30,11 +30,11 @@
   <component name="ChangeListManager">
     <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI2/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/PAEMIApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/PAEMIApplication.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/viewmodels/MainActitityViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/java/com/app4web/asdzendo/paemi/viewmodels/MainActitityViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI2/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/ToDoActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/ToDoActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/ToDoApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/ToDoApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +75,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596427895326</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Start ToDo">
+      <created>1597035651525</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1597035651525</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -104,13 +111,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Start PAEMI" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start PAEMI" />
+    <MESSAGE value="Start ToDo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start ToDo" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="586" y="93" key="CommitChangelistDialog2" timestamp="1596427894606">
+    <state x="586" y="93" key="CommitChangelistDialog2" timestamp="1597035650702">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="586" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596427894606" />
+    <state x="586" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035650702" />
     <state x="739" y="260" key="FileChooserDialogImpl" timestamp="1596427763753">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -119,9 +127,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="833" y="417" key="Github.ShareDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596428032646" />
-    <state x="551" y="239" key="Vcs.Push.Dialog.v2" timestamp="1596427984955">
+    <state x="551" y="239" key="Vcs.Push.Dialog.v2" timestamp="1597035657858">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="551" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596427984955" />
+    <state x="551" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035657858" />
   </component>
 </project>

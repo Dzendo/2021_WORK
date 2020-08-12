@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.app4web.asdzendo.todo.R
+import com.app4web.asdzendo.todo.database.FactDatabase
 import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
 import com.app4web.asdzendo.todo.viewmodels.ToDoActitityViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -32,6 +33,7 @@ class ToDoActivity : AppCompatActivity() {
         mainBinding.viewmodel = mainViewModel
         mainBinding.lifecycleOwner = this
 
+        val dataSource = FactDatabase.getInstance(this).factDatabaseDao
 
         mainViewModel.snackbar.observe(this) {snack ->
             if (snack == true) {

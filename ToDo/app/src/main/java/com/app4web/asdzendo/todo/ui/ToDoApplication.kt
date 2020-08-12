@@ -18,6 +18,7 @@
 package com.app4web.asdzendo.todo.ui
 
 import android.app.Application
+import com.app4web.asdzendo.todo.database.FactDatabase
 //import android.os.Build
 //import androidx.work.*
 //import com.example.android.devbyteviewer.work.RefreshDataWorker
@@ -49,6 +50,9 @@ class ToDoApplication : Application() {
         super.onCreate()
         // Timber.plant(Timber.DebugTree()) вынесено в поток  delayedInit()
         delayedInit()  // Добавьте вызов delayedInit()в onCreate().
+
+        // Create an instance of the ViewModel Factory.
+        val dataSource = FactDatabase.getInstance(this).factDatabaseDao
        
     }
     // Создайте функцию инициализации, которая не блокирует основной поток:

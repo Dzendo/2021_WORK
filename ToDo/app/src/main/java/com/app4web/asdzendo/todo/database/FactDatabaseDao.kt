@@ -39,16 +39,16 @@ interface FactDatabaseDao {
      * При обновлении строки со значением, уже установленным в столбце,
      * заменяет старое значение на новое.
      *
-     * @param night new value to write
+     * @param fact new value to write
      */
     @Update
     fun update(fact: Fact)
 
     /**
      * Selects and returns the row that matches the supplied start time, which is our key.
-     * Выбирает и возвращает строку, которая соответствует предоставленному времени начала, что является нашим ключом.
+     * Выбирает и возвращает строку, которая соответствует предоставленному id  что является нашим ключом.
      *
-     * @param key startTimeMilli to match
+     * @param id startTimeMilli to match
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
     fun get(id: Long): Fact

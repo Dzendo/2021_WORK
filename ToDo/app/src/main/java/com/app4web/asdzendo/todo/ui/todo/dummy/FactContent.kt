@@ -1,5 +1,6 @@
 package com.app4web.asdzendo.todo.ui.todo.dummy
 
+import com.app4web.asdzendo.todo.database.Fact
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -11,47 +12,41 @@ import java.util.HashMap
  *
  * TODO: Replace all uses of this class before publishing your app.
  */
-object DummyContent {
+object FactContent {
 
     /**
      * An array of sample (dummy) items.
      */
-    val ITEMS: MutableList<DummyItem> = ArrayList()
+  
+    val FACTS: MutableList<Fact> = ArrayList()
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    private val ITEM_MAP: MutableMap<String, DummyItem> = HashMap()
+   
+    private val FACT_MAP: MutableMap<Long, Fact> = HashMap()
 
     private const val COUNT = 45
 
     init {
         // Add some sample items.
-        for (i in 1..COUNT) addItem(createDummyItem(i))
+        for (i in 1..COUNT) addFactItem(createFactItem(i.toLong()))
     }
-
-    private fun addItem(item: DummyItem) {
-        ITEMS.add(item)
-        ITEM_MAP[item.id] = item
+   
+    private fun addFactItem(fact: Fact) {
+        FACTS.add(fact)
+        FACT_MAP[fact.factId] = fact
     }
-
-    private fun createDummyItem(position: Int): DummyItem {
-        return DummyItem(position.toString(), "Строка $position", makeDetails(position))
+    
+    private fun createFactItem(id: Long): Fact {
+        return Fact(id, nameShort= "Факт $id", name= makeDetails(id.toInt()))
     }
 
     private fun makeDetails(position: Int): String {
         val builder = StringBuilder()
-        builder.append("Детали строки : ").append(position)
-        for (i in 0 until position) {
-            builder.append("\nРасшифровка строки. $i")
-        }
+        builder.append("Факт полностью: ").append(position)
+       
         return builder.toString()
     }
-
-    /**
-     * A dummy item representing a piece of content.
-     */
-    data class DummyItem(val id: String, val content: String, val details: String) {
-        override fun toString(): String = content
-    }
+    
 }

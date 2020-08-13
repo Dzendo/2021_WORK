@@ -1,4 +1,4 @@
-package com.app4web.asdzendo.todo.ui.todo
+package com.app4web.asdzendo.todo.ui.todo.dummy
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.app4web.asdzendo.todo.R
-import com.app4web.asdzendo.todo.database.Fact
-import com.app4web.asdzendo.todo.ui.todo.dummy.DummyContent
+
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class ToDoAdapterList(
-    private val values: List<Fact>
-) : RecyclerView.Adapter<ToDoAdapterList.ViewHolder>() {
+class DummyAdapterList(
+    private val values: List<DummyContent.DummyItem>
+) : RecyclerView.Adapter<DummyAdapterList.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -25,9 +24,9 @@ class ToDoAdapterList(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.factId.toString()
-        holder.contentView.text = item.nameShort
-        holder.detailsView.text = item.name
+        holder.idView.text = item.id
+        holder.contentView.text = item.content
+        holder.detailsView.text = item.details
     }
 
     override fun getItemCount(): Int = values.size

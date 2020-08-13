@@ -104,25 +104,14 @@ abstract class FactDatabase : RoomDatabase() {
         fun getinstance(context: Context): FactDatabase =
             instance ?: synchronized(this) {     // только один поток выполнения одновременно может войти в этот блок кода,
                 instance ?: buildDatabase(context).also { instance = it }
-
         }
 
         // Создайте и предварительно заполните базу данных.
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
-        private fun buildDatabase(context: Context): FactDatabase {
-            return Room.databaseBuilder(context, FactDatabase::class.java, "fact_todo_database")
-              /*  .addCallback(object : RoomDatabase.Callback() {     // Интересно зачем нужен Callback ??? WorkManager
-                    override fun onCreate(db: SupportSQLiteDatabase) {
-                        super.onCreate(db)
-                        // Запланируется работа для WorkManager
-                        val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>().build()
-                        WorkManager.getInstance(context).enqueue(request)
-                    }
-                })*/
-                .build()
-        }
-
+        private fun buildDatabase(context: Context): FactDatabase =
+           Room.databaseBuilder(context, FactDatabase::class.java, "fact_todo_database").build()
+        
         fun getInstance(context: Context): FactDatabase {
             // Multiple threads can ask for the database at the same time, ensure we only initialize
             // it once by using synchronized. Only one thread may enter a synchronized block at a

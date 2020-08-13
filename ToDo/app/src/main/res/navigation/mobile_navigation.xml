@@ -86,7 +86,7 @@
         android:id="@+id/todoFragment"
         android:name="com.app4web.asdzendo.todo.ui.todo.ToDoFragment"
         android:label="ToDo"
-        tools:layout="@layout/to_do_fragment_list" />
+        tools:layout="@layout/to_do_recycler_list" />
 
     <!--fragment
         android:id="@+id/fragmentRecyclerGridLayout"

@@ -28,12 +28,10 @@ class ToDoActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph, mainBinding.drawerLayout)
         mainBinding.toolbar.setupWithNavController(navController, appBarConfiguration)
         mainBinding.navView.setupWithNavController(navController)
-        mainBinding.bottomNavView.setupWithNavController(navController)
+        //mainBinding.bottomNavView.setupWithNavController(navController) перенесен в фрагмент
 
         mainBinding.viewmodel = mainViewModel
         mainBinding.lifecycleOwner = this
-
-        val dataSource = FactDatabase.getInstance(this).factDatabaseDao
 
         mainViewModel.snackbar.observe(this) {snack ->
             if (snack == true) {
@@ -46,7 +44,7 @@ class ToDoActivity : AppCompatActivity() {
                 mainViewModel.snackbarFalse()
             }
         }
-        Timber.i("PAEMItimber MainActivity")
+        Timber.i("ToDotimber MainActivity")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

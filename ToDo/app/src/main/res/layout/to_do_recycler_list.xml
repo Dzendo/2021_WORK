@@ -13,7 +13,7 @@
     вся модель представления, так что мы можем получить доступ к живым данным,
     щелкните обработчики и переменные состояния. -->
     <data>
-
+        <import type= "android.view.MenuItem"/>
         <variable
             name="viewmodel"
             type="com.app4web.asdzendo.todo.viewmodels.FragmentRecyclerViewModel" />
@@ -54,8 +54,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="?android:attr/windowBackground"
+        android:onClick="@{() -> viewmodel.onClickBottomNavView()}"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:menu="@menu/bottom_nav_menu" />
+    <!--  android:onClick="@{() -> viewmodel.onClickBottomNavView}" -->
 </FrameLayout>
 
 </layout>

@@ -19,6 +19,7 @@ package com.app4web.asdzendo.todo.ui
 
 import android.app.Application
 import com.app4web.asdzendo.todo.database.FactDatabase
+import com.app4web.asdzendo.todo.ui.todo.dummy.FactContent
 //import android.os.Build
 //import androidx.work.*
 //import com.example.android.devbyteviewer.work.RefreshDataWorker
@@ -33,9 +34,16 @@ import timber.log.Timber
  * Override application to setup background work via WorkManager
  * Переопределение приложения для настройки фоновой работы через Диспетчер работ
  */
+
+
 class ToDoApplication : Application() {
+    // Заполнение начальных данных
+    companion object {
+       val FactContentFACTS = FactContent.FACTS
+    }
     //Создайте область сопрограммы для использования в вашем приложении чтобы не блокировать onCreate:
     private val applicationScope = CoroutineScope(Dispatchers.Default)
+
 
     /**
      * onCreate is called before the first screen is shown to the user.
@@ -61,6 +69,7 @@ class ToDoApplication : Application() {
     private fun delayedInit() = applicationScope.launch {
         Timber.plant(Timber.DebugTree())
         Timber.i("ToDotimber ToDoApplication")
+        Timber.i("ToDotimber  ToDoApplication ${FactContentFACTS[0].name}")
       //  setupRecurringWork()
     }
 

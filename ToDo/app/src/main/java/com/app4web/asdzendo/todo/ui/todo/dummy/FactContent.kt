@@ -26,11 +26,11 @@ object FactContent {
    
     private val FACT_MAP: MutableMap<Long, Fact> = HashMap()
 
-    private const val COUNT = 45
+    private const val COUNT = 45L
 
     init {
         // Add some sample items.
-        for (i in 1..COUNT) addFactItem(createFactItem(i.toLong()))
+        for (i in 0L..COUNT) addFactItem(createFactItem(i))
     }
    
     private fun addFactItem(fact: Fact) {

@@ -8,6 +8,8 @@ import timber.log.Timber
 
 class ToDoActitityViewModel: ViewModel() {
     init { Timber.i("ToDoItimber TODOActitityViewModel")}
+
+
     private val _snackbar: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
             val snackbar: LiveData<Boolean>
                 get() = _snackbar

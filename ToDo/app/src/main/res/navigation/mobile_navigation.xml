@@ -72,10 +72,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.app4web.asdzendo.paemi.ui.base.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/FactDetailFragment"
+        android:name="com.app4web.asdzendo.todo.ui.FactDetailFragment"
+        android:label="FactDetailFragment"
+        tools:layout="@layout/fact_detail_fragment">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
@@ -86,7 +86,26 @@
         android:id="@+id/todoFragment"
         android:name="com.app4web.asdzendo.todo.ui.todo.ToDoFragment"
         android:label="ToDo"
-        tools:layout="@layout/to_do_recycler_list" />
+        tools:layout="@layout/to_do_recycler_list" >
+        <action
+            android:id="@+id/action_todoFragment_to_factDetailFragment"
+            app:destination="@id/factDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/factDetailFragment"
+        android:name="com.app4web.asdzendo.todo.ui.FactDetailFragment"
+        android:label="FactDetailFragment"
+        tools:layout="@layout/fact_detail_fragment">
+        <argument
+            android:name="factID"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_factDetailFragment_to_todoFragment"
+            app:destination="@id/todoFragment" />
+    </fragment>
+
 
     <!--fragment
         android:id="@+id/fragmentRecyclerGridLayout"

@@ -36,7 +36,7 @@ data class Fact(
         var factId: Long = 0L,
         var data: Long = 0L, // LocalDateTime = LocalDateTime.now(),
         var parent: Long = 0L,
-        var paemi: Char = 'i',
+        var paemi: String = "I",
         var nameShort: String = "",
         var name: String = "",
         var rezult: String = "",

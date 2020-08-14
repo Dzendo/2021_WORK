@@ -29,28 +29,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/dummy/DummyAdapterList.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/dummy/FactAdapterList.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/dummy/FactContent.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/viewmodels/FragmentRecyclerViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/dummy_recycler_list_item.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAEMI2/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ToDo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabase.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/ToDoActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/ToDoActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoAdapterList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoAdapterList.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/dummy/DummyContent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/dummy/DummyContent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/activity_to_do.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/activity_to_do.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/nav_header_to_do.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/nav_header_to_do.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_fragment_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_fragment_list_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/menu/bottom_nav_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/menu/bottom_nav_menu.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/navigation/mobile_navigation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/navigation/mobile_navigation.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/values/dimens.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,5 +128,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="551" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035657858" />
+    <state x="719" y="426" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1597351902263">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="719" y="426" key="git4idea.remote.GitConfigureRemotesDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597351902263" />
   </component>
 </project>

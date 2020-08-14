@@ -6,7 +6,7 @@
         android:title="ALL" /-->
 
     <item
-        android:id="@+id/ideas"
+        android:id="@+id/idea"
         android:icon="@drawable/ic_home"
         android:title="Idea" />
     <item
@@ -25,7 +25,7 @@
     <item
         android:id="@+id/money"
         android:icon="@drawable/ic_home"
-        android:title="money" />
+        android:title="Money" />
 
 
 </menu>

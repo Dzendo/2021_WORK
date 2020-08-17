@@ -6,34 +6,82 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.database.Fact
-import com.app4web.asdzendo.todo.ui.todo.dummy.DummyContent
+import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListItemBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
  * TODO: Replace the implementation with code for your data type.
  */
+private val ITEM_VIEW_TYPE_HEADER = 0
+private val ITEM_VIEW_TYPE_ITEM = 1
+
 class ToDoAdapterList(
-    private val values: List<Fact>
-) : RecyclerView.Adapter<ToDoAdapterList.ViewHolder>() {
+        private val clickListener: FactListener):
+        ListAdapter<DataItem, RecyclerView.ViewHolder>(FactDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.dummy_recycler_list_item, parent, false)
-        return ViewHolder(view)
-    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    override fun onBindViewHolder(holder: RecyclerView. ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> {
+                val factItem = getItem(position) as DataItem.FactItem
+                holder.bind(clickListener, factItem.fact)
+            }
+        }
+
+       /* val item = values[position]
         holder.idView.text = item.factId.toString()
         holder.contentView.text = item.nameShort
         holder.detailsView.text = item.name
+
+        */
     }
 
-    override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when (viewType) {
+            ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
+            else -> throw ClassCastException("Unknown viewType ${viewType}")
+        }
+    /*
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.to_do_recycler_list_item, parent, false)
+        return ViewHolder(view)
+    }*/
+
+    // Вместо того, чтобы использовать submitList(), предоставленный ListAdapter,
+    // для отправки вашего списка, вы будете использовать эту функцию,
+    // чтобы добавить заголовок, а затем отправить список.
+    fun addHeaderAndSubmitList(list: List<Fact>?) {
+        // запустите сопрограмму в, adapterScope чтобы управлять списком
+        adapterScope.launch {
+            //если переданный список есть null, верните только заголовок,
+            // в противном случае присоедините заголовок к заголовку списка,
+            // а затем отправьте список.
+            val items = when (list) {
+                null -> listOf(DataItem.Header)
+                else -> listOf(DataItem.Header) + list.map { DataItem.FactItem(it) }
+            }
+            // Затем переключитесь в Dispatchers.Main контекст, чтобы отправить список
+            withContext(Dispatchers.Main) {
+                submitList(items)
+            }
+        }
+        // Ваш код должен собираться и запускаться, и вы не увидите никакой разницы.
+    }
+
+   // override fun getItemCount(): Int = values.size
+
+   /* class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val idView: TextView = view.findViewById(R.id.item_number)
         val contentView: TextView = view.findViewById(R.id.content)
         val detailsView: TextView = view.findViewById(R.id.details)
@@ -41,18 +89,51 @@ class ToDoAdapterList(
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
         }
+    }*/
+   class ViewHolder private constructor(private val binding:ToDoRecyclerListItemBinding)
+       : RecyclerView.ViewHolder(binding.root) {
+
+       fun bind(clickListener: FactListener, item: Fact) {
+           binding.fact = item
+           binding.clickListener = clickListener
+           binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
+       }
+       companion object {
+           fun from(parent: ViewGroup): ViewHolder {
+               val layoutInflater = LayoutInflater.from(parent.context)
+               val binding = ToDoRecyclerListItemBinding.inflate(layoutInflater, parent, false)
+               return ViewHolder(binding)
+           }
+       }
+   }
+
+    // 23,2 Добавьте класс TextHolder внутри SleepNightAdapter класса.
+    class TextViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup): TextViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.header, parent, false)
+                return TextViewHolder(view)
+            }
+        }
     }
+    //23,6 Затем, чтобы выяснить, какой тип представления вернуть, добавьте проверку,
+// чтобы увидеть, какой тип элемента находится в списке:
+    // Затем переопределите getItemViewType и верните правильный тип представления элемента.
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+            is DataItem.FactItem -> ITEM_VIEW_TYPE_ITEM
+        }
+    }
+
+
 }
 // Умное обновление изменившихся элементов на экране, а не всех
 //23,5 Обновите ваш DiffCallback для обработки DataItem вместо SleepNight:
 class FactDiffCallback : DiffUtil.ItemCallback<DataItem>() {
-    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem == newItem
-    }
+    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean = oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean = oldItem == newItem
 }
 // Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
 class FactListener(val clickListener: (factId: Long) -> Unit) {

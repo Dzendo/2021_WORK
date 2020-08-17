@@ -22,7 +22,6 @@ import com.app4web.asdzendo.todo.database.FactDatabase
 import com.app4web.asdzendo.todo.ui.todo.dummy.FactContent
 //import android.os.Build
 //import androidx.work.*
-//import com.example.android.devbyteviewer.work.RefreshDataWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,20 +58,23 @@ class ToDoApplication : Application() {
         // Timber.plant(Timber.DebugTree()) вынесено в поток  delayedInit()
         delayedInit()  // Добавьте вызов delayedInit()в onCreate().
 
-        // Create an instance of the ViewModel Factory.
-        val dataSource = FactDatabase.getInstance(this).factDatabaseDao
-       
     }
+
     // Создайте функцию инициализации, которая не блокирует основной поток:
     // Важно отметить, что WorkManager.initialize должен вызываться изнутри onCreate без использования фонового потока,
     // чтобы избежать проблем, возникающих при инициализации после использования WorkManager.
     private fun delayedInit() = applicationScope.launch {
         Timber.plant(Timber.DebugTree())
-        Timber.i("ToDotimber ToDoApplication")
-        Timber.i("ToDotimber  ToDoApplication ${FactContentFACTS[0].name}")
-      //  setupRecurringWork()
-    }
+        Timber.i("ToDotimber Init ToDoApplication")
 
+        val dataSource = FactDatabase.getInstance(applicationContext).factDatabaseDao
+        dataSource.clear()
+        for (fact in FactContentFACTS ) dataSource.insert(fact)
+        Timber.i("ToDoApplication Init Database Строк записи = ${FactContentFACTS.size}")
+
+        //  setupRecurringWork()
+    }
+}
     /**
      * Setup WorkManager background job to 'fetch' new network data daily.
      * Настройка работы менеджер фоновых заданий, чтобы "взять" новую сеть данных ежедневно.
@@ -113,7 +115,7 @@ class ToDoApplication : Application() {
     // Если существует ожидающая (незавершенная) работа с тем же именем,
     // ExistingPeriodicWorkPolicy.KEEP параметр заставляет WorkManager сохранить предыдущую периодическую работу
     // и отклонить новый запрос на работу.
-}
+
 
 
 

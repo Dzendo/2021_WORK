@@ -5,15 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app4web.asdzendo.todo.R
+import com.app4web.asdzendo.todo.database.FactDatabase
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
-import com.app4web.asdzendo.todo.ui.ToDoApplication.Companion.FactContentFACTS
-import com.app4web.asdzendo.todo.viewmodels.FragmentRecyclerViewModel
+import com.app4web.asdzendo.todo.viewmodels.ToDoViewModel
+import com.app4web.asdzendo.todo.viewmodels.ToDoViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
@@ -25,7 +27,7 @@ class ToDoFragment : Fragment() {
 
 
     private var orientation: Int = 0
-    private val fragmentRecyclerViewModel: FragmentRecyclerViewModel by viewModels()
+    //private val ToDoViewModel: ToDoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +38,50 @@ class ToDoFragment : Fragment() {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ): View? {
-        val binding : ToDoRecyclerListBinding = DataBindingUtil.inflate(inflater, R.layout.to_do_recycler_list, container, false)
+            savedInstanceState: Bundle?): View? {
+        // Get a reference to the binding object and inflate the fragment views.
+        // Получить ссылку на объект привязки и раздуть представления фрагментов.
+        val binding : ToDoRecyclerListBinding = DataBindingUtil.inflate(
+                inflater, R.layout.to_do_recycler_list, container, false)
+
+        val application = requireNotNull(this.activity).application
+
+        val dataSource = FactDatabase.getInstance(application).factDatabaseDao
+
+        val viewModelFactory = ToDoViewModelFactory(dataSource, application)
+        val todoViewModel =
+                ViewModelProvider(this, viewModelFactory).get(ToDoViewModel::class.java)
+
+        binding.viewmodel = todoViewModel
+
+        // Говорит можно объявить и в RecyclerView XML
+        val manager = LinearLayoutManager(activity)
+        binding.recyclerList.layoutManager = manager
+
+        // Говорит можно объявить и в RecyclerView XML
+        val adapter = ToDoAdapterList(FactListener { factID ->
+            //todoViewModel.onFactClicked(factId)
+            this.findNavController().navigate(
+                    ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID))
+
+          //  Toast.makeText(context,  " Тырк в строку $factId", Toast.LENGTH_LONG).show()
+        })
+        binding.recyclerList.adapter = adapter
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        todoViewModel.facts.observe(viewLifecycleOwner) {
+            it?.let {
+                //adapter.submitList(it)
+                adapter.addHeaderAndSubmitList(it)
+                // 23.10 Наконец, обновите, SleepTrackerFragment чтобы передать список DataItem вместо списка SleepNight
+                // и вызвать новый метод addHeaderAndSubmitList вместо метода submitList:
+                // LiveData observers are sometimes passed null, so make sure you check for null.
+                // Наблюдатели живых данных иногда передаются null, поэтому убедитесь, что вы проверяете наличие null.
+            }
+        }
 
         // Set the adapter На будущее для подклюяения cardView
-            with(binding.recyclerList) {
+         /*   with(binding.recyclerList) {
                 layoutManager = when (orientation){
                     Configuration.ORIENTATION_PORTRAIT -> LinearLayoutManager(context)
                     Configuration.ORIENTATION_LANDSCAPE -> LinearLayoutManager(context)
@@ -52,12 +92,12 @@ class ToDoFragment : Fragment() {
                 // adapter = FactAdapterList(FactContent.FACTS)
                 //adapter = ToDoAdapterList(FactContent.FACTS)
                 adapter = ToDoAdapterList(FactContentFACTS)
-            }
+            }*/
 
-        binding.viewmodel = fragmentRecyclerViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        //binding.viewmodel = fragmentRecyclerViewModel
 
-        fragmentRecyclerViewModel.snackbar.observe(viewLifecycleOwner) { snack ->
+
+        todoViewModel.snackbar.observe(viewLifecycleOwner) { snack ->
             if (snack == true) {
                 Snackbar.make(
                         binding.root,
@@ -66,15 +106,15 @@ class ToDoFragment : Fragment() {
                     //.setAction("Action", null)
                     .show()
                 Timber.i("ToDotimber Snackbar")
-                fragmentRecyclerViewModel.snackbarFalse()
+                todoViewModel.snackbarFalse()
             }
         }
 
         binding.bottomNavView.setOnNavigationItemSelectedListener { paemi ->
             Timber.i("ToDo ToDoFragment  setOnNavigationItemSelectedListener PAEMI $paemi")
-            fragmentRecyclerViewModel.onClickBottomNavView(paemi)}
+            todoViewModel.onClickBottomNavView(paemi)}
 
-        Timber.i("ToDotimber Fragment")
+        Timber.i("ToDo Recycler Fragment")
 
         return binding.root
     }

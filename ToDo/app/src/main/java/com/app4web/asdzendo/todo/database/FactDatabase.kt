@@ -67,8 +67,7 @@ abstract class FactDatabase : RoomDatabase() {
          */
         // For Singleton instantiation
         //  Для одноэлементный экземпляр Volatile - НЕ кешировать
-        @Volatile
-        private var INSTANCE: FactDatabase? = null
+        @Volatile private var INSTANCE: FactDatabase? = null
         // INSTANCE Переменная будет хранить ссылку на базу данных, когда один был создан.
         // Это поможет вам избежать повторного открытия соединений с базой данных, что дорого.
         //  Для одноэлементный экземпляр Volatile - НЕ кешировать
@@ -99,7 +98,7 @@ abstract class FactDatabase : RoomDatabase() {
          *
          * @param context The application context Singleton, used to get access to the filesystem.
          */
-        // вызывается из InjectorUtils
+        // вызывается из InjectorUtils SunFlower
         // getInstance() метод с Context параметром, который понадобится построителю базы данных.
         fun getinstance(context: Context): FactDatabase =
             instance ?: synchronized(this) {     // только один поток выполнения одновременно может войти в этот блок кода,

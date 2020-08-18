@@ -24,22 +24,24 @@ object FactContent {
      * A map of sample (dummy) items, by ID.
      */
    
-    private val FACT_MAP: MutableMap<Long, Fact> = HashMap()
-
-    private const val COUNT = 650L
+   // private val FACT_MAP: MutableMap<Long, Fact> = HashMap()
+    private val PAEMI: List<String> = arrayListOf("I","P","A","E","M")
+    private const val COUNT = 65L
 
     init {
         // Add some sample items.
-        for (i in 1L..COUNT) addFactItem(createFactItem(i))
+        for (i in 1L..COUNT)
+            for (paemi in PAEMI)
+                addFactItem(createFactItem(i,paemi))
     }
    
     private fun addFactItem(fact: Fact) {
         FACTS.add(fact)
-        FACT_MAP[fact.factId] = fact
+   //     FACT_MAP[fact.factId] = fact
     }
     
-    private fun createFactItem(id: Long): Fact {
-        return Fact(paemi = "P", nameShort= "$id Факт", name= makeDetails(id))
+    private fun createFactItem(id: Long= 0L, paemi: String = "S"): Fact {
+        return Fact(paemi = paemi, nameShort= "$id Факт", name= makeDetails(id))
     }
 
     private fun makeDetails(position: Long): String {

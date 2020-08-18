@@ -69,7 +69,8 @@ class ToDoApplication : Application() {
 
         val dataSource = FactDatabase.getInstance(applicationContext).factDatabaseDao
         dataSource.clear()
-        for (fact in FactContentFACTS ) dataSource.insert(fact)
+        dataSource.insertAll(FactContentFACTS)
+        //for (fact in FactContentFACTS ) dataSource.insert(fact)
         Timber.i("ToDoApplication Init Database Строк записи = ${FactContentFACTS.size}")
 
         //  setupRecurringWork()

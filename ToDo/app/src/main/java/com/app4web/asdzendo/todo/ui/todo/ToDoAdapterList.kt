@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.app4web.asdzendo.todo.R
@@ -17,7 +16,6 @@ import kotlinx.coroutines.withContext
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
  */
 private val ITEM_VIEW_TYPE_HEADER = 0
 private val ITEM_VIEW_TYPE_ITEM = 1
@@ -29,6 +27,12 @@ class ToDoAdapterList(
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
+    //передаем данные и оповещаем адаптер о необходимости обновления списка - не работает
+    fun refreshUsers() { //users: List<User>) {
+        //this.users = users
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: RecyclerView. ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
@@ -36,13 +40,6 @@ class ToDoAdapterList(
                 holder.bind(clickListener, factItem.fact)
             }
         }
-
-       /* val item = values[position]
-        holder.idView.text = item.factId.toString()
-        holder.contentView.text = item.nameShort
-        holder.detailsView.text = item.name
-
-        */
     }
 
 
@@ -52,11 +49,6 @@ class ToDoAdapterList(
             ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType ${viewType}")
         }
-    /*
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.to_do_recycler_list_item, parent, false)
-        return ViewHolder(view)
-    }*/
 
     // Вместо того, чтобы использовать submitList(), предоставленный ListAdapter,
     // для отправки вашего списка, вы будете использовать эту функцию,
@@ -76,20 +68,10 @@ class ToDoAdapterList(
                 submitList(items)
             }
         }
-        // Ваш код должен собираться и запускаться, и вы не увидите никакой разницы.
     }
 
    // override fun getItemCount(): Int = values.size
 
-   /* class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.item_number)
-        val contentView: TextView = view.findViewById(R.id.content)
-        val detailsView: TextView = view.findViewById(R.id.details)
-
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
-        }
-    }*/
    class ViewHolder private constructor(private val binding:ToDoRecyclerListItemBinding)
        : RecyclerView.ViewHolder(binding.root) {
 
@@ -126,8 +108,6 @@ class ToDoAdapterList(
             is DataItem.FactItem -> ITEM_VIEW_TYPE_ITEM
         }
     }
-
-
 }
 // Умное обновление изменившихся элементов на экране, а не всех
 //23,5 Обновите ваш DiffCallback для обработки DataItem вместо SleepNight:

@@ -17,6 +17,7 @@
 package com.app4web.asdzendo.todo.database
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 
@@ -26,6 +27,9 @@ import androidx.room.*
  */
 @Dao
 interface FactDatabaseDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(facts: List<Fact>)
 
     @Insert
     fun insert(fact: Fact)
@@ -78,15 +82,15 @@ interface FactDatabaseDao {
 
     /**
      * Selects and returns the night with given nightId.
-     * Выбирает и возвращает ночь с вечером я.
+     * Выбирает и возвращает fact c id.
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
     fun getFactWithId(id: Long): LiveData<Fact>
 
-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
-    fun getPaemiFacts(paemi: Char): LiveData<List<Fact>>
 
-   // @Insert(onConflict = OnConflictStrategy.REPLACE)
-   // suspend fun insertAll(fact: List<Fact>)
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
+    fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
+
+
 
 }

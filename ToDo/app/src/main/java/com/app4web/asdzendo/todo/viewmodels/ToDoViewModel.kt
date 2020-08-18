@@ -16,7 +16,7 @@ class ToDoViewModel(
         val database: FactDatabaseDao,
         application: Application
 ) : AndroidViewModel(application) {
-    private var PAEMI: Char = ' '
+    private var PAEMI: String = "*"
     init { Timber.i("ToDoItimber TODO ToDoViewModel created")}
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
@@ -28,10 +28,17 @@ class ToDoViewModel(
 
     private var tofact = MutableLiveData<Fact?>()
 
-    val facts = database.getAllFacts()
+    private var _facts =  MutableLiveData<List<Fact>>()
+
+    var facts: LiveData<List<Fact>> = database.getAllFacts()
+       // get() = _facts
+
+
+
 
     init {
         initializeTofact()
+       // _facts = database.getAllFacts() as MutableLiveData<List<Fact>>
     }
 
     private fun initializeTofact() {
@@ -41,10 +48,11 @@ class ToDoViewModel(
     }
     private suspend fun getTofactFromDatabase(): Fact? {
         return withContext(Dispatchers.IO) {
-            var fact = database.getTofact()
+            val fact = database.getTofact()
            /* if (night?.endTimeMilli != night?.startTimeMilli) {
                 night = null
             }*/
+
             fact
         }
     }
@@ -108,15 +116,35 @@ class ToDoViewModel(
     }
 
     // подключено надо доделывать вызов из XML
-    fun onClickBottomNavView(paemi: MenuItem): Boolean =
-        when(paemi.itemId) {
-            R.id.idea -> { PAEMI = 'I'; true }
-            R.id.plan -> { PAEMI = 'P'; true }
-            R.id.action -> { PAEMI = 'A'; true }
-            R.id.event -> { PAEMI = 'E'; true }
-            R.id.money -> { PAEMI = 'M'; true }
-            else -> {PAEMI = ' ' ; false }
+    fun onClickBottomNavView(paemi: MenuItem): Boolean {
+        val returnPAEMI = when (paemi.itemId) {
+            R.id.idea -> {
+                PAEMI = "I"; true
+            }
+            R.id.plan -> {
+                PAEMI = "P"; true
+            }
+            R.id.action -> {
+                PAEMI = "A"; true
+            }
+            R.id.event -> {
+                PAEMI = "E"; true
+            }
+            R.id.money -> {
+                PAEMI = "M"; true
+            }
+            else -> {
+                PAEMI = "S"; false
+            }
+
         }
+       // _facts.value = database.getAllPAEMIFacts(PAEMI).value
+        _facts.value = database.getAllPAEMIFacts(PAEMI).value
+        //facts = _facts
+        facts = database.getAllPAEMIFacts(PAEMI)
+
+        return returnPAEMI
+    }
     // не вызывается
     fun onClickBottomNavView(): Boolean  {
         Timber.i("ToDo OnClick Fragment Recycler OnClick")

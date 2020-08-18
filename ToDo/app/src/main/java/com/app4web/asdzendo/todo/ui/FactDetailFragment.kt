@@ -58,7 +58,6 @@ class FactDetailFragment : Fragment() {
    /* override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(FactDetailViewModel::class.java)
-        // TODO: Use the ViewModel
     }*/
 
 }

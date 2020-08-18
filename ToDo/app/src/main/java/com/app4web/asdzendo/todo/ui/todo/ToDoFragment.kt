@@ -1,11 +1,9 @@
 package com.app4web.asdzendo.todo.ui.todo
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -77,25 +75,10 @@ class ToDoFragment : Fragment() {
                 // и вызвать новый метод addHeaderAndSubmitList вместо метода submitList:
                 // LiveData observers are sometimes passed null, so make sure you check for null.
                 // Наблюдатели живых данных иногда передаются null, поэтому убедитесь, что вы проверяете наличие null.
+                //adapter.refreshUsers()
+                //binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
             }
         }
-
-        // Set the adapter На будущее для подклюяения cardView
-         /*   with(binding.recyclerList) {
-                layoutManager = when (orientation){
-                    Configuration.ORIENTATION_PORTRAIT -> LinearLayoutManager(context)
-                    Configuration.ORIENTATION_LANDSCAPE -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, orientation)
-                }
-
-                // adapter = DummyAdapterList(DummyContent.ITEMS)
-                // adapter = FactAdapterList(FactContent.FACTS)
-                //adapter = ToDoAdapterList(FactContent.FACTS)
-                adapter = ToDoAdapterList(FactContentFACTS)
-            }*/
-
-        //binding.viewmodel = fragmentRecyclerViewModel
-
 
         todoViewModel.snackbar.observe(viewLifecycleOwner) { snack ->
             if (snack == true) {
@@ -112,7 +95,12 @@ class ToDoFragment : Fragment() {
 
         binding.bottomNavView.setOnNavigationItemSelectedListener { paemi ->
             Timber.i("ToDo ToDoFragment  setOnNavigationItemSelectedListener PAEMI $paemi")
-            todoViewModel.onClickBottomNavView(paemi)}
+            val returnClik=todoViewModel.onClickBottomNavView(paemi)
+           // adapter.addHeaderAndSubmitList(todoViewModel.facts.value)
+           // adapter.refreshUsers()
+           // binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
+            returnClik
+            }
 
         Timber.i("ToDo Recycler Fragment")
 

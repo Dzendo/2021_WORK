@@ -16,55 +16,40 @@
 
 package com.app4web.asdzendo.todo.database
 
-import androidx.room.ColumnInfo
+
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Period
-import java.net.URL
 
 
 /**
  * Represents one night's sleep through start, end times, and the sleep quality.
- * Представляет собой один ночной сон через время начала, окончания и качество сна.
- * Представляет собой одну запись жизни: Идею План Действие
+ * Представляет собой один запись фактта жизни идеи(I), плана(P), действия(A), события(E), денег(M).
  */
 @Entity(tableName = "fact_todo")
 data class Fact(
         @PrimaryKey(autoGenerate = true)
-        var factId: Long = 0L,
-        var data: Long = 0L, // LocalDateTime = LocalDateTime.now(),
-        var parent: Long = 0L,
-        var paemi: String = "I",
+        var factId: Long = 0L,  // пускай нумеруется сам -  никогда не меняется (надо бы не удалять запись 0L)
+        var data: Long = System.currentTimeMillis(),  // Сейчас - дата и время создания записи
+        var parent: Long = 0L, // Какая запись (неважно какого типа) породила эту
+        var paemi: String = "S",  // идеи(I), плана(P), действия(A), события(E), денег(M) служебная(S)
         var nameShort: String = "",
         var name: String = "",
-        var rezult: String = "",
-        var toWork: Boolean = false,
-        var type: Long = 0L, // List<Long>,
-        var dataStart: Long = 0L, // LocalDate,
-        var dataEnd:  Long = 0L, //LocalDate,
-        var deadLine:  Long = 0L, //LocalDate,
-        var duration:  Long = 0L, //Period,
+        var rezult: String = "", // ожидаемый или полученный или получившийся РЕЗУЛЬТАТ
+        var toWork: Boolean = false, // закпущена в работу или снята с работы(отказ или удалена)
+        var type: Long = 0L, // List<Long>, // Номер ссылки в доп справочнике, нужно множественную
+        var dataStart: Long = data, // LocalDate,
+        var dataEnd: Long = data, //LocalDate,
+        var deadLine: Long = data, //LocalDate,
+        var duration: Long = 0L, //Period,
         var resources: String = "",
         var money: Int = 0,
-        var close: Boolean = false,
-        var defect: String = "",
-      //  var parentList: List<Long>,
-      //  var childList: List<Long>,
-        var comment: String = "",
-      //  var url: List<URL>
+        var close: Boolean = false,  // Факт закрыт
+        var defect: String = "",  // Халтура недоделки
+      //  var parentList: List<Long>,   // Ссылки на родителей надо делать ?
+      //  var childList: List<Long>,    // Ссылка на подчиненных надо делать ?
+        var comment: String = "",       // просто свободный комментарий для User
+        var system: String = "",       // Специальный информация только для меня
+        var url: String = "https://developer.android.com/guide"              //List<URL>
 )
 
-/*
-        @ColumnInfo(name = "start_time_milli")
-        val startTimeMilli: Long = System.currentTimeMillis(),
-
-        @ColumnInfo(name = "end_time_milli")
-        var endTimeMilli: Long = startTimeMilli,
-
-        @ColumnInfo(name = "quality_rating")
-        var sleepQuality: Int = -1
-
- */
 

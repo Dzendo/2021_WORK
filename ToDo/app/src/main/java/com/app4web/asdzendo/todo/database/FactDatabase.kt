@@ -98,13 +98,11 @@ abstract class FactDatabase : RoomDatabase() {
          *
          * @param context The application context Singleton, used to get access to the filesystem.
          */
-        // вызывается из InjectorUtils SunFlower
         // getInstance() метод с Context параметром, который понадобится построителю базы данных.
         fun getinstance(context: Context): FactDatabase =
             instance ?: synchronized(this) {     // только один поток выполнения одновременно может войти в этот блок кода,
                 instance ?: buildDatabase(context).also { instance = it }
         }
-
         // Создайте и предварительно заполните базу данных.
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
@@ -147,7 +145,6 @@ abstract class FactDatabase : RoomDatabase() {
                     // Назначить экземпляр вновь созданной базе данных.
                     INSTANCE = instance
                 }
-
                 // Return instance; smart cast to be non-null.
                 // Return instance; интеллектуальное приведение должно быть ненулевым.
                 return instance

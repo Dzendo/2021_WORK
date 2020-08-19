@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--item
+        android:id="@+id/all"
+        android:icon="@drawable/ic_home"
+        android:title="ALL" /-->
+
+    <item
+        android:id="@+id/idea"
+        android:icon="@drawable/ic_home"
+        android:title="Idea" />
+    <item
+        android:id="@+id/plan"
+        android:icon="@drawable/ic_home"
+        android:title="Plan" />
+    <item
+        android:id="@+id/action"
+        android:icon="@drawable/ic_home"
+        android:title="Action" />
+    <item
+        android:id="@+id/event"
+        android:icon="@drawable/ic_home"
+        android:title="Event" />
+
+    <item
+        android:id="@+id/money"
+        android:icon="@drawable/ic_home"
+        android:title="Money" />
+
+
+</menu>

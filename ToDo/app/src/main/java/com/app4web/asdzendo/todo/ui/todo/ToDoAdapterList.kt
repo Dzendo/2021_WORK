@@ -42,7 +42,6 @@ class ToDoAdapterList(
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)

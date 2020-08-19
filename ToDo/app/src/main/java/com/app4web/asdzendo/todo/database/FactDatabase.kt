@@ -42,12 +42,13 @@ abstract class FactDatabase : RoomDatabase() {
 
     /**
      * Define a companion object, this allows us to add functions on the FactDatabase class.
-     * Определите сопутствующий объект, это позволит нам добавить функции в класс базы данных Sleep.
+     * Определите сопутствующий объект, это позволит нам добавить функции в класс базы данных Fact.
      *
-     * For example, clients can call `FactDatabase.getInstance(context)` to instantiate
-     * a new FactDatabase.
-     * Например, клиенты могут вызвать базу данных "Sleep".getInstance (context)` для создания экземпляра
-     * новая база данных сна.
+     * For example, clients can call `FactDatabase.getInstance(context)`
+     * to instantiate a new FactDatabase.
+     * Например, клиенты могут вызвать "базу данных фактов".getInstance (контекст)`
+     * создать экземпляр новой базы данных фактов.
+     *
      */
     companion object {
         /**
@@ -66,12 +67,12 @@ abstract class FactDatabase : RoomDatabase() {
          * Это означает, что изменения, внесенные одним потоком к общим данным виден другим потокам.
          */
         // For Singleton instantiation
-        //  Для одноэлементный экземпляр Volatile - НЕ кешировать
+        //  Для одноэлементный экземпляр SunFlower
+        @Volatile private var instance: FactDatabase? = null
+        //  Для одноэлементный экземпляр Udacity
         @Volatile private var INSTANCE: FactDatabase? = null
         // INSTANCE Переменная будет хранить ссылку на базу данных, когда один был создан.
         // Это поможет вам избежать повторного открытия соединений с базой данных, что дорого.
-        //  Для одноэлементный экземпляр Volatile - НЕ кешировать
-        @Volatile private var instance: FactDatabase? = null
 
         /**
          * Helper function to get the database.
@@ -102,7 +103,7 @@ abstract class FactDatabase : RoomDatabase() {
         fun getinstance(context: Context): FactDatabase =
             instance ?: synchronized(this) {     // только один поток выполнения одновременно может войти в этот блок кода,
                 instance ?: buildDatabase(context).also { instance = it }
-        }
+            }
         // Создайте и предварительно заполните базу данных.
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
@@ -111,8 +112,7 @@ abstract class FactDatabase : RoomDatabase() {
         
         fun getInstance(context: Context): FactDatabase {
             // Multiple threads can ask for the database at the same time, ensure we only initialize
-            // it once by using synchronized. Only one thread may enter a synchronized block at a
-            // time.
+            // it once by using synchronized. Only one thread may enter a synchronized block at a time.
             // Несколько потоков могут запрашивать базу данных одновременно, убедитесь, что мы только инициализируем
             // это один раз с помощью synchronized. Только один поток может войти в синхронизированный блок одновременно.
 
@@ -136,8 +136,6 @@ abstract class FactDatabase : RoomDatabase() {
                             // Migration is not part of this lesson. You can learn more about
                             // migration with Room in this blog post:
                             // Стирает и перестраивает вместо миграции, если объект миграции отсутствует.
-                            // Миграция не является частью этого урока. Вы можете узнать больше о компании
-                            // миграция с помещением в этом блоге:
                             // https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
                             .fallbackToDestructiveMigration()
                             .build()
@@ -145,8 +143,8 @@ abstract class FactDatabase : RoomDatabase() {
                     // Назначить экземпляр вновь созданной базе данных.
                     INSTANCE = instance
                 }
-                // Return instance; smart cast to be non-null.
-                // Return instance; интеллектуальное приведение должно быть ненулевым.
+                //  smart cast to be non-null.
+                //  интеллектуальное приведение должно быть ненулевым.
                 return instance
             }
         }

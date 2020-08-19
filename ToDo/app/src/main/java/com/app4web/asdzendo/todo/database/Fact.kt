@@ -22,8 +22,8 @@ import androidx.room.PrimaryKey
 
 
 /**
- * Represents one night's sleep through start, end times, and the sleep quality.
- * Представляет собой один запись фактта жизни идеи(I), плана(P), действия(A), события(E), денег(M).
+ * Represents one record of the fact of life of an idea (I), plan(P), action(A), event(Y), money(M).
+ * Представляет собой один запись факта жизни идеи(I), плана(P), действия(A), события(E), денег(M).
  */
 @Entity(tableName = "fact_todo")
 data class Fact(

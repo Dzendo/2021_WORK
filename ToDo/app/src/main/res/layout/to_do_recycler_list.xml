@@ -16,7 +16,7 @@
         <import type= "android.view.MenuItem"/>
         <variable
             name="viewmodel"
-            type="com.app4web.asdzendo.todo.viewmodels.ToDoViewModel" />
+            type="com.app4web.asdzendo.todo.ui.todo.ToDoViewModel" />
     </data>
 
 

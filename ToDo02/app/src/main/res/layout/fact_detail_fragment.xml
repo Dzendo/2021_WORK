@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type = "com.app4web.asdzendo.todo.database.Fact"/>
+        <variable
+            name="FactDetailViewModel"
+            type="com.app4web.asdzendo.todo.viewmodels.FactDetailViewModel" />
+        <!--variable
+            name="callback"
+            type="com.google.samples.apps.sunflower.PlantDetailFragment.Callback" /-->
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/detail_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".ui.FactDetailFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/factId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{FactDetailViewModel.factid}"/>
+            <EditText
+                android:id="@+id/data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DATA"/>
+            <EditText
+                android:id="@+id/paemi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{FactDetailViewModel.fact.paemi}"/>
+            <EditText
+                android:id="@+id/nameShort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{FactDetailViewModel.fact.nameShort}"/>
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{FactDetailViewModel.fact.name}"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="100"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/add_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Add" />
+
+                <Button
+                    android:id="@+id/update_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Update" />
+
+                <Button
+                    android:id="@+id/delete_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Delete" />
+
+                <Button
+                    android:id="@+id/cancel_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Cancel" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

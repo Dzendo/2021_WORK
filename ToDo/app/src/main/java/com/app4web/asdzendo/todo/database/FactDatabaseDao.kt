@@ -23,7 +23,7 @@ import androidx.room.*
 
 /**
  * Defines methods for using the Fact class with Room.
- * Определяет методы для использования класса Fact с номером.
+ * Определяет методы для использования класса Fact с Room.
  */
 @Dao
 interface FactDatabaseDao {
@@ -47,7 +47,7 @@ interface FactDatabaseDao {
 
     /**
      * Selects and returns the row that matches the supplied start time, which is our key.
-     * Выбирает и возвращает строку, которая соответствует предоставленному id  что является нашим ключом.
+     * Выбирает и возвращает строку, которая соответствует предоставленному id  что является ключом.
      *
      * @param id startTimeMilli to match
      */

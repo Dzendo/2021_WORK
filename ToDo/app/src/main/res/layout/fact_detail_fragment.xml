@@ -7,7 +7,7 @@
         <import type = "com.app4web.asdzendo.todo.database.Fact"/>
         <variable
             name="FactDetailViewModel"
-            type="com.app4web.asdzendo.todo.viewmodels.FactDetailViewModel" />
+            type="com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel" />
         <!--variable
             name="callback"
             type="com.google.samples.apps.sunflower.PlantDetailFragment.Callback" /-->
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".ui.FactDetailFragment">
+        tools:context=".ui.detail.FactDetailFragment">
 
         <LinearLayout
             android:layout_width="match_parent"

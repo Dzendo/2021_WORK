@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.app4web.asdzendo.todo.viewmodels.ToDoActitityViewModel" />
+            type="com.app4web.asdzendo.todo.launcher.ToDoActitityViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout

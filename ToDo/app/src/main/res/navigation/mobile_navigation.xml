@@ -6,82 +6,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/todoFragment">
 
-    <!--fragment
-        android:id="@+id/fragmentPlans"
-        android:name="com.app4web.asdzendo.paemi.ui.plans.PlansFragment"
-        android:label="Plans"
-        tools:layout="@layout/fragment_recycler_list_layout_list" />
-
-    <fragment
-        android:id="@+id/fragmentActions"
-        android:name="com.app4web.asdzendo.paemi.ui.actions.ActionsFragment"
-        android:label="Actions"
-        tools:layout="@layout/fragment_recycler_list_layout_list" />
-
-    <fragment
-        android:id="@+id/fragmentEvents"
-        android:name="com.app4web.asdzendo.paemi.ui.events.EventsFragment"
-        android:label="Events"
-        tools:layout="@layout/fragment_recycler_list_layout_list" />
-
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.app4web.asdzendo.paemi.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.app4web.asdzendo.paemi.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.app4web.asdzendo.paemi.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.app4web.asdzendo.paemi.ui.homebottom.BottomFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_bottom" />
-
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.app4web.asdzendo.paemi.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.app4web.asdzendo.paemi.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
-
-    <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.app4web.asdzendo.paemi.ui.base.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/FactDetailFragment"
-        android:name="com.app4web.asdzendo.todo.ui.FactDetailFragment"
-        android:label="FactDetailFragment"
-        tools:layout="@layout/fact_detail_fragment">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment-->
-
     <fragment
         android:id="@+id/todoFragment"
         android:name="com.app4web.asdzendo.todo.ui.todo.ToDoFragment"
@@ -94,7 +18,7 @@
 
     <fragment
         android:id="@+id/factDetailFragment"
-        android:name="com.app4web.asdzendo.todo.ui.FactDetailFragment"
+        android:name="com.app4web.asdzendo.todo.ui.detail.FactDetailFragment"
         android:label="FactDetailFragment"
         tools:layout="@layout/fact_detail_fragment">
         <argument
@@ -105,12 +29,5 @@
             android:id="@+id/action_factDetailFragment_to_todoFragment"
             app:destination="@id/todoFragment" />
     </fragment>
-
-
-    <!--fragment
-        android:id="@+id/fragmentRecyclerGridLayout"
-        android:name="com.app4web.asdzendo.paemi.ui.recycler.grid.FragmentRecyclerGridLayout"
-        android:label="fragment_recycler_grid_layout_list"
-        tools:layout="@layout/fragment_recycler_grid_layout_list" /-->
 
 </navigation>

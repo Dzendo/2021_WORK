@@ -1,54 +1,51 @@
 package com.app4web.asdzendo.todo.ui.todo
 
+import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.database.FactDatabase
+import com.app4web.asdzendo.todo.database.FactDatabaseDao
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
-import com.app4web.asdzendo.todo.viewmodels.ToDoViewModel
-import com.app4web.asdzendo.todo.viewmodels.ToDoViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
-
 
 /**
  * A fragment representing a list of Items.
  */
 class ToDoFragment : Fragment() {
 
-
     private var orientation: Int = 0
     //private val ToDoViewModel: ToDoViewModel by viewModels()
+    // private lateinit var  binding: FactDetailFragmentBinding
+    private lateinit var  application: Application
+    private lateinit var  dataSource: FactDatabaseDao
+    private lateinit var  viewModelFactory: ToDoViewModelFactory
+    private lateinit var  todoViewModel: ToDoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.i("ToDo Recycler Fragment onCreate")
         orientation = resources.configuration.orientation
-
-        //val dataSource = FactDatabase.getInstance(this).factDatabaseDao
+        application = requireNotNull(this.activity).application
+        dataSource = FactDatabase.getInstance(application).factDatabaseDao
+        viewModelFactory = ToDoViewModelFactory(dataSource, application)
+        todoViewModel =
+             ViewModelProvider(this, viewModelFactory).get(ToDoViewModel::class.java)
     }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
+        Timber.i("ToDo Recycler Fragment onCreateView")
         // Get a reference to the binding object and inflate the fragment views.
         // Получить ссылку на объект привязки и раздуть представления фрагментов.
-        val binding : ToDoRecyclerListBinding = DataBindingUtil.inflate(
-                inflater, R.layout.to_do_recycler_list, container, false)
-
-        val application = requireNotNull(this.activity).application
-
-        val dataSource = FactDatabase.getInstance(application).factDatabaseDao
-
-        val viewModelFactory = ToDoViewModelFactory(dataSource, application)
-        val todoViewModel =
-                ViewModelProvider(this, viewModelFactory).get(ToDoViewModel::class.java)
+        val binding = ToDoRecyclerListBinding.inflate(inflater, container, false)
 
         binding.viewmodel = todoViewModel
 
@@ -61,7 +58,6 @@ class ToDoFragment : Fragment() {
             //todoViewModel.onFactClicked(factId)
             this.findNavController().navigate(
                     ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID))
-
           //  Toast.makeText(context,  " Тырк в строку $factId", Toast.LENGTH_LONG).show()
         })
         binding.recyclerList.adapter = adapter
@@ -95,15 +91,12 @@ class ToDoFragment : Fragment() {
 
         binding.bottomNavView.setOnNavigationItemSelectedListener { paemi ->
             Timber.i("ToDo ToDoFragment  setOnNavigationItemSelectedListener PAEMI $paemi")
-            val returnClik=todoViewModel.onClickBottomNavView(paemi)
+            val returnClik = todoViewModel.onClickBottomNavView(paemi)
            // adapter.addHeaderAndSubmitList(todoViewModel.facts.value)
            // adapter.refreshUsers()
            // binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
             returnClik
             }
-
-        Timber.i("ToDo Recycler Fragment")
-
         return binding.root
     }
 }

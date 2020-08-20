@@ -32,7 +32,7 @@ interface FactDatabaseDao {
     suspend fun insertAll(facts: List<Fact>)
 
     @Insert
-    fun insert(fact: Fact)
+    suspend fun insert(fact: Fact)
 
     /**
      * When updating a row with a value already set in a column,
@@ -43,7 +43,10 @@ interface FactDatabaseDao {
      * @param fact new value to write
      */
     @Update
-    fun update(fact: Fact)
+    suspend fun update(fact: Fact)
+
+    @Delete
+    suspend fun delete(fact: Fact)
 
     /**
      * Selects and returns the row that matches the supplied start time, which is our key.
@@ -62,7 +65,7 @@ interface FactDatabaseDao {
      * При этом таблица не удаляется, а только ее содержимое.
      */
     @Query("DELETE FROM fact_todo")
-    fun clear()
+    suspend fun clear()
 
     /**
      * Selects and returns all rows in the table,
@@ -90,7 +93,4 @@ interface FactDatabaseDao {
 
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
     fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
-
-
-
 }

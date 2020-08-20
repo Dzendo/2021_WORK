@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactDatabaseDao
@@ -17,27 +18,29 @@ class ToDoViewModel(
         application: Application
 ) : AndroidViewModel(application) {
 
-    private var PAEMI: String = "S"
+    private var PAEMI: MutableLiveData<String> = MutableLiveData<String>("*")
 
     init { Timber.i("ToDoViewModel created PAEMI= $PAEMI")}
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
      */
-    private var viewModelJob = Job()
+    private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private var tofact = MutableLiveData<Fact?>()
-
-    private var _facts : MutableLiveData<List<Fact>> =  MutableLiveData<List<Fact>>(database.getAllPAEMIFacts(PAEMI).value)
-
-    var facts: LiveData<List<Fact>> = database.getAllPAEMIFacts(PAEMI) //database.getAllFacts()
-       // get() = _facts
 
 
+    val facts: LiveData<List<Fact>>
+        get() = PAEMI.switchMap { paemi ->
+            if (paemi == "*")
+            database.getAllFacts()
+            else
+            database.getAllPAEMIFacts(paemi)
+        }
+
+    /* private val tofact = MutableLiveData<Fact?>()
     init {
         initializeTofact()
-       // _facts = database.getAllFacts() as MutableLiveData<List<Fact>>
     }
 
     private fun initializeTofact() {
@@ -51,10 +54,9 @@ class ToDoViewModel(
            /* if (night?.endTimeMilli != night?.startTimeMilli) {
                 night = null
             }*/
-
             fact
         }
-    }
+    }*/
 
     private suspend fun clear() {
         withContext(Dispatchers.IO) {
@@ -62,15 +64,20 @@ class ToDoViewModel(
         }
     }
 
-    private suspend fun update(night: Fact) {
+    private suspend fun update(fact: Fact) {
         withContext(Dispatchers.IO) {
-            database.update(night)
+            database.update(fact)
         }
     }
 
-    private suspend fun insert(night: Fact) {
+    private suspend fun insert(fact: Fact) {
         withContext(Dispatchers.IO) {
-            database.insert(night)
+            database.insert(fact)
+        }
+    }
+    private suspend fun delete(fact: Fact) {
+        withContext(Dispatchers.IO) {
+            database.delete(fact)
         }
     }
 
@@ -92,13 +99,13 @@ class ToDoViewModel(
     //07.4.5 Задача: обрабатывать щелчки элементов
     // Шаг 1: навигация по клику
     // функцию обработчика щелчков.
-    fun onFactClicked(id: Long){
-      //  _navigateToSleepDataQuality.value = id
+    fun onFactClicked(factid: Long){
+      //  _navigateToFactDetail.value = factid
     }
 
     // Определите метод для вызова после завершения навигации приложения
    // fun onSleepDataQualityNavigated() {
-   //     _navigateToSleepDataQuality.value = null
+   //     _navigateToFactDetail.value = null
    // }
 
 
@@ -116,34 +123,16 @@ class ToDoViewModel(
 
     // подключено надо доделывать вызов из XML
     fun onClickBottomNavView(paemi: MenuItem): Boolean {
-        val returnPAEMI = when (paemi.itemId) {
-            R.id.idea -> {
-                PAEMI = "I"; true
-            }
-            R.id.plan -> {
-                PAEMI = "P"; true
-            }
-            R.id.action -> {
-                PAEMI = "A"; true
-            }
-            R.id.event -> {
-                PAEMI = "E"; true
-            }
-            R.id.money -> {
-                PAEMI = "M"; true
-            }
-            else -> {
-                PAEMI = "S"; false
-            }
-
+        PAEMI.value = when (paemi.itemId) {
+            R.id.idea ->   "I"
+            R.id.plan ->   "P"
+            R.id.action -> "A"
+            R.id.event ->  "E"
+            R.id.money ->  "M"
+            else -> "S"
         }
-       // _facts.value = database.getAllPAEMIFacts(PAEMI).value
-        _facts.value = database.getAllPAEMIFacts(PAEMI).value
-        //facts = _facts
-        //_facts = database.getAllPAEMIFacts(PAEMI)
-        facts = database.getAllPAEMIFacts(PAEMI)
-
-        return returnPAEMI
+        Timber.i("ToDoViewModel onClickBottomNavView ${PAEMI.value}}")
+        return true
     }
     // Вызов в XML стоит но не вызывается
     fun onClickBottomNavView(): Boolean  {

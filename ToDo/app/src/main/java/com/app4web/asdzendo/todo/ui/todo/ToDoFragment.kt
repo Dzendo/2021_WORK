@@ -48,6 +48,7 @@ class ToDoFragment : Fragment() {
         val binding = ToDoRecyclerListBinding.inflate(inflater, container, false)
 
         binding.viewmodel = todoViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // Говорит можно объявить и в RecyclerView XML
         val manager = LinearLayoutManager(activity)
@@ -55,13 +56,12 @@ class ToDoFragment : Fragment() {
 
         // Говорит можно объявить и в RecyclerView XML
         val adapter = ToDoAdapterList(FactListener { factID ->
-            //todoViewModel.onFactClicked(factId)
+            //todoViewModel.onFactClicked(factID)
             this.findNavController().navigate(
                     ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID))
           //  Toast.makeText(context,  " Тырк в строку $factId", Toast.LENGTH_LONG).show()
         })
         binding.recyclerList.adapter = adapter
-        binding.lifecycleOwner = viewLifecycleOwner
 
         todoViewModel.facts.observe(viewLifecycleOwner) {
             it?.let {
@@ -71,8 +71,6 @@ class ToDoFragment : Fragment() {
                 // и вызвать новый метод addHeaderAndSubmitList вместо метода submitList:
                 // LiveData observers are sometimes passed null, so make sure you check for null.
                 // Наблюдатели живых данных иногда передаются null, поэтому убедитесь, что вы проверяете наличие null.
-                //adapter.refreshUsers()
-                //binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
             }
         }
 
@@ -91,11 +89,7 @@ class ToDoFragment : Fragment() {
 
         binding.bottomNavView.setOnNavigationItemSelectedListener { paemi ->
             Timber.i("ToDo ToDoFragment  setOnNavigationItemSelectedListener PAEMI $paemi")
-            val returnClik = todoViewModel.onClickBottomNavView(paemi)
-           // adapter.addHeaderAndSubmitList(todoViewModel.facts.value)
-           // adapter.refreshUsers()
-           // binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
-            returnClik
+            todoViewModel.onClickBottomNavView(paemi)
             }
         return binding.root
     }

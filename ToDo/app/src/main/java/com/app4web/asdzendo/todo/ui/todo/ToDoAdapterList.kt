@@ -27,12 +27,6 @@ class ToDoAdapterList(
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    //передаем данные и оповещаем адаптер о необходимости обновления списка - не работает
-    fun refreshUsers() { //users: List<User>) {
-        //this.users = users
-        notifyDataSetChanged()
-    }
-
     override fun onBindViewHolder(holder: RecyclerView. ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {

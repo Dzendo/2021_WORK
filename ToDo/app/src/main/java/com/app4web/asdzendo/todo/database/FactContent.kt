@@ -11,20 +11,14 @@ import java.util.ArrayList
  */
 object FactContent {
 
-    /**
-     * An array of sample (dummy) items.
-     */
-  
-    val FACTS: MutableList<Fact> = ArrayList()
+    private const val COUNT = 650L
 
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
-
-    private const val COUNT = 65L
-    //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
     private val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
-
+    /**
+     * An array and map of sample (dummy) items , by ID..
+     */
+    val FACTS: MutableList<Fact> = ArrayList()
+    //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
 
     init {
         // Add some sample items.

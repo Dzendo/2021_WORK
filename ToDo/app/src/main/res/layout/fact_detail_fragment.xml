@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type = "com.app4web.asdzendo.todo.database.Fact"/>
+
         <variable
             name="FactDetailViewModel"
             type="com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel" />
@@ -76,6 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="25"
+                    android:onClick="@{() -> FactDetailViewModel.delete(FactDetailViewModel.fact)}"
                     android:text="Delete" />
 
                 <Button

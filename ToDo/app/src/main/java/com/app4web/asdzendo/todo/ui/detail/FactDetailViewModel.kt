@@ -4,7 +4,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactDatabaseDao
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class FactDetailViewModel(
@@ -33,6 +35,30 @@ class FactDetailViewModel(
     }
 
     init { Timber.i("ToDo Detail ViewModel")}
+
+    private suspend fun clear() {
+        withContext(Dispatchers.IO) {
+            database.clear()
+        }
+    }
+
+    private suspend fun update(fact: Fact) {
+        withContext(Dispatchers.IO) {
+            database.update(fact)
+        }
+    }
+
+    private suspend fun insert(fact: Fact) {
+        withContext(Dispatchers.IO) {
+            database.insert(fact)
+        }
+    }
+    fun delete(fact: Fact) {
+         Timber.i("ToDo Detail ViewModel delete ${fact.factId}")
+    /*    withContext(Dispatchers.IO) {
+            database.delete(fact)
+        }*/
+    }
 
     override fun onCleared() {
         super.onCleared()

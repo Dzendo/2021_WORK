@@ -12,13 +12,13 @@ class ToDoActitityViewModel: ViewModel() {
     private val _snackbar: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
             val snackbar: LiveData<Boolean>
                 get() = _snackbar
-    fun fabClick() {
-        _snackbar.value = true
-        Timber.i("ToDoActitityViewModel fabClick() SnackbarTrue()")
-    }
+
     fun snackbarFalse() {
         _snackbar.value = false
         Timber.i("ToDoActitityViewModel  SnackbarFalse()")
     }
-
+   /* fun fabClick() {
+        _snackbar.value = true
+        Timber.i("ToDoActitityViewModel fabClick() SnackbarTrue()")
+    }*/
 }

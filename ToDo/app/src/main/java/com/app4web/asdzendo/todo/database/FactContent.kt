@@ -1,5 +1,8 @@
 package com.app4web.asdzendo.todo.database
 
+import com.app4web.asdzendo.todo.launcher.*
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.ArrayList
 
 /**
@@ -9,29 +12,29 @@ import java.util.ArrayList
  * созданных Мастера шаблонов Android.
  *
  */
-object FactContent {
+fun factContent(countFacts: Long = 65L): MutableList<Fact>  {
 
-    private const val COUNT = 650L
-
-    private val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
+    //val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
+    val FACTS: MutableList<Fact> = ArrayList()
+    //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
     /**
      * An array and map of sample (dummy) items , by ID..
      */
-    val FACTS: MutableList<Fact> = ArrayList()
-    //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
-
-    init {
-        // Add some sample items.
-        for (id in 1L..COUNT)
-            for (paemi in PAEMI)
-                addFactItem(createFactItem(id,paemi))
-        //     FACT_MAP[fact.factId] = fact
-    }
-   
-    private fun addFactItem(fact: Fact) = FACTS.add(fact)
-
-    private fun createFactItem(id: Long= 0L, paemi: String = "S"): Fact =
-        Fact(paemi = paemi, nameShort= "$id Факт", name= makeDetails(id))
-
-    private fun makeDetails(id: Long): String = "Факт полностью: $id"
+    // Add some sample items.
+    for (id in 1L..countFacts)
+        for (paemi in PAEMI)
+            FACTS.add((Fact(paemi = paemi, nameShort= "$id Факт", name= "Факт полностью: $id")))
+    //     FACT_MAP[fact.factId] = fact
+    return FACTS
 }
+
+fun createFactDatabase(countFacts: Long = 65L) = APPlicationScope.launch {
+    // Заполнение начальных данных
+    //FactdataSource.clear()
+    FactdataSource.insertAll(factContent(countFacts))
+    Timber.i("ToDoApplication Add Database Строк записи = $countFacts * 7 = ${countFacts * 7}")
+}
+
+
+
+

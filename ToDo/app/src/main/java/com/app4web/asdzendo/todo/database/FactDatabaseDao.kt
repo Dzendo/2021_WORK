@@ -17,7 +17,6 @@
 package com.app4web.asdzendo.todo.database
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 
@@ -93,4 +92,7 @@ interface FactDatabaseDao {
 
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
     fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
+
+    @Query("SELECT COUNT(factId) FROM fact_todo")
+    fun getCount(): LiveData<Int>
 }

@@ -18,15 +18,13 @@
 package com.app4web.asdzendo.todo.launcher
 
 import android.app.Application
-import com.app4web.asdzendo.todo.database.FactDatabase
-import com.app4web.asdzendo.todo.database.FactContent
+import com.app4web.asdzendo.todo.database.*
 //import android.os.Build
 //import androidx.work.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 //import java.util.concurrent.TimeUnit
+
 
 
 /**
@@ -34,14 +32,7 @@ import timber.log.Timber
  * Переопределение приложения для настройки фоновой работы через Диспетчер работ
  */
 
-
 class ToDoApplication : Application() {
-    // Заполнение начальных данных
-    companion object {
-       val FactContentFACTS = FactContent.FACTS
-    }
-    //Создайте область сопрограммы для использования в вашем приложении чтобы не блокировать onCreate:
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     /**
      * onCreate is called before the first screen is shown to the user.
@@ -54,30 +45,23 @@ class ToDoApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        delayedInit()  // Добавьте вызов delayedInit()в onCreate().
-
+        FactdataSource = FactDatabase.getInstance(applicationContext).factDatabaseDao
+        timberInit()  // Инициализировать Timber
     }
 
     // Создайте функцию инициализации, которая не блокирует основной поток:
-    // Важно отметить, что WorkManager.initialize должен вызываться изнутри onCreate без использования фонового потока,
-    // чтобы избежать проблем, возникающих при инициализации после использования WorkManager.
-    private fun delayedInit() = applicationScope.launch {
+
+    private fun timberInit() = APPlicationScope.launch {
         Timber.plant(Timber.DebugTree())  // Инициализация Timber
         Timber.i("ToDoApplication timber Init ")
-
-        val dataSource = FactDatabase.getInstance(applicationContext).factDatabaseDao
-        dataSource.clear()
-        dataSource.insertAll(FactContentFACTS)
-        Timber.i("ToDoApplication Init Database Строк записи = ${FactContentFACTS.size}")
-
-        //  setupRecurringWork()
     }
-
 }
     /**
      * Setup WorkManager background job to 'fetch' new network data daily.
      * Настройка работы менеджер фоновых заданий, чтобы "взять" новую сеть данных ежедневно.
      */
+// Важно отметить, что WorkManager.initialize должен вызываться изнутри onCreate без использования фонового потока,
+// чтобы избежать проблем, возникающих при инициализации после использования WorkManager.
     // Шаг 1: Настройка повторяющейся работы
 // Сделайте запрос PeriodWorkRequest: Это должно бежать один раз каждый день.
   /*  private fun setupRecurringWork() {

@@ -14,13 +14,11 @@ class FactDetailViewModel(
     dataSource: FactDatabaseDao): ViewModel() {
     val factid = factID.toString()  // Временно для TextView поменять на адаптер
     /**
-     * Hold a reference to SleepDatabase via its SleepDatabaseDao.
-     * Держите ссылку на базу данных Sleep через ее Sleep DatabaseDao.
+     * Hold a reference to FactDatabase via its FactDatabaseDao.
+     * Держите ссылку на базу данных Fact через ее Fact DatabaseDao.
      */
     val database = dataSource
-    /** Coroutine setup variables Переменные настройки сопрограммы */
-
-    /**
+    /** Coroutine setup variables Переменные настройки сопрограммы
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
      */

@@ -1,33 +1,33 @@
 package com.app4web.asdzendo.todo.ui.detail
 
-import android.app.Application
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.app4web.asdzendo.todo.database.FactDatabase
-import com.app4web.asdzendo.todo.database.FactDatabaseDao
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+
+import androidx.navigation.fragment.navArgs
+
 import com.app4web.asdzendo.todo.databinding.FactDetailFragmentBinding
+import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
+
 import timber.log.Timber
 
 class FactDetailFragment : Fragment() {
-   // private lateinit var  binding: FactDetailFragmentBinding
-    private lateinit var  application: Application
-    private lateinit var  arguments: FactDetailFragmentArgs
-    private lateinit var  dataSource: FactDatabaseDao
-    private lateinit var  viewModelFactory: FactDetailViewModelFactory
-    private lateinit var  factDetailViewModel: FactDetailViewModel
+
+    private val args: FactDetailFragmentArgs by navArgs()
+
+    private val factDetailViewModel: FactDetailViewModel by viewModels {
+        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(),args.factID)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        application = requireNotNull(this.activity).application
-        arguments = FactDetailFragmentArgs.fromBundle(requireArguments())
-        dataSource = FactDatabase.getInstance(application).factDatabaseDao
-        viewModelFactory = FactDetailViewModelFactory(arguments.factID, dataSource)
-        factDetailViewModel =
-            ViewModelProvider(this, viewModelFactory).get(FactDetailViewModel::class.java)
+
         Timber.i("ToDo FactDetailFragment onCreate ")
     }
 
@@ -39,8 +39,7 @@ class FactDetailFragment : Fragment() {
 
         // Get a reference to the binding object and inflate the fragment views.
         // Получить ссылку на объект привязки и раздуть представления фрагментов.
-        //binding = DataBindingUtil.inflate(
-        //inflater, R.layout.fact_detail_fragment, container, false)
+
         val binding = FactDetailFragmentBinding.inflate(inflater, container, false)
 
         // To use the View Model with data binding, you have to explicitly
@@ -50,6 +49,13 @@ class FactDetailFragment : Fragment() {
         binding.factDetailViewModel = factDetailViewModel
         binding.lifecycleOwner = viewLifecycleOwner //this
 
+        factDetailViewModel.backup.observe(viewLifecycleOwner) {
+            if (it == true) { // Observed state is true. Наблюдаемое состояние истинно.
+                this.findNavController().navigateUp()
+                Toast.makeText(context, "Возврат", Toast.LENGTH_SHORT).show()
+                factDetailViewModel.backupNull()
+            }
+        }
         return binding.root
     }
 }

@@ -1,23 +1,27 @@
 package com.app4web.asdzendo.todo.ui.detail
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactDatabaseDao
+import com.app4web.asdzendo.todo.database.FactRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class FactDetailViewModel(
+    private val factRepository: FactRepository,
     factID: Long = 0L,
-    dataSource: FactDatabaseDao): ViewModel() {
+    ): ViewModel() {
     val factid = factID.toString()  // Временно для TextView поменять на адаптер
     /**
      * Hold a reference to FactDatabase via its FactDatabaseDao.
      * Держите ссылку на базу данных Fact через ее Fact DatabaseDao.
      */
-    val database = dataSource
+    //val database = dataSource
     /** Coroutine setup variables Переменные настройки сопрограммы
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
@@ -29,37 +33,52 @@ class FactDetailViewModel(
     fun getFact() = fact
 
     init {
-        fact.addSource(database.getFactWithId(factID), fact::setValue)
+        fact.addSource(factRepository.getFactWithId(factID), fact::setValue)
     }
 
     init { Timber.i("ToDo Detail ViewModel")}
 
-    private suspend fun clear() {
-        withContext(Dispatchers.IO) {
-            database.clear()
-        }
-    }
+     fun update(fact: Fact) {
+     //   withContext(Dispatchers.IO) {
+             fact.rezult = "Измененный ${fact.factId}"
+            factRepository.update(fact)
 
-    private suspend fun update(fact: Fact) {
-        withContext(Dispatchers.IO) {
-            database.update(fact)
-        }
-    }
+     //   }
+         Timber.i("ToDo Detail ViewModel update ${fact.factId}")
+         backupTrue()
+     }
 
-    private suspend fun insert(fact: Fact) {
-        withContext(Dispatchers.IO) {
-            database.insert(fact)
-        }
-    }
-    fun delete(fact: Fact) {
+     fun insert(fact: Fact) {
+     //   withContext(Dispatchers.IO) {
+            fact.factId = 0L
+         fact.rezult =  "Добавлен ${(0..100).random()}"
+            factRepository.insert(fact)
+     //   }
+
+        Timber.i("ToDo Detail ViewModel insert ${fact.rezult}")
+         backupTrue()
+     }
+
+     fun delete(fact: Fact) {
+      //  withContext(Dispatchers.IO) {
+            factRepository.delete(fact)
+      //  }
          Timber.i("ToDo Detail ViewModel delete ${fact.factId}")
-    /*    withContext(Dispatchers.IO) {
-            database.delete(fact)
-        }*/
-    }
+         backupTrue()
+     }
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+    private val _backup: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>(null)
+    val backup: LiveData<Boolean?>
+        get() = _backup
+
+    fun backupTrue() {
+        _backup.value = true
+    }
+    fun backupNull() {
+        _backup.value = null
     }
 }

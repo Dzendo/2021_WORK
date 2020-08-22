@@ -11,16 +11,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.app4web.asdzendo.todo.R
-import com.app4web.asdzendo.todo.database.createFactDatabase
 import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ToDoActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mainBinding: ActivityToDoBinding
-    private val mainViewModel: ToDoActitityViewModel by viewModels()
+    private val mainViewModel: ToDoActitityViewModel  by viewModels {
+        ToDoInjectorUtils.provideToDoActitityViewModelFactory(applicationContext)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = DataBindingUtil.setContentView (this, R.layout.activity_to_do)
@@ -34,7 +34,7 @@ class ToDoActivity : AppCompatActivity() {
         //mainBinding.bottomNavView.setupWithNavController(navController) перенесен в фрагмент
 
         // Вывести в заголовок количество записей в базе
-        FactdataSource.getCount().observe(this) { count -> title = "ToDoDo $count"}
+        mainViewModel.count().observe(this) { count -> title = "ToDoDo $count"}
 
         mainBinding.viewmodel = mainViewModel
         mainBinding.lifecycleOwner = this
@@ -66,18 +66,12 @@ class ToDoActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             R.id.fact_base_creating -> {
-                APPlicationScope.launch {
-                    createFactDatabase(COUNTSFact) // Заполнить заново базу данных
-                    Timber.i("ToDoMainActivity fact_base_creating База добавлено  ${COUNTSFact} * 7 = ${COUNTSFact * 7} записей ")
-                }
+                mainViewModel.addFactDatabase(COUNTSFact) // Дозаполнить заново базу данных
                 Toast.makeText(applicationContext,"База добавлено  ${COUNTSFact} * 7 = ${COUNTSFact * 7} записей ",Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.fact_base_clearing -> {
-                APPlicationScope.launch {
-                    FactdataSource.clear() // Заполнить заново базу данных
-                    Timber.i("ToDoMainActivity fact_base_clearing База очищена  ")
-                }
+                mainViewModel.clear()
                 Toast.makeText(applicationContext,"База очищена ",Toast.LENGTH_SHORT).show()
                 true
             }

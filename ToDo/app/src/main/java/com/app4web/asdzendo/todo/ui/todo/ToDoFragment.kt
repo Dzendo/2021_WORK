@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app4web.asdzendo.todo.database.FactDatabase
 import com.app4web.asdzendo.todo.database.FactDatabaseDao
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
+import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
@@ -21,22 +23,14 @@ import timber.log.Timber
 class ToDoFragment : Fragment() {
 
     private var orientation: Int = 0
-    //private val ToDoViewModel: ToDoViewModel by viewModels()
-    // private lateinit var  binding: FactDetailFragmentBinding
-    private lateinit var  application: Application
-    private lateinit var  dataSource: FactDatabaseDao
-    private lateinit var  viewModelFactory: ToDoViewModelFactory
-    private lateinit var  todoViewModel: ToDoViewModel
+    private val todoViewModel: ToDoViewModel by viewModels {
+        ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.i("ToDo Recycler Fragment onCreate")
         orientation = resources.configuration.orientation
-        application = requireNotNull(this.activity).application
-        dataSource = FactDatabase.getInstance(application).factDatabaseDao
-        viewModelFactory = ToDoViewModelFactory(dataSource, application)
-        todoViewModel =
-             ViewModelProvider(this, viewModelFactory).get(ToDoViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -56,7 +50,7 @@ class ToDoFragment : Fragment() {
 
         // Говорит можно объявить и в RecyclerView XML
         val adapter = ToDoAdapterList(FactListener { factID ->
-            //todoViewModel.onFactClicked(factID)
+            todoViewModel.onFactClicked(factID)
             this.findNavController().navigate(
                     ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID))
           //  Toast.makeText(context,  " Тырк в строку $factId", Toast.LENGTH_LONG).show()

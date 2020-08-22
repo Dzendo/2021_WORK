@@ -5,12 +5,12 @@
         <item
             android:id="@+id/fact_base_clearing"
             android:orderInCategory="100"
-            android:title="fact_base_clearting"
+            android:title="Очисить базу"
             app:showAsAction="never" />
         <item
             android:id="@+id/fact_base_creating"
             android:orderInCategory="100"
-            android:title="fact_base_creating"
+            android:title="Добавить пачку"
             app:showAsAction="never" />
 
     <item

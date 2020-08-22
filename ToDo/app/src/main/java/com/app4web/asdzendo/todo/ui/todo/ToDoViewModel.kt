@@ -1,26 +1,22 @@
 package com.app4web.asdzendo.todo.ui.todo
 
 
-import android.app.Application
+
 import android.view.MenuItem
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.database.Fact
-import com.app4web.asdzendo.todo.database.FactDatabaseDao
+import com.app4web.asdzendo.todo.database.FactRepository
 import kotlinx.coroutines.*
 import timber.log.Timber
 
-class ToDoViewModel(
-        val database: FactDatabaseDao,
-        application: Application
-) : AndroidViewModel(application) {
+class ToDoViewModel internal constructor(
+    private val factRepository: FactRepository
+) : ViewModel() {
 
     private var PAEMI: MutableLiveData<String> = MutableLiveData<String>("*")
 
-    init { Timber.i("ToDoViewModel created PAEMI= $PAEMI")}
+    init { Timber.i("ToDoViewModel created PAEMI= ${PAEMI.value}")}
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
@@ -33,53 +29,11 @@ class ToDoViewModel(
     val facts: LiveData<List<Fact>>
         get() = PAEMI.switchMap { paemi ->
             if (paemi == "*")
-            database.getAllFacts()
+            factRepository.getAllFacts()
             else
-            database.getAllPAEMIFacts(paemi)
+            factRepository.getAllPAEMIFacts(paemi)
         }
 
-    /* private val tofact = MutableLiveData<Fact?>()
-    init {
-        initializeTofact()
-    }
-
-    private fun initializeTofact() {
-        uiScope.launch {
-            tofact.value = getTofactFromDatabase()
-        }
-    }
-    private suspend fun getTofactFromDatabase(): Fact? {
-        return withContext(Dispatchers.IO) {
-            val fact = database.getTofact()
-           /* if (night?.endTimeMilli != night?.startTimeMilli) {
-                night = null
-            }*/
-            fact
-        }
-    }*/
-
-    private suspend fun clear() {
-        withContext(Dispatchers.IO) {
-            database.clear()
-        }
-    }
-
-    private suspend fun update(fact: Fact) {
-        withContext(Dispatchers.IO) {
-            database.update(fact)
-        }
-    }
-
-    private suspend fun insert(fact: Fact) {
-        withContext(Dispatchers.IO) {
-            database.insert(fact)
-        }
-    }
-    private suspend fun delete(fact: Fact) {
-        withContext(Dispatchers.IO) {
-            database.delete(fact)
-        }
-    }
 
     /**
      * Called when the ViewModel is dismantled.

@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.app4web.asdzendo.todo.launcher.FACT_TODO_DATABASE_NAME
 
 
 /**
@@ -33,13 +34,12 @@ import androidx.room.RoomDatabase
  */
 @Database(entities = [Fact::class], version = 1, exportSchema = false)
 abstract class FactDatabase : RoomDatabase() {
-
     /**
      * Connects the database to the DAO.
      * Подключает базу данных к DAO.
      */
     abstract val factDatabaseDao: FactDatabaseDao
-
+    //abstract fun factDatabaseDaoD(): FactDatabaseDao  // Дает Ошибку трансляции
     /**
      * Define a companion object, this allows us to add functions on the FactDatabase class.
      * Определите сопутствующий объект, это позволит нам добавить функции в класс базы данных Fact.
@@ -69,8 +69,7 @@ abstract class FactDatabase : RoomDatabase() {
         // For Singleton instantiation
         //  Для одноэлементный экземпляр SunFlower
         @Volatile private var instance: FactDatabase? = null
-        //  Для одноэлементный экземпляр Udacity
-        @Volatile private var INSTANCE: FactDatabase? = null
+
         // INSTANCE Переменная будет хранить ссылку на базу данных, когда один был создан.
         // Это поможет вам избежать повторного открытия соединений с базой данных, что дорого.
 
@@ -100,7 +99,7 @@ abstract class FactDatabase : RoomDatabase() {
          * @param context The application context Singleton, used to get access to the filesystem.
          */
         // getInstance() метод с Context параметром, который понадобится построителю базы данных.
-        fun getinstance(context: Context): FactDatabase =
+        fun getInstance(context: Context): FactDatabase =
             instance ?: synchronized(this) {     // только один поток выполнения одновременно может войти в этот блок кода,
                 instance ?: buildDatabase(context).also { instance = it }
             }
@@ -108,45 +107,6 @@ abstract class FactDatabase : RoomDatabase() {
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): FactDatabase =
-           Room.databaseBuilder(context, FactDatabase::class.java, "fact_todo_database").build()
-        
-        fun getInstance(context: Context): FactDatabase {
-            // Multiple threads can ask for the database at the same time, ensure we only initialize
-            // it once by using synchronized. Only one thread may enter a synchronized block at a time.
-            // Несколько потоков могут запрашивать базу данных одновременно, убедитесь, что мы только инициализируем
-            // это один раз с помощью synchronized. Только один поток может войти в синхронизированный блок одновременно.
-
-            synchronized(this) {
-
-                // Copy the current value of INSTANCE to a local variable so Kotlin can smart cast.
-                // Smart cast is only available to local variables.
-                // Копируем текущее значение экземпляра локальной переменной, так Котлин может умного бросания.
-                // Smart cast доступен только для локальных переменных.
-                var instance = INSTANCE
-
-                // If instance is `null` make a new database instance.
-                // Если экземпляр имеет значение 'null', создайте новый экземпляр базы данных.
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                            context.applicationContext,
-                            FactDatabase::class.java,
-                            "Fact_Todo_Database"
-                    )
-                            // Wipes and rebuilds instead of migrating if no Migration object.
-                            // Migration is not part of this lesson. You can learn more about
-                            // migration with Room in this blog post:
-                            // Стирает и перестраивает вместо миграции, если объект миграции отсутствует.
-                            // https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
-                            .fallbackToDestructiveMigration()
-                            .build()
-                    // Assign INSTANCE to the newly created database.
-                    // Назначить экземпляр вновь созданной базе данных.
-                    INSTANCE = instance
-                }
-                //  smart cast to be non-null.
-                //  интеллектуальное приведение должно быть ненулевым.
-                return instance
-            }
-        }
+           Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME).build()
     }
 }

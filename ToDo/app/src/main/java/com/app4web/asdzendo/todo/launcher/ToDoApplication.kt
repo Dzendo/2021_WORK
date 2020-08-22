@@ -18,14 +18,10 @@
 package com.app4web.asdzendo.todo.launcher
 
 import android.app.Application
-import com.app4web.asdzendo.todo.database.*
-//import android.os.Build
-//import androidx.work.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-//import java.util.concurrent.TimeUnit
-
-
 
 /**
  * Override application to setup background work via WorkManager
@@ -33,7 +29,7 @@ import timber.log.Timber
  */
 
 class ToDoApplication : Application() {
-
+    private val applicationScope = CoroutineScope(Dispatchers.Default)
     /**
      * onCreate is called before the first screen is shown to the user.
      * onCreate вызывается до того, как пользователю будет показан первый экран.
@@ -45,16 +41,13 @@ class ToDoApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        FactdataSource = FactDatabase.getInstance(applicationContext).factDatabaseDao
-        timberInit()  // Инициализировать Timber
+        timberInit()  // Инициализировать Timber не блокирует основной поток:
     }
-
-    // Создайте функцию инициализации, которая не блокирует основной поток:
-
-    private fun timberInit() = APPlicationScope.launch {
-        Timber.plant(Timber.DebugTree())  // Инициализация Timber
-        Timber.i("ToDoApplication timber Init ")
-    }
+    fun timberInit() = // Инициализация Timber
+            applicationScope.launch {
+                Timber.plant(Timber.DebugTree())
+                Timber.i("ToDoApplication timber Init ")
+            }
 }
     /**
      * Setup WorkManager background job to 'fetch' new network data daily.

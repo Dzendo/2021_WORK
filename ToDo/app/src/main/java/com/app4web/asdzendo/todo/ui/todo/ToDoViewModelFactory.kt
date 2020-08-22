@@ -16,10 +16,9 @@
 
 package com.app4web.asdzendo.todo.ui.todo
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app4web.asdzendo.todo.database.FactDatabaseDao
+import com.app4web.asdzendo.todo.database.FactRepository
 import timber.log.Timber
 
 
@@ -31,16 +30,15 @@ import timber.log.Timber
  * Предоставляет SleepDatabaseDao и контекст для ViewModel.
  */
 class ToDoViewModelFactory(
-        private val dataSource: FactDatabaseDao,
-        private val application: Application) : ViewModelProvider.Factory {
+        private val repository: FactRepository,
+        ) : ViewModelProvider.Factory {
     init { Timber.i("ToDoViewModelFactory ask ToDoViewModel ")}
+
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ToDoViewModel::class.java)) {
             Timber.i("ToDoViewModelFactory ToDoViewModel created")
-            return ToDoViewModel(dataSource, application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+            return ToDoViewModel(repository) as T
     }
 }
+
 

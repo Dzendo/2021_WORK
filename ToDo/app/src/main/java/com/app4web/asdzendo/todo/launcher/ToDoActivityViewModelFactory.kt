@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.app4web.asdzendo.todo.ui.detail
+package com.app4web.asdzendo.todo.launcher
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -26,19 +26,19 @@ import timber.log.Timber
  * This is pretty much boiler plate code for a ViewModel Factory.
  * Это в значительной степени шаблонный код для фабрики ViewModel.
  *
- * Provides the key for the night and the SleepDatabaseDao to the ViewModel.
- * Предоставляет ключ для night и SleepDatabaseDao в ViewModel.
+ * Provides the SleepDatabaseDao and context to the ViewModel.
+ * Предоставляет SleepDatabaseDao и контекст для ViewModel.
  */
-class FactDetailViewModelFactory(
-        private val factRepository: FactRepository,
-        private val factID: Long
-) : ViewModelProvider.Factory {
-    init { Timber.i("ToDo Detail ViewModel Factory ask viewmodel ")}
+class ToDoActivityViewModelFactory(
+        private val repository: FactRepository,
+        ) : ViewModelProvider.Factory {
+    init { Timber.i("ToDoViewModelFactory ask ToDoViewModel ")}
+
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            Timber.i("ToDo Detail ViewModel Factory ViewModel created")
-            return FactDetailViewModel(factRepository, factID) as T
+            Timber.i("ToDoViewModelFactory ToDoViewModel created")
+            return ToDoActitityViewModel(repository) as T
     }
 }
 
- 
+

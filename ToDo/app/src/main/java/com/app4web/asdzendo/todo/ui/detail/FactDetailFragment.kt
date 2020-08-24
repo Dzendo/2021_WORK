@@ -21,7 +21,7 @@ class FactDetailFragment : Fragment() {
     private val args: FactDetailFragmentArgs by navArgs()
 
     private val factDetailViewModel: FactDetailViewModel by viewModels {
-        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(),args.factID)
+        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(),args.factID,args.paemi)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

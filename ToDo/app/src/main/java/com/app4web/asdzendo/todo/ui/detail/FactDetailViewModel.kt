@@ -8,6 +8,7 @@ import timber.log.Timber
 class FactDetailViewModel(
     private val factRepository: FactRepository,
     factID: Long = 0L,
+    paemi: String = " "
     ): ViewModel() {
     val factid = factID.toString()  // Временно для TextView поменять на адаптер
     /**
@@ -26,6 +27,11 @@ class FactDetailViewModel(
     fun getFact() = fact
 
     init {
+        if (factID == 0L) {
+            val fact0L = MutableLiveData(Fact(paemi = paemi, nameShort= "новый Факт", name= "Факт полностью: новый"))
+            fact.addSource(fact0L, fact::setValue)
+        }
+        else
         fact.addSource(factRepository.getFactWithId(factID), fact::setValue)
     }
 
@@ -42,7 +48,7 @@ class FactDetailViewModel(
      }
 
      fun insert(fact: Fact?)  {
-        // viewModelScope.launch {    // coroutine стоит в репозитории наверно здесь не надо???
+        // viewModelScope.launch {    // coroutine стоит в репозитории, наверно здесь не надо???
              //   withContext(Dispatchers.IO) {
              fact?.rezult = "Добавлен ${(0..100).random()}"
              factRepository.insert(fact)

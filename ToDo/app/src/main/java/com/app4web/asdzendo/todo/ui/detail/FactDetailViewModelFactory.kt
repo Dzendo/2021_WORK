@@ -30,12 +30,13 @@ import timber.log.Timber
  */
 class FactDetailViewModelFactory(
         private val factRepository: FactRepository,
-        private val factID: Long
+        private val factID: Long,
+        private val paemi: String
 ) : ViewModelProvider.Factory {
     init { Timber.i("ToDo Detail ViewModel Factory ask viewmodel ")}
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             Timber.i("ToDo Detail ViewModel Factory ViewModel created")
-            return FactDetailViewModel(factRepository, factID) as T
+            return FactDetailViewModel(factRepository, factID, paemi) as T
     }
 }

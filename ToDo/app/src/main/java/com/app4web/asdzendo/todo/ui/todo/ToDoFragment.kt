@@ -1,5 +1,6 @@
 package com.app4web.asdzendo.todo.ui.todo
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,7 +54,11 @@ class ToDoFragment : Fragment() {
         todoViewModel.facts.observe(viewLifecycleOwner) {
             it?.let {
                 //adapter.submitList(it)
-                adapter.addHeaderAndSubmitList(it)
+                when (orientation) {
+                    Configuration.ORIENTATION_PORTRAIT -> adapter.addSubmitCard(it)
+                    Configuration.ORIENTATION_LANDSCAPE -> adapter.addHeaderAndSubmitList(it)
+                }
+
                 // 23.10 Наконец, обновите, SleepTrackerFragment чтобы передать список DataItem вместо списка SleepNight
                 // и вызвать новый метод addHeaderAndSubmitList вместо метода submitList:
                 // LiveData observers are sometimes passed null, so make sure you check for null.
@@ -64,21 +69,8 @@ class ToDoFragment : Fragment() {
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
             factID?.let {
                 this.findNavController().navigate(
-                        ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID))
+                        ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID,todoViewModel.PAEMI.value?: " "))
                  todoViewModel.navigateToFactDetailNavigated()
-            }
-        }
-
-        todoViewModel.snackbar.observe(viewLifecycleOwner) { snack ->
-            if (snack == true) {
-                Snackbar.make(
-                        binding.root,
-                        "Snackbar через LiveData",
-                        Snackbar.LENGTH_LONG)
-                    //.setAction("Action", null)
-                    .show()
-                Timber.i("ToDotimber Snackbar")
-                todoViewModel.snackbarFalse()
             }
         }
 
@@ -86,6 +78,7 @@ class ToDoFragment : Fragment() {
             Timber.i("ToDo ToDoFragment  setOnNavigationItemSelectedListener PAEMI $paemi")
             todoViewModel.onClickBottomNavView(paemi)
             }
+
         return binding.root
     }
 }

@@ -1,38 +1,36 @@
 package com.app4web.asdzendo.todo.ui.detail
 
+
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-
 import androidx.navigation.fragment.navArgs
-
 import com.app4web.asdzendo.todo.databinding.FactDetailFragmentBinding
 import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
-
 import timber.log.Timber
+import com.app4web.asdzendo.todo.R
+
 
 class FactDetailFragment : Fragment() {
 
     private val args: FactDetailFragmentArgs by navArgs()
 
     private val factDetailViewModel: FactDetailViewModel by viewModels {
-        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(),args.factID,args.paemi)
+        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(), args.factID, args.paemi)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // Добавляет и обрабатывает меню три точки для этого фрагмента
+        setHasOptionsMenu(true)
         Timber.i("ToDo FactDetailFragment onCreate ")
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?,
     ): View? {
         Timber.i("ToDoFactDetailFragment onCreateView ")
 
@@ -56,5 +54,22 @@ class FactDetailFragment : Fragment() {
             }
         }
         return binding.root
+    }
+    // Добавляет и обрабатывает меню три точки для этого фрагмента
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.detail, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.Add_fact ->
+                factDetailViewModel.insert()
+            R.id.Update_fact->
+                factDetailViewModel.update()
+            R.id.Delete_fact->
+                factDetailViewModel.delete()
+            else -> return false
+        }
+        return true
     }
 }

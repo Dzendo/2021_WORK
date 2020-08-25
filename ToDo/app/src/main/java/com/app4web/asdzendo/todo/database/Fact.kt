@@ -50,4 +50,3 @@ data class Fact(
         var url: String = "https://developer.android.com/guide"              //List<URL>
 )
 
-

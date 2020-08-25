@@ -43,7 +43,7 @@ class ToDoApplication : Application() {
         super.onCreate()
         timberInit()  // Инициализировать Timber не блокирует основной поток:
     }
-    fun timberInit() = // Инициализация Timber
+    private fun timberInit() = // Инициализация Timber
             CoroutineScope(Dispatchers.Default).launch {
                 Timber.plant(Timber.DebugTree())
                 Timber.i("ToDoApplication timber Init ")

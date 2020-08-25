@@ -2,12 +2,11 @@ package com.app4web.asdzendo.todo.ui.todo
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.database.Fact
+import com.app4web.asdzendo.todo.databinding.ToDoHeaderListItemBinding
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerCardItemBinding
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListItemBinding
 import kotlinx.coroutines.CoroutineScope
@@ -16,21 +15,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem].
+ * [RecyclerView.Adapter] that can display a [DataItem].
  */
-private val ITEM_VIEW_TYPE_HEADER = 0
-private val ITEM_VIEW_TYPE_ITEM = 1
-private val ITEM_VIEW_TYPE_CARD = 2
+private const val ITEM_VIEW_TYPE_HEADER = 0
+private const val ITEM_VIEW_TYPE_ITEM = 1
+private const val ITEM_VIEW_TYPE_CARD = 2
 
-class ToDoAdapterList(
-        private val clickListener: FactListener):
+class ToDoAdapter(private val clickListener: FactListener):
         ListAdapter<DataItem, RecyclerView.ViewHolder>(FactDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
+    // Для реакции на нажатие строки или карточки - для заголовка пока не сделана сортировка
     override fun onBindViewHolder(holder: RecyclerView. ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolder -> {
+            is ListViewHolder -> {
                 val factItem = getItem(position) as DataItem.FactItem
                 holder.bind(clickListener, factItem.fact)
             }
@@ -44,9 +43,9 @@ class ToDoAdapterList(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
-            ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> ListViewHolder.from(parent)
             ITEM_VIEW_TYPE_CARD -> CardViewHolder.from(parent)
-            else -> throw ClassCastException("Unknown viewType ${viewType}")
+            else -> throw ClassCastException("Unknown viewType $viewType")
         }
 
     // Вместо того, чтобы использовать submitList(), предоставленный ListAdapter,
@@ -68,6 +67,8 @@ class ToDoAdapterList(
             }
         }
     }
+    // Вместо того, чтобы использовать submitList(), предоставленный ListAdapter,
+    // для отправки вашего списка, вы будете использовать эту функцию,
     fun addSubmitCard(list: List<Fact>?) {
         // запустите сопрограмму в, adapterScope чтобы управлять списком
         adapterScope.launch {
@@ -80,9 +81,21 @@ class ToDoAdapterList(
             }
         }
     }
-   // override fun getItemCount(): Int = values.size
 
-   class ViewHolder private constructor(private val binding:ToDoRecyclerListItemBinding)
+    // 23,2 Добавьте класс TextHolder внутри SleepNightAdapter класса.
+    class TextViewHolder private constructor(binding: ToDoHeaderListItemBinding)
+        : RecyclerView.ViewHolder(binding.root) {
+        companion object {
+            fun from(parent: ViewGroup): TextViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ToDoHeaderListItemBinding.inflate(layoutInflater, parent, false)
+                return TextViewHolder(binding)
+            }
+        }
+    }
+   // override fun getItemCount(): Int = values.size
+   // перечень фактов в строках для Landscape
+   class ListViewHolder private constructor(private val binding:ToDoRecyclerListItemBinding)
        : RecyclerView.ViewHolder(binding.root) {
 
        fun bind(clickListener: FactListener, item: Fact) {
@@ -91,13 +104,14 @@ class ToDoAdapterList(
            binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
        }
        companion object {
-           fun from(parent: ViewGroup): ViewHolder {
+           fun from(parent: ViewGroup): ListViewHolder {
                val layoutInflater = LayoutInflater.from(parent.context)
                val binding = ToDoRecyclerListItemBinding.inflate(layoutInflater, parent, false)
-               return ViewHolder(binding)
+               return ListViewHolder(binding)
            }
        }
    }
+    // перечень фактов в карточках для Portrait
     class CardViewHolder private constructor(private val binding:ToDoRecyclerCardItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
@@ -115,16 +129,6 @@ class ToDoAdapterList(
         }
     }
 
-    // 23,2 Добавьте класс TextHolder внутри SleepNightAdapter класса.
-    class TextViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        companion object {
-            fun from(parent: ViewGroup): TextViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.header, parent, false)
-                return TextViewHolder(view)
-            }
-        }
-    }
     //23,6 Затем, чтобы выяснить, какой тип представления вернуть, добавьте проверку,
 // чтобы увидеть, какой тип элемента находится в списке:
     // Затем переопределите getItemViewType и верните правильный тип представления элемента.
@@ -148,14 +152,15 @@ class FactListener(val clickListener: (factId: Long) -> Unit) {
 }
 // 23.1. Внизу SleepNightAdapter добавьте запечатанный класс с именем DataItem:
 sealed class DataItem {
-    data class FactItem(val fact: Fact): DataItem() {
-        override val id = fact.factId
-    }
+    abstract val id: Long
+
     object Header: DataItem() {
         override val id = Long.MIN_VALUE
+    }
+    data class FactItem(val fact: Fact): DataItem() {
+        override val id = fact.factId
     }
     data class FactCard(val fact: Fact): DataItem() {
         override val id = fact.factId
     }
-    abstract val id: Long
 }

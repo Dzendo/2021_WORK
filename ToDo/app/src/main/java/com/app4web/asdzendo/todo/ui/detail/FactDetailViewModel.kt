@@ -10,12 +10,16 @@ class FactDetailViewModel(
     factID: Long = 0L,
     paemi: String = " "
     ): ViewModel() {
+    init { Timber.i("TODO FactDetailViewModel created $factID")}
+
     val factid = factID.toString()  // Временно для TextView поменять на адаптер
+
     /**
      * Hold a reference to FactDatabase via its FactDatabaseDao.
      * Держите ссылку на базу данных Fact через ее Fact DatabaseDao.
+     * Теперь ссылка factRepository на FactRepository
      */
-    //val database = dataSource
+
     /** Coroutine setup variables Переменные настройки сопрограммы
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
@@ -37,33 +41,33 @@ class FactDetailViewModel(
 
     init { Timber.i("ToDo Detail ViewModel")}
 
-     fun update(fact: Fact?) {
+    // Добавляет и обрабатывает меню три точки для этого фрагмента
+     fun update() {
      //   withContext(Dispatchers.IO) {
-             fact?.rezult = "Измененный ${fact?.factId}"
-            factRepository.update(fact)
-
+         fact.value?.rezult = "Измененный ${fact.value?.factId}"
+         factRepository.update(fact.value)
      //   }
-         Timber.i("ToDo Detail ViewModel update ${fact?.factId}")
+         Timber.i("ToDo Detail ViewModel update ${fact.value?.factId}")
          backupTrue()
      }
 
-     fun insert(fact: Fact?)  {
+     fun insert()  {
         // viewModelScope.launch {    // coroutine стоит в репозитории, наверно здесь не надо???
              //   withContext(Dispatchers.IO) {
-             fact?.rezult = "Добавлен ${(0..100).random()}"
-             factRepository.insert(fact)
+         fact.value?.rezult = "Добавлен ${(0..100).random()}"
+         factRepository.insert(fact.value)
              //   }
          //}
 
-        Timber.i("ToDo Detail ViewModel insert ${fact?.rezult}")
+        Timber.i("ToDo Detail ViewModel insert ${fact.value?.rezult}")
          backupTrue()
      }
 
-     fun delete(fact: Fact?) {
+     fun delete() {
       //  withContext(Dispatchers.IO) {
-            factRepository.delete(fact)
+         factRepository.delete(fact.value)
       //  }
-         Timber.i("ToDo Detail ViewModel delete ${fact?.factId}")
+         Timber.i("ToDo Detail ViewModel delete ${fact.value?.factId}")
          backupTrue()
      }
 
@@ -75,10 +79,11 @@ class FactDetailViewModel(
     val backup: LiveData<Boolean?>
         get() = _backup
 
-    fun backupTrue() {
+    private fun backupTrue() {
         _backup.value = true
     }
     fun backupNull() {
         _backup.value = null
     }
+
 }

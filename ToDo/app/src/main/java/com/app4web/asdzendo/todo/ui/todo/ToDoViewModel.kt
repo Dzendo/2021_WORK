@@ -84,4 +84,10 @@ class ToDoViewModel internal constructor(
         Timber.i("ToDoViewModel onReClickBottomNavView ${PAEMI.value}}")
         return true
     }
+    // Добавляет и обрабатывает меню три точки для этого фрагмента
+    fun clear() = factRepository.clear()
+
+    fun addFactDatabase(COUNTSFact: Long) = factRepository.addFactDatabase(COUNTSFact)
+
+    fun count() = factRepository.count()
 }

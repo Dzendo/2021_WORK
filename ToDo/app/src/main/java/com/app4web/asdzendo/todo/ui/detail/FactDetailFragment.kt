@@ -43,8 +43,9 @@ class FactDetailFragment : Fragment() {
         // give the binding object a reference to it.
         // Чтобы использовать модель представления с привязкой данных, вы должны явно
         // дайте объекту привязки ссылку на него.
-        binding.factDetailViewModel = factDetailViewModel
+        binding.viewmodel = factDetailViewModel
         binding.lifecycleOwner = viewLifecycleOwner //this
+        binding.fact = factDetailViewModel.getFact().value
 
         // Для возврата в таблицу по нажатию любой кнопки
         factDetailViewModel.backup.observe(viewLifecycleOwner) {

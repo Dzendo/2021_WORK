@@ -44,7 +44,7 @@ class FactDetailViewModel(
     // Добавляет и обрабатывает меню три точки для этого фрагмента
      fun update() {
      //   withContext(Dispatchers.IO) {
-         fact.value?.rezult = "Измененный ${fact.value?.factId}"
+         fact.value?.rezult = " Изм ${fact.value?.factId} " + fact.value?.rezult
          factRepository.update(fact.value)
      //   }
          Timber.i("ToDo Detail ViewModel update ${fact.value?.factId}")
@@ -54,7 +54,7 @@ class FactDetailViewModel(
      fun insert()  {
         // viewModelScope.launch {    // coroutine стоит в репозитории, наверно здесь не надо???
              //   withContext(Dispatchers.IO) {
-         fact.value?.rezult = "Добавлен ${(0..100).random()}"
+         fact.value?.rezult = " Доб " + fact.value?.rezult
          factRepository.insert(fact.value)
              //   }
          //}

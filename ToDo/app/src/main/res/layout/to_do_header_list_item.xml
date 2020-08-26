@@ -21,6 +21,6 @@
     android:background="@color/purple_200"
     android:gravity="center"
     android:padding="8dp"
-    android:text="шапка таблички для сортировеи"
+    android:text="шапка таблички для сортировки"
     android:textAppearance="?android:attr/textAppearanceLarge" />
 </layout>

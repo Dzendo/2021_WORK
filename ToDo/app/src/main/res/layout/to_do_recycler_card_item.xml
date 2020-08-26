@@ -26,10 +26,11 @@
 
         <variable
             name="fact"
-            type="com.app4web.asdzendo.todo.database.Fact"/>
+            type="com.app4web.asdzendo.todo.database.Fact" />
+
         <variable
             name="clickListener"
-            type="com.app4web.asdzendo.todo.ui.todo.FactListener"/>
+            type="com.app4web.asdzendo.todo.ui.todo.FactListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -66,9 +67,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                app:layout_constraintStart_toStartOf="@+id/left_well"
-                app:layout_constraintTop_toBottomOf="@+id/name_card"
-                tools:text="factID"/>
+                android:text="@{fact.factId}"
+                app:layout_constraintEnd_toEndOf="@+id/right_well"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="factID" />
 
             <TextView
                 android:id="@+id/paemi_card"
@@ -82,27 +84,9 @@
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/right_well"
-                app:layout_constraintStart_toEndOf="@+id/item_number_card"
-                app:layout_constraintTop_toBottomOf="@+id/name_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="PAEMI" />
-
-
-            <TextView
-                android:id="@+id/nameShort_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:text="@{fact.nameShort}"
-                android:textAlignment="viewStart"
-                android:textAllCaps="false"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/right_well"
-                app:layout_constraintStart_toStartOf="@+id/left_well"
-                app:layout_constraintTop_toBottomOf="@+id/paemi_card"
-                tools:text="nameShort" />
 
             <TextView
                 android:id="@+id/name_card"
@@ -120,17 +104,35 @@
                 tools:text="name" />
 
             <TextView
-                android:id="@+id/rezult"
+                android:id="@+id/nameShort_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:layout_marginTop="32dp"
-                android:text="@{fact.rezult}"
+                android:text="@{fact.nameShort}"
                 android:textAppearance="?attr/textAppearanceListItem"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Rezult" />
+                tools:text="nameShort" />
+
+            <TextView
+                android:id="@+id/rezult"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="@{fact.rezult}"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/right_well"
+                app:layout_constraintStart_toStartOf="@+id/left_well"
+                app:layout_constraintTop_toBottomOf="@+id/paemi_card"
+                tools:text="rezult" />
+
 
             <View
                 android:id="@+id/clickableOverlay"
@@ -142,6 +144,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

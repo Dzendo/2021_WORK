@@ -12,7 +12,7 @@ class FactDetailViewModel(
     ): ViewModel() {
     init { Timber.i("TODO FactDetailViewModel created $factID")}
 
-    val factid = factID.toString()  // Временно для TextView поменять на адаптер
+   // val factid = factID.toString()  // Временно для TextView поменять на адаптер
 
     /**
      * Hold a reference to FactDatabase via its FactDatabaseDao.

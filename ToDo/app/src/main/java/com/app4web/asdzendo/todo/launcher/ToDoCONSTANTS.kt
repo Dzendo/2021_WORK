@@ -6,4 +6,5 @@ const val COUNTSFact = 65L
 //val APPlicationScope = CoroutineScope(Dispatchers.Default)
 //lateinit var  FactdataSource: FactDatabaseDao
 val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
+//val PAEMI: List<Char> = arrayListOf(' ','P','A','E','M','I','S')
 //lateinit var  factRepository: FactRepository

@@ -89,6 +89,19 @@
                 tools:text="PAEMI" />
 
             <TextView
+                android:id="@+id/data"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{fact.data}"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/right_well"
+                tools:text="PAEMI" />
+
+            <TextView
                 android:id="@+id/name_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -21,7 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Repository module for handling data operations.
@@ -77,7 +77,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun getAllFacts() = factDao.getAllFacts()
 
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
-    fun getAllPAEMIFacts(paemi:String) = factDao.getAllPAEMIFacts(paemi)
+    fun getAllPAEMIFacts(paemi: String) = factDao.getAllPAEMIFacts(paemi)
 
     // отдает LiveData<Fact>
     fun getFactWithId(factID: Long) = factDao.getFactWithId(factID)
@@ -91,9 +91,19 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
         //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
         // Add some sample items.
         for (id in 1L..countFacts)
-            for (paemi in PAEMI)
-                FACTS.add((Fact(paemi = paemi, nameShort= "$id Факт", name= "Факт полностью: $id")))
-        //     FACT_MAP[fact.factId] = fact
+            for (paemi in PAEMI) {
+                val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
+                with (fact) {
+                    data = Date(Date().time - (countFacts - id) * 86400000L)
+                    dataStart = Date(Date().time - (countFacts - id+1) * 1000)
+                    dataEnd = Date(Date().time -( countFacts - id+1) * 100)
+                    deadLine = Calendar.getInstance()
+                    deadLine.add(Calendar.DATE,id.toInt())
+                    duration = dataStart?.time?.let { dataEnd?.time?.minus(it) }
+                }
+                FACTS.add(fact)
+                //     FACT_MAP[fact.factId] = fact
+            }
         return FACTS
     }
 

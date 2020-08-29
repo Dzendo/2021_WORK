@@ -25,6 +25,10 @@ import com.app4web.asdzendo.todo.ui.todo.ToDoViewModelFactory
 /**
  * Static methods used to inject classes needed for various Activities and Fragments.
  * Статические методы используются для введения классов, необходимых для различных действий и фрагментов.
+ * Context
+ *   Не стоит передавать Activity в модель в качестве Context. Это может привести к утечкам памяти.
+ *   Если вам в модели понадобился объект Context, то вы можете наследовать не ViewModel, а AndroidViewModel.
+
  */
 object ToDoInjectorUtils {
 

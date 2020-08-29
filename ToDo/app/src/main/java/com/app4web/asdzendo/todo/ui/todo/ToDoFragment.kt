@@ -76,7 +76,7 @@ class ToDoFragment : Fragment() {
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
             factID?.let {
                 this.findNavController().navigate(
-                        ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID,todoViewModel.PAEMI.value?: " "))
+                        ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID,todoViewModel.PAEMI.value.toString()))
                  todoViewModel.navigateToFactDetailNavigated()
             }
         }

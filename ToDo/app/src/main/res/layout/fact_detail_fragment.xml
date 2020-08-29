@@ -5,14 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.app4web.asdzendo.todo.ui.MyEditTextBindingAdapters"/>
         <import type="com.app4web.asdzendo.todo.ui.BindingKt"/>
         <variable
             name="fact"
             type="com.app4web.asdzendo.todo.database.Fact" />
-        <!--variable
-            name="fact"
-            type="com.app4web.asdzendo.todo.ui.detail.viewmodel" /-->
+
         <variable
             name="viewmodel"
             type="com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel" />
@@ -236,12 +233,13 @@
                     android:layout_height="wrap_content"
                     android:text="deadLine:" />
 
+
+                <!--CalendarView-->
                 <EditText
                     android:id="@+id/deadLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="@={viewmodel.fact.deadLine}" />
+                    android:text="@={viewmodel.fact.deadLine}"/>
             </LinearLayout>
 
             <LinearLayout

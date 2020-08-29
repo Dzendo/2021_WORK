@@ -29,9 +29,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/DatabaseConverters.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PAEMI2/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/PAEMI2/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ToDo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoInjectorUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoInjectorUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/Binding.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/Binding.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/fact_detail_fragment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/fact_detail_fragment.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,9 +56,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$PROJECT_DIR$/../_AndroidSDK" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../2019_APP4WEB" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -116,14 +122,19 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035650702" />
-    <state x="739" y="260" key="FileChooserDialogImpl" timestamp="1596427763753">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2659" y="260" key="FileChooserDialogImpl" timestamp="1598560426320">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="260" key="FileChooserDialogImpl/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596427763753" />
+    <state x="2659" y="260" key="FileChooserDialogImpl/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1598560426320" />
     <state x="833" y="417" key="Github.ShareDialog" timestamp="1596428032646">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="833" y="417" key="Github.ShareDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596428032646" />
+    <state x="2381" y="164" key="SettingsEditor" timestamp="1598560569780">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2381" y="164" key="SettingsEditor/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1598560569780" />
     <state x="551" y="239" key="Vcs.Push.Dialog.v2" timestamp="1597035657858">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -45,7 +45,7 @@ class FactDetailFragment : Fragment() {
         // дайте объекту привязки ссылку на него.
         binding.viewmodel = factDetailViewModel
         binding.lifecycleOwner = viewLifecycleOwner //this
-        binding.fact = factDetailViewModel.getFact().value
+       // binding.fact = factDetailViewModel.getFact().value
 
         // Для возврата в таблицу по нажатию любой кнопки
         factDetailViewModel.backup.observe(viewLifecycleOwner) {

@@ -1,22 +1,25 @@
 package com.app4web.asdzendo.todo.ui
 
 import android.widget.EditText
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
 import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseMethod
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
+// android:text="@={Converter.dateToString(viewmodel.birthDate)}"
+// @InverseBindingMethod
 // android:text="@{FactDetailViewModel.fact.factId}"
+//@InverseMethod("captureLongValue")
+//@InverseMethod("convertLongToString")
 @BindingConversion
-fun convertLongToString(long: Long?) = long?.toString() ?: ""
+fun convertLongToString(long: Long?): String = long?.toString() ?: ""
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
 fun captureLongValue(view: EditText): Long {
-    var value: Long = 0
+    var value: Long = 0L
     try {
         value = view.text.toString().toLong()
     } catch (e: NumberFormatException) {
@@ -27,22 +30,12 @@ fun captureLongValue(view: EditText): Long {
 
 //  android:text="@{FactDetailViewModel.fact.toWork}"
 @BindingConversion
-fun convertBooleanToString(boolean: Boolean?) = boolean?.toString() ?: ""
+fun convertBooleanToString(boolean: Boolean?): String = boolean?.toString() ?: ""
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-fun convertStringToBoolean(view: EditText): Boolean?  = when(view.text.toString().capitalize())
-    {
-        "TRUE" -> true
-        "FALSE" -> false
-        else -> null
-    }
+fun convertStringToBoolean(view: EditText): Boolean?  = view.text.toString().trim().toBoolean()
 
 @BindingConversion
-fun convertCharToString(char: Char?) = char?.toString() ?: " "
-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-fun convertStringToChar(view: EditText): Char? = view.text.toString()[0]
-
-@BindingConversion
-fun convertDateToString(date: Date?) =
+fun convertDateToString(date: Date?): String =
         if (date!=null)
         SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
         else ""
@@ -80,6 +73,55 @@ fun captureCalendarValue(view: EditText): Calendar? {
     return value
 }
 
-//fun convertCharToString(paemi: TextView): CharSequence {
-//return paemi.toString()
-//}
+object BindingConverters {
+
+    @InverseMethod(value = "convertStringToLong")
+    @JvmStatic fun convertLongToString(long: Long?): String = long?.toString() ?: ""
+    @JvmStatic fun convertStringToLong(text: String): Long? =
+        try { text.toLong() } catch (e: NumberFormatException) { 0L }
+
+    @InverseMethod(value = "convertStringToBoolean")
+    @JvmStatic fun convertBooleanToString(boolean: Boolean?): String = boolean?.toString() ?: ""
+    @JvmStatic fun convertStringToBoolean(text: String): Boolean?  = text.trim().toBoolean()
+
+    @InverseMethod(value = "convertStringToDate")
+    @JvmStatic fun convertDateToString(date: Date?): String =
+            (date?:Date()).let{SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it)}
+    @JvmStatic fun convertStringToDate(text: String): Date? =
+            try { SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH) .parse(text) }
+            catch (e: Exception) { Date()}
+
+    @InverseMethod(value = "convertStringToCalendar")
+    @JvmStatic fun convertCalendarToString(calendar: Calendar?): String =
+            calendar?.let { SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).format(calendar.time) }?:"nul"
+    @JvmStatic fun convertStringToCalendar(text: String): Calendar? {
+        val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
+        val value: Calendar? = Calendar.getInstance()
+        try {
+            value?.time = sdf.parse(text)?: Calendar.getInstance().time
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return value
+    }
+
+    @InverseMethod(value = "convertStringToInt")
+    @JvmStatic fun convertIntToString(value: Int): String = value.toString()
+    @JvmStatic fun convertStringToInt(text: String): Int =
+               try { text.toInt() }
+               catch (e: NumberFormatException) { 0 }
+
+    @InverseMethod(value = "convertStringToChar")
+    @JvmStatic fun convertCharToString(char: Char?): String = char?.toString() ?: " "
+    @JvmStatic fun convertStringToChar(text: String): Char? =
+               try { text.toCharArray()[0] }
+               catch (e: ArrayIndexOutOfBoundsException) { ' ' }
+}
+
+
+
+// <TextView
+//        android:id="@+id/number"
+//        android:text='@={Converter.convertIntToString(myViewModel.number)}'
+//
+//        />

@@ -3,13 +3,15 @@ package com.app4web.asdzendo.todo.ui.detail
 import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
+import com.app4web.asdzendo.todo.launcher.Charr
 import timber.log.Timber
 
+
 class FactDetailViewModel(
-    private val factRepository: FactRepository,
-    factID: Long = 0L,
-    paemi: String = " "
-    ): ViewModel() {
+        private val factRepository: FactRepository,
+        factID: Long = 0L,
+        paemi: String = " ",
+): ViewModel() {
     init { Timber.i("TODO FactDetailViewModel created $factID")}
 
    // val factid = factID.toString()  // Временно для TextView поменять на адаптер
@@ -25,18 +27,21 @@ class FactDetailViewModel(
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
      */
    // private val viewModelJob = Job()
+    var charr = Charr  // AS
+    private  var _fact1: MutableLiveData<Fact?> = MutableLiveData<Fact?>()
+    val fact1: LiveData<Fact?>
+        get() = _fact1  // AS
 
-    //private val fact : MutableLiveData<Fact> = MutableLiveData<Fact>()
+
     private val fact = MediatorLiveData<Fact>()
     fun getFact() = fact
 
     init {
-        if (factID == 0L) {
-            val fact0L = MutableLiveData(Fact(paemi = paemi, nameShort= "новый Факт", name= "Факт полностью: новый"))
-            fact.addSource(fact0L, fact::setValue)
-        }
-        else
-        fact.addSource(factRepository.getFactWithId(factID), fact::setValue)
+        val fact0L: LiveData<Fact> = if (factID == 0L)
+                MutableLiveData(Fact(paemi = paemi, nameShort = "новый Факт", name = "Факт полностью: новый"))
+           else factRepository.getFactWithId(factID)
+        fact.addSource(fact0L, fact::setValue)
+        val  _fact1 = Transformations.switchMap(fact0L) { it -> MutableLiveData<Fact?>(it)}  // AS
     }
 
     init { Timber.i("ToDo Detail ViewModel")}
@@ -47,8 +52,9 @@ class FactDetailViewModel(
          fact.value?.rezult = " Изм ${fact.value?.factId} " + fact.value?.rezult
          factRepository.update(fact.value)
      //   }
-         Timber.i("ToDo Detail ViewModel update ${fact.value?.factId}")
+         Timber.i("ToDo Detail ViewModel update ${fact.value?.factId}  $charr")
          backupTrue()
+        Charr = charr  // AS
      }
 
      fun insert()  {

@@ -37,7 +37,7 @@ data class Fact(
         var nameShort: String = "",
         var name: String = "",
         var rezult: String = "", // ожидаемый или полученный или получившийся РЕЗУЛЬТАТ
-        var toWork: Boolean = false, // закпущена в работу или снята с работы(отказ или удалена)
+        var toWork: Boolean? = false, // закпущена в работу или снята с работы(отказ или удалена)
         var type: Long = 0L, // List<Long>, // Номер ссылки в доп справочнике, нужно множественную
         var dataStart: Date? = Date(), //Date.from(LocalDateTime.now().atStartOfDay(ZoneId.systemDefault()).toInstant())
         var dataEnd: Date? = Date(), //LocalDate,
@@ -45,7 +45,7 @@ data class Fact(
         var duration: Long? = dataStart?.time?.let { dataEnd?.time?.minus(it) },// 0L, //Period,
         var resources: String = "",
         var money: Int = 0,
-        var close: Boolean = false,  // Факт закрыт
+        var close: Boolean? = false,  // Факт закрыт
         var defect: String = "",  // Халтура недоделки
         //  var parentList: List<Long>,   // Ссылки на родителей надо делать ?
         //  var childList: List<Long>,    // Ссылка на подчиненных надо делать ?

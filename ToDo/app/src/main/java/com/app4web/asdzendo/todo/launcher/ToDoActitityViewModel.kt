@@ -8,7 +8,12 @@ class ToDoActitityViewModel internal constructor(
         private val factRepository: FactRepository
 ): ViewModel() {
 
-    init { Timber.i("TODOActitityViewModel created")}
+    init {
+        Timber.i("TODOActitityViewModel created")
+        addFactDatabase(COUNTSFact)
+    }
 
     fun count() = factRepository.count()
+
+    fun addFactDatabase(COUNTSFact: Long) = factRepository.addFactDatabase(COUNTSFact)
 }

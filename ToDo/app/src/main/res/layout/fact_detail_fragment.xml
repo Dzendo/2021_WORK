@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.app4web.asdzendo.todo.ui.BindingConverters"/>
+        <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
         <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
         <!--variable
             name="fact"
@@ -293,7 +293,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text='@={BindingConverters.convertIntToString(viewmodel.fact.money)}' />
+                    android:text='@={BC.convertIntToString(viewmodel.fact.money)}' />
                     <!--android:text="@{String.valueOf(viewmodel.fact.money)}" /-->
                     <!--android:text='@{Integer.toString(viewmodel.fact.money)}' /-->
             </LinearLayout>
@@ -383,7 +383,7 @@
                     android:text="@={viewmodel.fact.url}" />
             </LinearLayout>
 
-            <LinearLayout
+            <!--LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -397,8 +397,8 @@
                     android:id="@+id/charr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={BindingConverters.convertCharToString(viewmodel.charr)}" />
-            </LinearLayout>
+                    android:text="@={BC.convertCharToString(viewmodel.charr)}" />
+            </LinearLayout-->
 
 
         </LinearLayout>

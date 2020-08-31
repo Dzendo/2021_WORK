@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
+
+
 /**
  * Repository module for handling data operations.
  * Модуль репозитория для обработки операций с данными.
@@ -94,7 +96,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             for (paemi in PAEMI) {
                 val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
                 with (fact) {
-                    data = Date(Date().time - (countFacts - id) * 86400000L)
+                    data = Date(Date().time - (countFacts -(0..100).random()*id) * 86400000L)
                     dataStart = Date(Date().time - (countFacts - id+1) * 1000)
                     dataEnd = Date(Date().time -( countFacts - id+1) * 100)
                     deadLine = Calendar.getInstance()

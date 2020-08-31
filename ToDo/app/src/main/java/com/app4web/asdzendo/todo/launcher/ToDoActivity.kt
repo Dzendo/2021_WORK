@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -32,7 +33,7 @@ class ToDoActivity : AppCompatActivity() {
         //mainBinding.bottomNavView.setupWithNavController(navController) перенесен в фрагмент
 
         // Вывести в заголовок количество записей в базе
-        mainViewModel.count().observe(this) { count -> title = "ToDoMain $count записей"}
+        mainViewModel.count().observe(this) { count -> title = "ToDo 31.08 записей=$count"}
 
         mainBinding.viewmodel = mainViewModel
         mainBinding.lifecycleOwner = this

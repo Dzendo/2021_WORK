@@ -37,12 +37,13 @@ fun convertStringToBoolean(view: EditText): Boolean?  = view.text.toString().tri
 @BindingConversion
 fun convertDateToString(date: Date?): String =
         if (date!=null)
-        SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
+        //    SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
+        SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
         else ""
 
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
 fun captureDateValue(view: EditText): Date? {
-    val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH)
+    val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH)
     var value: Date? = Date()
     try {
         value = sdf.parse(view.text.toString())
@@ -55,7 +56,7 @@ fun captureDateValue(view: EditText): Date? {
 fun convertCalendarToString(calendar: Calendar?): String //= calendar.toString()
 {
     if (calendar == null) return "nul"
-    val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
+    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
     val ccc = sdf.format(calendar.time)
    Timber.i("ToDo convertCalendarToString $ccc ")
     return ccc
@@ -63,7 +64,7 @@ fun convertCalendarToString(calendar: Calendar?): String //= calendar.toString()
 
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
 fun captureCalendarValue(view: EditText): Calendar? {
-    val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
+    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
     val value: Calendar? = Calendar.getInstance()
     try {
             value?.time = sdf.parse(view.text.toString())?: Calendar.getInstance().time
@@ -86,23 +87,19 @@ object BindingConverters {
 
     @InverseMethod(value = "convertStringToDate")
     @JvmStatic fun convertDateToString(date: Date?): String =
-            (date?:Date()).let{SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it)}
+            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it)}
     @JvmStatic fun convertStringToDate(text: String): Date? =
-            try { SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH) .parse(text) }
+            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH) .parse(text) }
             catch (e: Exception) { Date()}
 
     @InverseMethod(value = "convertStringToCalendar")
     @JvmStatic fun convertCalendarToString(calendar: Calendar?): String =
-            calendar?.let { SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).format(calendar.time) }?:"nul"
-    @JvmStatic fun convertStringToCalendar(text: String): Calendar? {
-        val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
-        val value: Calendar? = Calendar.getInstance()
+            calendar?.let { SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(it.time) }?:"nul"
+    @JvmStatic fun convertStringToCalendar(text: String): Calendar? = Calendar.getInstance().let {
         try {
-            value?.time = sdf.parse(text)?: Calendar.getInstance().time
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        return value
+            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).parse(text)?:Date()
+            it
+        } catch (e: Exception) { it }
     }
 
     @InverseMethod(value = "convertStringToInt")

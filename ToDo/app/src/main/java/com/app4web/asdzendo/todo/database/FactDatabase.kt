@@ -117,7 +117,8 @@ abstract class FactDatabase : RoomDatabase() {
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): FactDatabase =
-           Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME)
+           Room.inMemoryDatabaseBuilder(context, FactDatabase::class.java)
+          // Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME)
                .fallbackToDestructiveMigration()
                .build()
     }

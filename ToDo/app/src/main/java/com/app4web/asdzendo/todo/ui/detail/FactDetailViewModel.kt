@@ -3,7 +3,6 @@ package com.app4web.asdzendo.todo.ui.detail
 import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
-import com.app4web.asdzendo.todo.launcher.Charr
 import timber.log.Timber
 
 
@@ -27,7 +26,7 @@ class FactDetailViewModel(
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
      */
    // private val viewModelJob = Job()
-    var charr = Charr  // AS
+
     private  var _fact1: MutableLiveData<Fact?> = MutableLiveData<Fact?>()
     val fact1: LiveData<Fact?>
         get() = _fact1  // AS
@@ -52,9 +51,8 @@ class FactDetailViewModel(
          fact.value?.rezult = " Изм ${fact.value?.factId} " + fact.value?.rezult
          factRepository.update(fact.value)
      //   }
-         Timber.i("ToDo Detail ViewModel update ${fact.value?.factId}  $charr")
+         Timber.i("ToDo Detail ViewModel update ${fact.value?.factId} ")
          backupTrue()
-        Charr = charr  // AS
      }
 
      fun insert()  {

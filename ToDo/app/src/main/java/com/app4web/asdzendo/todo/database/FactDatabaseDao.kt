@@ -103,5 +103,33 @@ interface FactDatabaseDao {
      * выборка фильтром PAEMI в обратной сортировке
      */
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
+    fun getAllPAEMIFactsID(paemi: String): LiveData<List<Fact>>
+
+    /**
+     * выборка фильтром PAEMI в обратной сортировке
+     */
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC ")
     fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
+
+
+    /**
+     * выборка фильтром PAEMI по индексу в обратной сортировке
+     */
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC ")
+    fun getAllPAEMIFactsIndex(paemi: String): LiveData<List<Fact>>
+}
+
+@Dao
+interface FactTableDao {
+    @Query("SELECT factId, data, parent, paemi, nameShort FROM fact_todo")
+    fun getFactTable(): LiveData<List<FactTable>>
+
+    @Query("SELECT factId, data, parent, paemi, nameShort FROM fact_todo ORDER BY factId DESC")
+    fun getAllFacts(): LiveData<List<FactTable>>
+
+    /**
+     * выборка фильтром PAEMI в обратной сортировке
+     */
+    @Query("SELECT factId, data, parent, paemi, nameShort FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
+    fun getAllPAEMIFacts(paemi: String): LiveData<List<FactTable>>
 }

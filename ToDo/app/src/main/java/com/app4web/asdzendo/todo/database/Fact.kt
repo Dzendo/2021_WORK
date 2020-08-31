@@ -24,18 +24,22 @@ import java.util.*
  * Represents one record of the fact of life of an idea (I), plan(P), action(A), event(Y), money(M).
  * Представляет собой один запись факта жизни идеи(I), плана(P), действия(A), события(E), денег(M).
  */
-@Entity(tableName = "fact_todo") //, indices = {@Index(value={"data","factId"}, unique = true)})
+//@Fts4           // Полнотекстовый поиск Дает ОШИБКУ
+@Entity(tableName = "fact_todo",
+        indices = [Index(value = ["data" , "factId"],name = "date_id_index")])
+       // indices = @Index(value = {"data" , "factId"},name = "date_id_index"))
 @TypeConverters(CharConverters::class, CalendarConverters::class, DateConverters::class)
 data class Fact(
         @ColumnInfo(index = true)
         @PrimaryKey(autoGenerate = true)
         var factId: Long = 0L,  // пускай нумеруется сам -  никогда не меняется (надо бы не удалять запись 0L)
-       // @ColumnInfo(index = true)
+        @ColumnInfo(index = true)
         var data: Date? = Date(), // System.currentTimeMillis(),  // Сейчас - дата и время создания записи
         var parent: Long = 0L, // Какая запись (неважно какого типа) породила эту
+        @ColumnInfo(index = true)
         var paemi: String? = "S",  // идеи(I), плана(P), действия(A), события(E), денег(M) служебная(S)
-        var nameShort: String = "",
-        var name: String = "",
+        var nameShort: String = "", // Факт PAEMI кратко
+        var name: String = "",      // Факт PAEMI Полностью
         var rezult: String = "", // ожидаемый или полученный или получившийся РЕЗУЛЬТАТ
         var toWork: Boolean? = false, // закпущена в работу или снята с работы(отказ или удалена)
         var type: Long = 0L, // List<Long>, // Номер ссылки в доп справочнике, нужно множественную
@@ -54,12 +58,10 @@ data class Fact(
         var url: String = "https://developer.android.com/guide"              //List<URL>
 )
 
-
-
-// @ColumnInfo(typeAffinity = TEXT)
-//   public int salary;
-
-// Но есть простое решение - использовать аннотацию Embedded.
-//  @Embedded
-//   public Address address;
-// Embedded подскажет Room, что надо просто взять поля из Address и считать их полями таблицы Employee.
+data class FactTable(
+        var factId: Long = 0L,  // пускай нумеруется сам -  никогда не меняется (надо бы не удалять запись 0L)
+        var data: Date? = Date(), // System.currentTimeMillis(),  // Сейчас - дата и время создания записи
+        var parent: Long = 0L, // Какая запись (неважно какого типа) породила эту
+        var paemi: String? = "S",  // идеи(I), плана(P), действия(A), события(E), денег(M) служебная(S)
+        var nameShort: String = "" // Факт PAEMI кратко
+)

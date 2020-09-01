@@ -10,7 +10,7 @@ class ToDoActitityViewModel internal constructor(
 
     init {
         Timber.i("TODOActitityViewModel created")
-        addFactDatabase(COUNTSFact)
+        //addFactDatabase(COUNTSFact)
     }
 
     fun count() = factRepository.count()

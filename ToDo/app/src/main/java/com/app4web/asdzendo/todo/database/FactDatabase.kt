@@ -21,6 +21,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.app4web.asdzendo.todo.launcher.BASE_IN_MEMORY
 import com.app4web.asdzendo.todo.launcher.FACT_TODO_DATABASE_NAME
 
 /**
@@ -117,9 +118,14 @@ abstract class FactDatabase : RoomDatabase() {
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): FactDatabase =
-           Room.inMemoryDatabaseBuilder(context, FactDatabase::class.java)
-          // Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME)
-               .fallbackToDestructiveMigration()
-               .build()
+            if (BASE_IN_MEMORY)
+            Room.inMemoryDatabaseBuilder(context, FactDatabase::class.java)
+                    .fallbackToDestructiveMigration()
+                    .build()
+            else
+                Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME)
+                    .fallbackToDestructiveMigration()
+                    .build()
+
     }
 }

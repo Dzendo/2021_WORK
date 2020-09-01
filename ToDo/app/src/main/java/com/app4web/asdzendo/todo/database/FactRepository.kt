@@ -61,7 +61,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun addFactDatabase(countFacts: Long = 65L) =  // Дозаполнение начальных данных
         applicationScope.launch {
             val addCount = factDao.insertAll(factContent(countFacts))
-            Timber.i("ToDoFactRepository Add Database Строк записи = $countFacts * 7 = $addCount")
+            Timber.i("ToDoFactRepository Add Database Строк записи = $countFacts * 7 = ${addCount.size}")
         }
 
     fun clear() =

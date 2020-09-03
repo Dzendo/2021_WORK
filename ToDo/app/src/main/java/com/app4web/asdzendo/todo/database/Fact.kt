@@ -26,7 +26,7 @@ import java.util.*
  */
 //@Fts4           // Полнотекстовый поиск Дает ОШИБКУ
 @Entity(tableName = "fact_todo",
-        indices = [Index(value = ["data" , "factId"],name = "date_id_index")])
+        indices = [Index(value = ["paemi", "data", "factId"],name = "date_id_index")])
        // indices = @Index(value = {"data" , "factId"},name = "date_id_index"))
 @TypeConverters(CharConverters::class, CalendarConverters::class, DateConverters::class)
 data class Fact(

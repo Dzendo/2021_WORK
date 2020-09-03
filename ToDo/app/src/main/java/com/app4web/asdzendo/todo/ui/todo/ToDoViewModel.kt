@@ -11,7 +11,7 @@ class ToDoViewModel internal constructor(
     private val factRepository: FactRepository
 ) : ViewModel() {
 
-    var PAEMI: MutableLiveData<String> = MutableLiveData<String>(" ")
+    var PAEMI: MutableLiveData<String> = MutableLiveData<String>("Z")
 
     init { Timber.i("ToDoViewModel created PAEMI= ${PAEMI.value}")}
     /**
@@ -23,10 +23,11 @@ class ToDoViewModel internal constructor(
 
     val facts: LiveData<List<Fact>>
         get() = PAEMI.switchMap { paemi ->
-            if (paemi == " ")
-            factRepository.getAllFacts()
-            else
-            factRepository.getAllPAEMIFacts(paemi)
+            when (paemi) {
+                "Z" -> factRepository.getAll()
+                " " -> factRepository.getAllFacts()
+                else -> factRepository.getAllPAEMIFacts(paemi)
+            }
         }
 
     /**

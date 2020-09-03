@@ -76,6 +76,9 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun count() = factDao.getCount()
 
     // отдает LiveData<List<Fact>>
+    fun getAll() = factDao.getAll()
+
+    // отдает LiveData<List<Fact>>
     fun getAllFacts() = factDao.getAllFacts()
 
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
@@ -96,7 +99,8 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             for (paemi in PAEMI) {
                 val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
                 with (fact) {
-                    data = Date(Date().time - (countFacts -(0..100).random()*id) * 86400000L)
+                    data = Date(Date().time - (countFacts -(0..1000).random()) * 86400000L)
+                    //data = Date(Date().time - (countFacts -(0..100).random()*id) * 86400000L)
                     dataStart = Date(Date().time - (countFacts - id+1) * 1000)
                     dataEnd = Date(Date().time -( countFacts - id+1) * 100)
                     deadLine = Calendar.getInstance()

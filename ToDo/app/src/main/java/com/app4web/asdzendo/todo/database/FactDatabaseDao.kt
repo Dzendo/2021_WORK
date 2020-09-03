@@ -81,8 +81,11 @@ interface FactDatabaseDao {
      * sorted by factid in descending order.
      * сортировка по factid в порядке убывания.
      */
-    @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
+    @Query("SELECT * FROM fact_todo ORDER BY factId DESC LIMIT 700")
     fun getAllFacts(): LiveData<List<Fact>>
+
+    @Query("SELECT * FROM fact_todo LIMIT 700")
+    fun getAll(): LiveData<List<Fact>>
 
     /**
      * Selects and returns the latest night.
@@ -102,20 +105,21 @@ interface FactDatabaseDao {
     /**
      * выборка фильтром PAEMI в обратной сортировке
      */
-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC LIMIT 700")
     fun getAllPAEMIFactsID(paemi: String): LiveData<List<Fact>>
 
     /**
      * выборка фильтром PAEMI в обратной сортировке
      */
-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC ")
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data , factId  LIMIT 7000")
+    //@Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 70000")
     fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
 
 
     /**
      * выборка фильтром PAEMI по индексу в обратной сортировке
      */
-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC ")
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
     fun getAllPAEMIFactsIndex(paemi: String): LiveData<List<Fact>>
 }
 

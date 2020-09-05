@@ -2,6 +2,8 @@ package com.app4web.asdzendo.todo.ui.todo
 
 import android.view.MenuItem
 import androidx.lifecycle.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
@@ -30,6 +32,10 @@ class ToDoViewModel internal constructor(
             }
         }
 
+    val factsP =  Pager( PagingConfig(  pageSize = 60, enablePlaceholders = true, maxSize = 200 ))
+    { factRepository.factDao.getAllP() }.flow
+
+
     /**
      * Called when the ViewModel is dismantled.
      * At this point, we want to cancel all coroutines;
@@ -46,12 +52,12 @@ class ToDoViewModel internal constructor(
     }*/
 
     //07.4.5 Задача: обрабатывать щелчки элементов
-    private val _navigateToFactDetail = MutableLiveData<Long>()
+    private val _navigateToFactDetail = MutableLiveData<Int>()
     val navigateToFactDetail
         get() = _navigateToFactDetail
     // Шаг 1: навигация по клику
     // функцию обработчика щелчков.
-    fun onFactClicked(factid: Long){
+    fun onFactClicked(factid: Int){
         _navigateToFactDetail.value = factid
     }
     // Определите метод для вызова после завершения навигации приложения
@@ -60,7 +66,7 @@ class ToDoViewModel internal constructor(
     }
 
     fun fabClick() {
-        _navigateToFactDetail.value = 0L
+        _navigateToFactDetail.value = 0
         Timber.i("ToDotimber ToDoFragment Recycler ViewModel fabClick() SnackbarTrue() ${PAEMI.value}")
     }
 

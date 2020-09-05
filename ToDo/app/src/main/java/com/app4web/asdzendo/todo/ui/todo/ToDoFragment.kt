@@ -5,13 +5,18 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+//import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
 import com.app4web.asdzendo.todo.launcher.COUNTSFact
 import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -56,7 +61,11 @@ class ToDoFragment : Fragment() {
         val adapter = ToDoAdapter(FactListener { factID ->
             todoViewModel.onFactClicked(factID)
         })
-        binding.recyclerList.adapter = adapter
+        // Говорит можно объявить и в RecyclerView XML
+        val adapterP = ToDoPageAdapter()
+
+
+        binding.recyclerList.adapter = adapterP
 
         todoViewModel.facts.observe(viewLifecycleOwner) {
             it?.let {
@@ -71,6 +80,13 @@ class ToDoFragment : Fragment() {
                 // LiveData observers are sometimes passed null, so make sure you check for null.
                 // Наблюдатели живых данных иногда передаются null, поэтому убедитесь, что вы проверяете наличие null.
             }
+        }
+
+        // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
+        // когда список меняется
+        lifecycleScope.launch {
+            @OptIn(ExperimentalCoroutinesApi::class)
+            todoViewModel.factsP.collectLatest { adapterP.submitData(it) }
         }
 
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->

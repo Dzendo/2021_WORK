@@ -30,17 +30,17 @@ import java.util.*
  * Модуль репозитория для обработки операций с данными.
  * вызывается из всех ViewModels сам вызывает FactDatabaseDao функции
  */
-class FactRepository private constructor(private val factDao: FactDatabaseDao) {
+class FactRepository private constructor( val factDao: FactDatabaseDao) {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     // Возвращает обычное Fact?
-    fun get(factID:Long): Fact? = factDao.get(factID)
+    fun get(factID:Int): Fact? = factDao.get(factID)
 
     fun insert(fact: Fact?) =
             applicationScope.launch {
                 var newFact = Fact()
                 if (fact != null) newFact = fact
-                newFact.factId = 0L
+                newFact.factId = 0
                 factDao.insert(newFact)
             }
 
@@ -74,10 +74,16 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun count() = factDao.getCount()
 
     // отдает LiveData<List<Fact>>
+    //fun getAll() = factDao.getAll()
+
+    // отдает LiveData<List<Fact>>
     fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
     fun getAllPage() = factDao.getAllPage()
+
+    // отдает LiveData<List<Fact>>
+    fun getAllP() = factDao.getAllP()
 
     // отдает LiveData<List<Fact>>
     fun getAllFacts() = factDao.getAllFacts()
@@ -92,7 +98,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun getAllPAEMIFactsPage(paemi: String?) = factDao.getAllPAEMIFactsPage(paemi)
 
     // отдает LiveData<Fact>
-    fun getFactWithId(factID: Long) = factDao.getFactWithId(factID)
+    fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)
 
 
     // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7

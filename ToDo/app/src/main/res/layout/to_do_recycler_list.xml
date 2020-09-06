@@ -34,7 +34,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.todo.ToDoFragment"
-        tools:listitem="@layout/to_do_recycler_list_item" />
+        tools:listitem="@layout/to_do_recycler_list_item_page" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

@@ -23,6 +23,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
         <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
         <variable
             name="fact"
@@ -67,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="@{fact.factId}"
+                android:text="@{BC.convertIntToString(fact.factId)}"
                 app:layout_constraintEnd_toEndOf="@+id/right_well"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="factID" />

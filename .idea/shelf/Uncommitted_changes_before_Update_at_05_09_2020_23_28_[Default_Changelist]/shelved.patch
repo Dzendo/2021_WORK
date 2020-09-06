@@ -1,0 +1,3825 @@
+Index: ToDo/app/src/main/res/menu/to_do.xml
+===================================================================
+--- ToDo/app/src/main/res/menu/to_do.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/menu/to_do.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,15 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto">
+-
+-        <item
+-            android:id="@+id/fact_base_clearing"
+-            android:orderInCategory="100"
+-            android:title="Очисить базу"
+-            app:showAsAction="never" />
+-        <item
+-            android:id="@+id/fact_base_creating"
+-            android:orderInCategory="100"
+-            android:title="Добавить пачку"
+-            app:showAsAction="never" />
+-</menu>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoInjectorUtils.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoInjectorUtils.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoInjectorUtils.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,50 +0,0 @@
+-/*
+- * Copyright 2018 Google LLC
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     https://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.launcher
+-
+-import android.content.Context
+-import com.app4web.asdzendo.todo.database.FactDatabase
+-import com.app4web.asdzendo.todo.database.FactRepository
+-import com.app4web.asdzendo.todo.ui.detail.FactDetailViewModelFactory
+-import com.app4web.asdzendo.todo.ui.todo.ToDoViewModelFactory
+-
+-/**
+- * Static methods used to inject classes needed for various Activities and Fragments.
+- * Статические методы используются для введения классов, необходимых для различных действий и фрагментов.
+- * Context
+- *   Не стоит передавать Activity в модель в качестве Context. Это может привести к утечкам памяти.
+- *   Если вам в модели понадобился объект Context, то вы можете наследовать не ViewModel, а AndroidViewModel.
+-
+- */
+-object ToDoInjectorUtils {
+-
+-// Fragment <- ViewModel <- ViewModelFactory <- provideToDoActitityViewModelFactory
+-// <- getFactRepository <- FactRepository <- FactDatabase <- FactDatabaseDao <- @Entity Fact
+-
+-    private fun getFactRepository(context: Context): FactRepository =
+-        FactRepository.getInstance(
+-                FactDatabase.getInstance(context.applicationContext).factDatabaseDao)
+-
+-    fun provideToDoActitityViewModelFactory(context: Context): ToDoActivityViewModelFactory =
+-        ToDoActivityViewModelFactory(getFactRepository(context))
+-
+-    fun provideToDoViewModelFactory(context: Context): ToDoViewModelFactory =
+-        ToDoViewModelFactory(getFactRepository(context))
+-
+-    fun provideFactDetailViewModelFactory(context: Context, factId: Long, paemi: String): FactDetailViewModelFactory =
+-        FactDetailViewModelFactory(getFactRepository(context), factId, paemi)
+-}
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivity.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivity.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivity.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,106 +0,0 @@
+-package com.app4web.asdzendo.todo.launcher
+-
+-import android.app.Dialog
+-import android.content.Context
+-import android.content.Intent
+-import android.os.Bundle
+-import android.view.Menu
+-import android.view.MenuItem
+-import android.view.View
+-import android.widget.Toast
+-import androidx.activity.viewModels
+-import androidx.appcompat.app.AlertDialog
+-import androidx.appcompat.app.AppCompatActivity
+-import androidx.databinding.DataBindingUtil
+-import androidx.fragment.app.DialogFragment
+-import androidx.navigation.findNavController
+-import androidx.navigation.ui.AppBarConfiguration
+-import androidx.navigation.ui.setupWithNavController
+-import com.app4web.asdzendo.todo.R
+-import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
+-import timber.log.Timber
+-
+-
+-class ToDoActivity : AppCompatActivity() {
+-    private lateinit var appBarConfiguration: AppBarConfiguration
+-    private lateinit var mainBinding: ActivityToDoBinding
+-    private val mainViewModel: ToDoActitityViewModel by viewModels {
+-        ToDoInjectorUtils.provideToDoActitityViewModelFactory(applicationContext)
+-    }
+-
+-    override fun onCreate(savedInstanceState: Bundle?) {
+-        super.onCreate(savedInstanceState)
+-
+-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_to_do)
+-        // Добавляет и обрабатывает меню три точки для этого фрагмента
+-        setSupportActionBar(mainBinding.toolbar)
+-
+-        val navController = findNavController(R.id.nav_host_fragment)
+-        appBarConfiguration = AppBarConfiguration(navController.graph, mainBinding.drawerLayout)
+-        mainBinding.toolbar.setupWithNavController(navController, appBarConfiguration)
+-        mainBinding.navView.setupWithNavController(navController)
+-        //mainBinding.bottomNavView.setupWithNavController(navController) перенесен в фрагмент
+-
+-        // Вывести в заголовок количество записей в базе
+-        val bas = if (BASE_IN_MEMORY) "M" else "D"
+-        mainViewModel.count().observe(this) { count -> title = "ToDo$bas 1.09 записей=$count" }
+-
+-        mainBinding.viewmodel = mainViewModel
+-        mainBinding.lifecycleOwner = this
+-
+-        Timber.i("ToDoMainActivity onCreate ")
+-    }
+-
+-    // Добавляет и обрабатывает меню три точки для этого фрагмента
+-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+-        // Inflate the menu; this adds items to the action bar if it is present.
+-        menuInflater.inflate(R.menu.main, menu)
+-        return true
+-    }
+-
+-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+-        // Handle action bar item clicks here. The action bar will
+-        // automatically handle clicks on the Home/Up button, so long
+-        // as you specify a parent activity in AndroidManifest.xml.
+-        when (item.itemId) {
+-            R.id.action_settings -> Toast.makeText(applicationContext, "Settings", Toast.LENGTH_SHORT).show()
+-            R.id.action_reboot -> startActivity(Intent(this, ToDoActivity::class.java))
+-
+-            //R.id.main_action_base ->  BASE_IN_MEMORY = false
+-            R.id.main_action_base_in_memory -> BASE_IN_MEMORY = true
+-            R.id.main_action_base_on_disk -> BASE_IN_MEMORY = false
+-
+-            R.id.main_action_constfact_1 -> COUNTSFact = 1L
+-            R.id.main_action_constfact_10 -> COUNTSFact = 10L
+-            R.id.main_action_constfact_100 -> COUNTSFact = 100L
+-            R.id.main_action_constfact_1000 -> COUNTSFact = 1_000L
+-            R.id.main_action_constfact_10_000 -> COUNTSFact = 10_000L
+-            R.id.main_action_constfact_100_000 -> COUNTSFact = 50_000L
+-            R.id.main_action_constfact_1000_000 -> COUNTSFact = 1_000_000L
+-            else -> {
+-                super.onOptionsItemSelected(item); return false
+-            }
+-        }
+-        Toast.makeText(applicationContext, "base in memory = $BASE_IN_MEMORY COUNTSFact = $COUNTSFact", Toast.LENGTH_LONG).show()
+-        return true
+-    }
+-
+-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+-        savedInstanceState.putInt("COUNTSFact", COUNTSFact.toInt())
+-        savedInstanceState.putBoolean("BASE_IN_MEMORY", BASE_IN_MEMORY);
+-        super.onSaveInstanceState(savedInstanceState)
+-    }
+-
+-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+-        super.onRestoreInstanceState(savedInstanceState)
+-        COUNTSFact = savedInstanceState.getInt("COUNTSFact").toLong()
+-        BASE_IN_MEMORY = savedInstanceState.getBoolean("BASE_IN_MEMORY");
+-    }
+-}
+-
+-/* вроде нужен для возврата по стрелке но работает и без него т.к. есть app:defaultNavHost="true"
+-    override fun onSupportNavigateUp(): Boolean {
+-    //  = findNavController(R.id.nav_host_fragment).navigateUp()
+-        val navController = findNavController(R.id.nav_host_fragment)
+-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+-    }*/
+Index: ToDo/app/src/main/res/values/themes.xml
+===================================================================
+--- ToDo/app/src/main/res/values/themes.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/values/themes.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,29 +0,0 @@
+-<resources xmlns:tools="http://schemas.android.com/tools">
+-    <!-- Base application theme. -->
+-    <style name="Theme.ToDo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+-        <!-- Primary brand color. -->
+-        <item name="colorPrimary">@color/purple_500</item>
+-        <item name="colorPrimaryVariant">@color/purple_700</item>
+-        <item name="colorOnPrimary">@color/white</item>
+-        <!-- Secondary brand color. -->
+-        <item name="colorSecondary">@color/teal_200</item>
+-        <item name="colorSecondaryVariant">@color/teal_700</item>
+-        <item name="colorOnSecondary">@color/black</item>
+-        <!-- Status bar color. -->
+-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+-        <!-- Customize your theme here. -->
+-    </style>
+-
+-    <style name="Theme.ToDo.NoActionBar">
+-        <item name="windowActionBar">false</item>
+-        <item name="windowNoTitle">true</item>
+-    </style>
+-
+-    <style name="Theme.ToDo.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+-
+-    <style name="Theme.ToDo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+-
+-    <style name="TextAppearance.ToDo.Toolbar.Text" parent="TextAppearance.MaterialComponents.Headline5" >
+-        <item name="android:textColor">?attr/colorOnSurface</item>
+-    </style>
+-</resources>
+\ No newline at end of file
+Index: ToDo/.idea/compiler.xml
+===================================================================
+--- ToDo/.idea/compiler.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/.idea/compiler.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="11" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailFragment.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailFragment.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailFragment.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,76 +0,0 @@
+-package com.app4web.asdzendo.todo.ui.detail
+-
+-
+-import android.os.Bundle
+-import android.view.*
+-import androidx.fragment.app.Fragment
+-import androidx.fragment.app.viewModels
+-import androidx.navigation.fragment.findNavController
+-import androidx.navigation.fragment.navArgs
+-import com.app4web.asdzendo.todo.databinding.FactDetailFragmentBinding
+-import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
+-import timber.log.Timber
+-import com.app4web.asdzendo.todo.R
+-
+-
+-class FactDetailFragment : Fragment() {
+-
+-    private val args: FactDetailFragmentArgs by navArgs()
+-
+-    private val factDetailViewModel: FactDetailViewModel by viewModels {
+-        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(), args.factID, args.paemi)
+-    }
+-
+-    override fun onCreate(savedInstanceState: Bundle?) {
+-        super.onCreate(savedInstanceState)
+-        // Добавляет и обрабатывает меню три точки для этого фрагмента
+-        setHasOptionsMenu(true)
+-        Timber.i("ToDo FactDetailFragment onCreate ")
+-    }
+-
+-    override fun onCreateView(
+-            inflater: LayoutInflater, container: ViewGroup?,
+-            savedInstanceState: Bundle?,
+-    ): View? {
+-        Timber.i("ToDoFactDetailFragment onCreateView ")
+-
+-        // Get a reference to the binding object and inflate the fragment views.
+-        // Получить ссылку на объект привязки и раздуть представления фрагментов.
+-
+-        val binding = FactDetailFragmentBinding.inflate(inflater, container, false)
+-
+-        // To use the View Model with data binding, you have to explicitly
+-        // give the binding object a reference to it.
+-        // Чтобы использовать модель представления с привязкой данных, вы должны явно
+-        // дайте объекту привязки ссылку на него.
+-        binding.viewmodel = factDetailViewModel
+-        binding.lifecycleOwner = viewLifecycleOwner //this
+-       // binding.fact = factDetailViewModel.getFact().value
+-
+-        // Для возврата в таблицу по нажатию любой кнопки
+-        factDetailViewModel.backup.observe(viewLifecycleOwner) {
+-            if (it == true) { // Observed state is true. Наблюдаемое состояние истинно.
+-                this.findNavController().navigateUp()
+-                factDetailViewModel.backupNull()
+-            }
+-        }
+-        return binding.root
+-    }
+-    // Добавляет и обрабатывает меню три точки для этого фрагмента
+-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+-        inflater.inflate(R.menu.detail, menu)
+-        super.onCreateOptionsMenu(menu, inflater)
+-    }
+-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+-        when (item.itemId) {
+-            R.id.Add_fact ->
+-                factDetailViewModel.insert()
+-            R.id.Update_fact->
+-                factDetailViewModel.update()
+-            R.id.Delete_fact->
+-                factDetailViewModel.delete()
+-            else -> return false
+-        }
+-        return true
+-    }
+-}
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/DatabaseConverters.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/DatabaseConverters.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/DatabaseConverters.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,43 +0,0 @@
+-package com.app4web.asdzendo.todo.database
+-
+-import androidx.room.TypeConverter
+-import java.util.*
+-
+-// @TypeConverters(DatabaseConverters::class)
+-/**
+- * @TypeConverters аннотация должна использоваться, когда мы объявляем свойство,
+- * тип которого является пользовательским классом, списком, типом даты или любым другим типом, который Room и SQL не знают, как сериализовать.
+- * В этом случае мы используем аннотацию на уровне поля класса, причем только это поле сможет ее использовать.
+- * В зависимости от того, где находится аннотация, она будет вести себя по-разному, как описано здесь.
+- *
+-Если вы поставите его на Database, все DAO и сущности в этой базе данных смогут использовать его.
+-Если вы поставите его на Dao, все методы в Дао смогут использовать его.
+-Если вы поставите его на Entity, все поля сущности смогут использовать его.
+-Если вы поместите его на POJO, все поля POJO смогут использовать его.
+-Если вы поставите его на Entity поле, только это поле сможет его использовать.
+-Если вы поставите его на Dao метод, все параметры метода будут иметь возможность использовать его.
+-Если вы поставите его на Dao параметр метода, только это поле сможет его использовать.
+- */
+-
+-/*
+-Помечает метод как преобразователь типов.
+-Класс может иметь столько методов @TypeConverter, сколько ему нужно.
+-Каждый метод конвертера должен получать 1 параметр и иметь тип возврата non-void.
+- */
+-// companion object {
+-// @TypeConverter @JvmStatic
+-class DateConverters {
+-    @TypeConverter fun fromTimestamp(value: Long?): Date? = value?.let { Date(it) }
+-    @TypeConverter fun dateToTimestamp(date: Date?): Long? = date?.time
+-}
+-
+-class CalendarConverters {
+-    @TypeConverter fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
+-    @TypeConverter fun datestampToCalendar(value: Long): Calendar = // Calendar.getInstance()
+-        Calendar.getInstance().apply { timeInMillis = value }
+-}
+-
+-class CharConverters {
+-    @TypeConverter fun CharToString(char: Char?): String? = char?.toString()
+-    @TypeConverter fun StringToChar(string: String?): Char? = string?.get(0)?:' '
+-}
+\ No newline at end of file
+Index: ToDo/app/src/main/res/drawable/ic_home.xml
+===================================================================
+--- ToDo/app/src/main/res/drawable/ic_home.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/drawable/ic_home.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,9 +0,0 @@
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="24dp"
+-    android:height="24dp"
+-    android:viewportWidth="24.0"
+-    android:viewportHeight="24.0">
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M10,20v-6h4v6h5v-8h3L12,3 2,12h3v8z" />
+-</vector>
+Index: ToDo/.idea/vcs.xml
+===================================================================
+--- ToDo/.idea/vcs.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/.idea/vcs.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoAdapter.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoAdapter.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoAdapter.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,166 +0,0 @@
+-package com.app4web.asdzendo.todo.ui.todo
+-
+-import androidx.recyclerview.widget.RecyclerView
+-import android.view.LayoutInflater
+-import android.view.ViewGroup
+-import androidx.recyclerview.widget.DiffUtil
+-import androidx.recyclerview.widget.ListAdapter
+-import com.app4web.asdzendo.todo.database.Fact
+-import com.app4web.asdzendo.todo.databinding.ToDoHeaderListItemBinding
+-import com.app4web.asdzendo.todo.databinding.ToDoRecyclerCardItemBinding
+-import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListItemBinding
+-import kotlinx.coroutines.CoroutineScope
+-import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.launch
+-import kotlinx.coroutines.withContext
+-
+-/**
+- * [RecyclerView.Adapter] that can display a [DataItem].
+- */
+-private const val ITEM_VIEW_TYPE_HEADER = 0
+-private const val ITEM_VIEW_TYPE_ITEM = 1
+-private const val ITEM_VIEW_TYPE_CARD = 2
+-
+-class ToDoAdapter(private val clickListener: FactListener):
+-        ListAdapter<DataItem, RecyclerView.ViewHolder>(FactDiffCallback()) {
+-
+-    private val adapterScope = CoroutineScope(Dispatchers.Default)
+-
+-    // Для реакции на нажатие строки или карточки - для заголовка пока не сделана сортировка
+-    override fun onBindViewHolder(holder: RecyclerView. ViewHolder, position: Int) {
+-        when (holder) {
+-            is ListViewHolder -> {
+-                val factItem = getItem(position) as DataItem.FactItem
+-                holder.bind(clickListener, factItem.fact)
+-            }
+-            is CardViewHolder -> {
+-                val factItem = getItem(position) as DataItem.FactCard
+-                holder.bind(clickListener, factItem.fact)
+-            }
+-        }
+-    }
+-
+-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+-        when (viewType) {
+-            ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
+-            ITEM_VIEW_TYPE_ITEM -> ListViewHolder.from(parent)
+-            ITEM_VIEW_TYPE_CARD -> CardViewHolder.from(parent)
+-            else -> throw ClassCastException("Unknown viewType $viewType")
+-        }
+-
+-    // Вместо того, чтобы использовать submitList(), предоставленный ListAdapter,
+-    // для отправки вашего списка, вы будете использовать эту функцию,
+-    // чтобы добавить заголовок, а затем отправить список.
+-    fun addHeaderAndSubmitList(list: List<Fact>?) {
+-        // запустите сопрограмму в, adapterScope чтобы управлять списком
+-        adapterScope.launch {
+-            //если переданный список есть null, верните только заголовок,
+-            // в противном случае присоедините заголовок к заголовку списка,
+-            // а затем отправьте список.
+-            val items = when (list) {
+-                null -> listOf(DataItem.Header)
+-                else -> listOf(DataItem.Header) + list.map { DataItem.FactItem(it) }
+-            }
+-            // Затем переключитесь в Dispatchers.Main контекст, чтобы отправить список
+-            withContext(Dispatchers.Main) {
+-                submitList(items)
+-            }
+-        }
+-    }
+-    // Вместо того, чтобы использовать submitList(), предоставленный ListAdapter,
+-    // для отправки вашего списка, вы будете использовать эту функцию,
+-    fun addSubmitCard(list: List<Fact>?) {
+-        // запустите сопрограмму в, adapterScope чтобы управлять списком
+-        adapterScope.launch {
+-            //Список в карточки
+-            val items = list?.map { DataItem.FactCard(it) }
+-
+-            // Затем переключитесь в Dispatchers.Main контекст, чтобы отправить список
+-            withContext(Dispatchers.Main) {
+-                submitList(items)
+-            }
+-        }
+-    }
+-
+-    // 23,2 Добавьте класс TextHolder внутри SleepNightAdapter класса.
+-    class TextViewHolder private constructor(binding: ToDoHeaderListItemBinding)
+-        : RecyclerView.ViewHolder(binding.root) {
+-        companion object {
+-            fun from(parent: ViewGroup): TextViewHolder {
+-                val layoutInflater = LayoutInflater.from(parent.context)
+-                val binding = ToDoHeaderListItemBinding.inflate(layoutInflater, parent, false)
+-                return TextViewHolder(binding)
+-            }
+-        }
+-    }
+-   // override fun getItemCount(): Int = values.size
+-   // перечень фактов в строках для Landscape
+-   class ListViewHolder private constructor(private val binding:ToDoRecyclerListItemBinding)
+-       : RecyclerView.ViewHolder(binding.root) {
+-
+-       fun bind(clickListener: FactListener, item: Fact) {
+-           binding.fact = item
+-           binding.clickListener = clickListener
+-           binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
+-       }
+-       companion object {
+-           fun from(parent: ViewGroup): ListViewHolder {
+-               val layoutInflater = LayoutInflater.from(parent.context)
+-               val binding = ToDoRecyclerListItemBinding.inflate(layoutInflater, parent, false)
+-               return ListViewHolder(binding)
+-           }
+-       }
+-   }
+-    // перечень фактов в карточках для Portrait
+-    class CardViewHolder private constructor(private val binding:ToDoRecyclerCardItemBinding)
+-        : RecyclerView.ViewHolder(binding.root) {
+-
+-        fun bind(clickListener: FactListener, item: Fact) {
+-            binding.fact = item
+-            binding.clickListener = clickListener
+-            binding.executePendingBindings()  // попоросить привязку выполнить обновление сразу
+-        }
+-        companion object {
+-            fun from(parent: ViewGroup): CardViewHolder {
+-                val layoutInflater = LayoutInflater.from(parent.context)
+-                val binding = ToDoRecyclerCardItemBinding.inflate(layoutInflater, parent, false)
+-                return CardViewHolder(binding)
+-            }
+-        }
+-    }
+-
+-    //23,6 Затем, чтобы выяснить, какой тип представления вернуть, добавьте проверку,
+-// чтобы увидеть, какой тип элемента находится в списке:
+-    // Затем переопределите getItemViewType и верните правильный тип представления элемента.
+-    override fun getItemViewType(position: Int): Int {
+-        return when (getItem(position)) {
+-            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+-            is DataItem.FactItem -> ITEM_VIEW_TYPE_ITEM
+-            is DataItem.FactCard -> ITEM_VIEW_TYPE_CARD
+-        }
+-    }
+-}
+-// Умное обновление изменившихся элементов на экране, а не всех
+-//23,5 Обновите ваш DiffCallback для обработки DataItem вместо SleepNight:
+-class FactDiffCallback : DiffUtil.ItemCallback<DataItem>() {
+-    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean = oldItem.id == newItem.id
+-    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean = oldItem == newItem
+-}
+-// Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
+-class FactListener(val clickListener: (factId: Long) -> Unit) {
+-    fun onClick(fact: Fact) = clickListener(fact.factId)
+-}
+-// 23.1. Внизу SleepNightAdapter добавьте запечатанный класс с именем DataItem:
+-sealed class DataItem {
+-    abstract val id: Long
+-
+-    object Header: DataItem() {
+-        override val id = Long.MIN_VALUE
+-    }
+-    data class FactItem(val fact: Fact): DataItem() {
+-        override val id = fact.factId
+-    }
+-    data class FactCard(val fact: Fact): DataItem() {
+-        override val id = fact.factId
+-    }
+-}
+\ No newline at end of file
+Index: ToDo/.idea/gradle.xml
+===================================================================
+--- ToDo/.idea/gradle.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/.idea/gradle.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,22 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="GradleMigrationSettings" migrationVersion="1" />
+-  <component name="GradleSettings">
+-    <option name="linkedExternalProjectsSettings">
+-      <GradleProjectSettings>
+-        <option name="testRunner" value="PLATFORM" />
+-        <option name="distributionType" value="DEFAULT_WRAPPED" />
+-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="gradleJvm" value="1.8" />
+-        <option name="modules">
+-          <set>
+-            <option value="$PROJECT_DIR$" />
+-            <option value="$PROJECT_DIR$/app" />
+-          </set>
+-        </option>
+-        <option name="resolveModulePerSourceSet" value="false" />
+-        <option name="useQualifiedModuleNames" value="true" />
+-      </GradleProjectSettings>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ToDo/build.gradle
+===================================================================
+--- ToDo/build.gradle	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/build.gradle	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,29 +0,0 @@
+-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+-buildscript {
+-    ext.kotlin_version = "1.4.0"
+-    repositories {
+-        google()
+-        jcenter()
+-        //maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
+-    }
+-    dependencies {
+-        classpath "com.android.tools.build:gradle:4.2.0-alpha08"
+-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
+-
+-        // NOTE: Do not place your application dependencies here; they belong
+-        // in the individual module build.gradle files
+-    }
+-}
+-
+-allprojects {
+-    repositories {
+-        google()
+-        jcenter()
+-        //maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
+-    }
+-}
+-
+-task clean(type: Delete) {
+-    delete rootProject.buildDir
+-}
+\ No newline at end of file
+Index: ToDo/app/src/main/res/drawable/ic_launcher_background.xml
+===================================================================
+--- ToDo/app/src/main/res/drawable/ic_launcher_background.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/drawable/ic_launcher_background.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,170 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:width="108dp"
+-    android:height="108dp"
+-    android:viewportWidth="108"
+-    android:viewportHeight="108">
+-    <path
+-        android:fillColor="#3DDC84"
+-        android:pathData="M0,0h108v108h-108z" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M9,0L9,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,0L19,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M29,0L29,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M39,0L39,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M49,0L49,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M59,0L59,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M69,0L69,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M79,0L79,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M89,0L89,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M99,0L99,108"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,9L108,9"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,19L108,19"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,29L108,29"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,39L108,39"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,49L108,49"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,59L108,59"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,69L108,69"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,79L108,79"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,89L108,89"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M0,99L108,99"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,29L89,29"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,39L89,39"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,49L89,49"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,59L89,59"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,69L89,69"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M19,79L89,79"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M29,19L29,89"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M39,19L39,89"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M49,19L49,89"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M59,19L59,89"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M69,19L69,89"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-    <path
+-        android:fillColor="#00000000"
+-        android:pathData="M79,19L79,89"
+-        android:strokeWidth="0.8"
+-        android:strokeColor="#33FFFFFF" />
+-</vector>
+Index: ToDo/.idea/misc.xml
+===================================================================
+--- ToDo/.idea/misc.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/.idea/misc.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,9 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/build/classes" />
+-  </component>
+-  <component name="ProjectType">
+-    <option name="id" value="Android" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,94 +0,0 @@
+-package com.app4web.asdzendo.todo.ui.todo
+-
+-import android.view.MenuItem
+-import androidx.lifecycle.*
+-import com.app4web.asdzendo.todo.R
+-import com.app4web.asdzendo.todo.database.Fact
+-import com.app4web.asdzendo.todo.database.FactRepository
+-import timber.log.Timber
+-
+-class ToDoViewModel internal constructor(
+-    private val factRepository: FactRepository
+-) : ViewModel() {
+-
+-    var PAEMI: MutableLiveData<String> = MutableLiveData<String>("Z")
+-
+-    init { Timber.i("ToDoViewModel created PAEMI= ${PAEMI.value}")}
+-    /**
+-     * viewModelJob allows us to cancel all coroutines started by this ViewModel.
+-     * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
+-     */
+-   // private val viewModelJob = Job()
+-   // private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+-
+-    val facts: LiveData<List<Fact>>
+-        get() = PAEMI.switchMap { paemi ->
+-            when (paemi) {
+-                "Z" -> factRepository.getAll()
+-                " " -> factRepository.getAllFacts()
+-                else -> factRepository.getAllPAEMIFacts(paemi)
+-            }
+-        }
+-
+-    /**
+-     * Called when the ViewModel is dismantled.
+-     * At this point, we want to cancel all coroutines;
+-     * otherwise we end up with processes that have nowhere to return to
+-     * using memory and resources.
+-     * Выполняется при нажатии кнопки Очистить.Вызывается при демонтаже ViewModel.
+-     * На этом этапе мы хотим отменить все сопрограммы;
+-     * в противном случае мы имеем дело с процессами, которым некуда возвращаться
+-     * использование памяти и ресурсов.
+-     */
+-   /* override fun onCleared() {
+-        super.onCleared()
+-        viewModelJob.cancel()
+-    }*/
+-
+-    //07.4.5 Задача: обрабатывать щелчки элементов
+-    private val _navigateToFactDetail = MutableLiveData<Long>()
+-    val navigateToFactDetail
+-        get() = _navigateToFactDetail
+-    // Шаг 1: навигация по клику
+-    // функцию обработчика щелчков.
+-    fun onFactClicked(factid: Long){
+-        _navigateToFactDetail.value = factid
+-    }
+-    // Определите метод для вызова после завершения навигации приложения
+-    fun navigateToFactDetailNavigated() {
+-        _navigateToFactDetail.value = null
+-    }
+-
+-    fun fabClick() {
+-        _navigateToFactDetail.value = 0L
+-        Timber.i("ToDotimber ToDoFragment Recycler ViewModel fabClick() SnackbarTrue() ${PAEMI.value}")
+-    }
+-
+-    // подключено надо доделывать вызов из XML
+-    fun onClickBottomNavView(paemi: MenuItem): Boolean {
+-        val oldPaemi = PAEMI.value
+-        PAEMI.value = when (paemi.itemId) {
+-            R.id.idea ->   "I"
+-            R.id.plan ->   "P"
+-            R.id.action -> "A"
+-            R.id.event ->  "E"
+-            R.id.money ->  "M"
+-            else -> "S"
+-        }
+-        if (oldPaemi == PAEMI.value) PAEMI.value = " "
+-        Timber.i("ToDoViewModel onClickBottomNavView ${PAEMI.value}}")
+-        return true
+-    }
+-
+-    // Вызов в XML стоит но не вызывается
+-    fun onClickBottomNavView(): Boolean  {
+-        Timber.i("ToDoViewModel onReClickBottomNavView ${PAEMI.value}}")
+-        return true
+-    }
+-    // Добавляет и обрабатывает меню три точки для этого фрагмента
+-    fun clear() = factRepository.clear()
+-
+-    fun addFactDatabase(COUNTSFact: Long) = factRepository.addFactDatabase(COUNTSFact)
+-
+-    fun count() = factRepository.count()
+-}
+\ No newline at end of file
+Index: ToDo/gradle/wrapper/gradle-wrapper.properties
+===================================================================
+--- ToDo/gradle/wrapper/gradle-wrapper.properties	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/gradle/wrapper/gradle-wrapper.properties	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,6 +0,0 @@
+-#Thu Aug 27 01:39:15 MSK 2020
+-distributionBase=GRADLE_USER_HOME
+-distributionUrl=https\://services.gradle.org/distributions/gradle-6.6.1-bin.zip
+-distributionPath=wrapper/dists
+-zipStorePath=wrapper/dists
+-zipStoreBase=GRADLE_USER_HOME
+Index: ToDo/app/src/main/res/drawable/ic_plus.xml
+===================================================================
+--- ToDo/app/src/main/res/drawable/ic_plus.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/drawable/ic_plus.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,25 +0,0 @@
+-<!--
+-  ~ Copyright 2018 Google LLC
+-  ~
+-  ~ Licensed under the Apache License, Version 2.0 (the "License");
+-  ~ you may not use this file except in compliance with the License.
+-  ~ You may obtain a copy of the License at
+-  ~
+-  ~     https://www.apache.org/licenses/LICENSE-2.0
+-  ~
+-  ~ Unless required by applicable law or agreed to in writing, software
+-  ~ distributed under the License is distributed on an "AS IS" BASIS,
+-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-  ~ See the License for the specific language governing permissions and
+-  ~ limitations under the License.
+-  -->
+-
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-        android:width="24dp"
+-        android:height="24dp"
+-        android:viewportWidth="24.0"
+-        android:viewportHeight="24.0">
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+-</vector>
+Index: ToDo/app/src/main/res/drawable/side_nav_bar.xml
+===================================================================
+--- ToDo/app/src/main/res/drawable/side_nav_bar.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/drawable/side_nav_bar.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,9 +0,0 @@
+-<shape xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:shape="rectangle">
+-    <gradient
+-        android:angle="135"
+-        android:centerColor="#009688"
+-        android:endColor="#00695C"
+-        android:startColor="#4DB6AC"
+-        android:type="linear" />
+-</shape>
+\ No newline at end of file
+Index: ToDo/.gitignore
+===================================================================
+--- ToDo/.gitignore	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/.gitignore	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,15 +0,0 @@
+-*.iml
+-.gradle
+-/local.properties
+-/.idea/caches
+-/.idea/libraries
+-/.idea/modules.xml
+-/.idea/workspace.xml
+-/.idea/navEditor.xml
+-/.idea/assetWizardSettings.xml
+-.DS_Store
+-/build
+-/captures
+-.externalNativeBuild
+-.cxx
+-local.properties
+Index: ToDo/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml
+===================================================================
+--- ToDo/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+-    <background android:drawable="@drawable/ic_launcher_background" />
+-    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+-</adaptive-icon>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/values/dimens.xml
+===================================================================
+--- ToDo/app/src/main/res/values/dimens.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/values/dimens.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,10 +0,0 @@
+-<resources>
+-    <!-- Default screen margins, per the Android Design guidelines. -->
+-    <dimen name="activity_horizontal_margin">16dp</dimen>
+-    <dimen name="activity_vertical_margin">16dp</dimen>
+-
+-    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+-    <dimen name="nav_header_height">176dp</dimen>
+-    <dimen name="fab_margin">8dp</dimen>
+-    <dimen name="text_margin">8dp</dimen>
+-</resources>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActitityViewModel.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActitityViewModel.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActitityViewModel.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,19 +0,0 @@
+-package com.app4web.asdzendo.todo.launcher
+-
+-import androidx.lifecycle.ViewModel
+-import com.app4web.asdzendo.todo.database.FactRepository
+-import timber.log.Timber
+-
+-class ToDoActitityViewModel internal constructor(
+-        private val factRepository: FactRepository
+-): ViewModel() {
+-
+-    init {
+-        Timber.i("TODOActitityViewModel created")
+-        //addFactDatabase(COUNTSFact)
+-    }
+-
+-    fun count() = factRepository.count()
+-
+-    fun addFactDatabase(COUNTSFact: Long) = factRepository.addFactDatabase(COUNTSFact)
+-}
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailViewModel.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailViewModel.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailViewModel.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,93 +0,0 @@
+-package com.app4web.asdzendo.todo.ui.detail
+-
+-import androidx.lifecycle.*
+-import com.app4web.asdzendo.todo.database.Fact
+-import com.app4web.asdzendo.todo.database.FactRepository
+-import timber.log.Timber
+-
+-
+-class FactDetailViewModel(
+-        private val factRepository: FactRepository,
+-        factID: Long = 0L,
+-        paemi: String = " ",
+-): ViewModel() {
+-    init { Timber.i("TODO FactDetailViewModel created $factID")}
+-
+-   // val factid = factID.toString()  // Временно для TextView поменять на адаптер
+-
+-    /**
+-     * Hold a reference to FactDatabase via its FactDatabaseDao.
+-     * Держите ссылку на базу данных Fact через ее Fact DatabaseDao.
+-     * Теперь ссылка factRepository на FactRepository
+-     */
+-
+-    /** Coroutine setup variables Переменные настройки сопрограммы
+-     * viewModelJob allows us to cancel all coroutines started by this ViewModel.
+-     * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
+-     */
+-   // private val viewModelJob = Job()
+-
+-    private  var _fact1: MutableLiveData<Fact?> = MutableLiveData<Fact?>()
+-    val fact1: LiveData<Fact?>
+-        get() = _fact1  // AS
+-
+-
+-    private val fact = MediatorLiveData<Fact>()
+-    fun getFact() = fact
+-
+-    init {
+-        val fact0L: LiveData<Fact> = if (factID == 0L)
+-                MutableLiveData(Fact(paemi = paemi, nameShort = "новый Факт", name = "Факт полностью: новый"))
+-           else factRepository.getFactWithId(factID)
+-        fact.addSource(fact0L, fact::setValue)
+-        val  _fact1 = Transformations.switchMap(fact0L) { it -> MutableLiveData<Fact?>(it)}  // AS
+-    }
+-
+-    init { Timber.i("ToDo Detail ViewModel")}
+-
+-    // Добавляет и обрабатывает меню три точки для этого фрагмента
+-     fun update() {
+-     //   withContext(Dispatchers.IO) {
+-         fact.value?.rezult = " Изм ${fact.value?.factId} " + fact.value?.rezult
+-         factRepository.update(fact.value)
+-     //   }
+-         Timber.i("ToDo Detail ViewModel update ${fact.value?.factId} ")
+-         backupTrue()
+-     }
+-
+-     fun insert()  {
+-        // viewModelScope.launch {    // coroutine стоит в репозитории, наверно здесь не надо???
+-             //   withContext(Dispatchers.IO) {
+-         fact.value?.rezult = " Доб " + fact.value?.rezult
+-         factRepository.insert(fact.value)
+-             //   }
+-         //}
+-
+-        Timber.i("ToDo Detail ViewModel insert ${fact.value?.rezult}")
+-         backupTrue()
+-     }
+-
+-     fun delete() {
+-      //  withContext(Dispatchers.IO) {
+-         factRepository.delete(fact.value)
+-      //  }
+-         Timber.i("ToDo Detail ViewModel delete ${fact.value?.factId}")
+-         backupTrue()
+-     }
+-
+-   /* override fun onCleared() {
+-        super.onCleared()
+-        viewModelJob.cancel()
+-    }*/
+-    private val _backup: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>(null)
+-    val backup: LiveData<Boolean?>
+-        get() = _backup
+-
+-    private fun backupTrue() {
+-        _backup.value = true
+-    }
+-    fun backupNull() {
+-        _backup.value = null
+-    }
+-
+-}
+\ No newline at end of file
+Index: ToDo/app/proguard-rules.pro
+===================================================================
+--- ToDo/app/proguard-rules.pro	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/proguard-rules.pro	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,21 +0,0 @@
+-# Add project specific ProGuard rules here.
+-# You can control the set of applied configuration files using the
+-# proguardFiles setting in build.gradle.
+-#
+-# For more details, see
+-#   http://developer.android.com/guide/developing/tools/proguard.html
+-
+-# If your project uses WebView with JS, uncomment the following
+-# and specify the fully qualified class name to the JavaScript interface
+-# class:
+-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+-#   public *;
+-#}
+-
+-# Uncomment this to preserve the line number information for
+-# debugging stack traces.
+-#-keepattributes SourceFile,LineNumberTable
+-
+-# If you keep the line number information, uncomment this to
+-# hide the original source file name.
+-#-renamesourcefileattribute SourceFile
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModelFactory.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModelFactory.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModelFactory.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,42 +0,0 @@
+-/*
+- * Copyright 2018, The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.ui.todo
+-
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.ViewModelProvider
+-import com.app4web.asdzendo.todo.database.FactRepository
+-import timber.log.Timber
+-
+-/**
+- * This is pretty much boiler plate code for a ViewModel Factory.
+- * Это в значительной степени шаблонный код для фабрики ViewModel.
+- *
+- * Provides the SleepDatabaseDao and context to the ViewModel.
+- * Предоставляет SleepDatabaseDao и контекст для ViewModel.
+- */
+-class ToDoViewModelFactory(
+-        private val repository: FactRepository,
+-        ) : ViewModelProvider.Factory {
+-    init { Timber.i("ToDoViewModelFactory ask ToDoViewModel ")}
+-
+-    @Suppress("unchecked_cast")
+-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+-            Timber.i("ToDoViewModelFactory ToDoViewModel created")
+-            return ToDoViewModel(repository) as T
+-    }
+-}
+-
+Index: ToDo/app/src/main/res/menu/bottom_nav_menu.xml
+===================================================================
+--- ToDo/app/src/main/res/menu/bottom_nav_menu.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/menu/bottom_nav_menu.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,30 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+-    <!--item
+-        android:id="@+id/all"
+-        android:icon="@drawable/ic_home"
+-        android:title="ALL" /-->
+-
+-    <item
+-        android:id="@+id/idea"
+-        android:icon="@drawable/ic_home"
+-        android:title="Idea" />
+-    <item
+-        android:id="@+id/plan"
+-        android:icon="@drawable/ic_home"
+-        android:title="Plan" />
+-    <item
+-        android:id="@+id/action"
+-        android:icon="@drawable/ic_home"
+-        android:title="Action" />
+-    <item
+-        android:id="@+id/event"
+-        android:icon="@drawable/ic_home"
+-        android:title="Event" />
+-
+-    <item
+-        android:id="@+id/money"
+-        android:icon="@drawable/ic_home"
+-        android:title="Money" />
+-
+-</menu>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/layout/to_do_recycler_card_item.xml
+===================================================================
+--- ToDo/app/src/main/res/layout/to_do_recycler_card_item.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/layout/to_do_recycler_card_item.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,163 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-
+-<!--
+-  ~ Copyright 2018, The Android Open Source Project
+-  ~
+-  ~ Licensed under the Apache License, Version 2.0 (the "License");
+-  ~ you may not use this file except in compliance with the License.
+-  ~ You may obtain a copy of the License at
+-  ~
+-  ~     http://www.apache.org/licenses/LICENSE-2.0
+-  ~
+-  ~ Unless required by applicable law or agreed to in writing, software
+-  ~ distributed under the License is distributed on an "AS IS" BASIS,
+-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-  ~ See the License for the specific language governing permissions and
+-  ~ limitations under the License.
+-  ~
+-  -->
+-
+-<layout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools">
+-
+-    <data>
+-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
+-        <variable
+-            name="fact"
+-            type="com.app4web.asdzendo.todo.database.Fact" />
+-
+-        <variable
+-            name="clickListener"
+-            type="com.app4web.asdzendo.todo.ui.todo.FactListener" />
+-    </data>
+-
+-    <com.google.android.material.card.MaterialCardView
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:layout_marginTop="8dp"
+-        android:layout_marginBottom="16dp"
+-        android:onClick="@{() -> clickListener.onClick(fact)}"
+-        app:cardBackgroundColor="@color/teal_200"
+-        app:cardCornerRadius="0dp"
+-        app:cardElevation="5dp">
+-
+-        <androidx.constraintlayout.widget.ConstraintLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="wrap_content">
+-
+-            <androidx.constraintlayout.widget.Guideline
+-                android:id="@+id/left_well"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:orientation="vertical"
+-                app:layout_constraintGuide_begin="8dp" />
+-
+-            <androidx.constraintlayout.widget.Guideline
+-                android:id="@+id/right_well"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginEnd="8dp"
+-                android:orientation="vertical"
+-                app:layout_constraintGuide_end="8dp" />
+-
+-            <TextView
+-                android:id="@+id/item_number_card"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginTop="14dp"
+-                android:text="@{fact.factId}"
+-                app:layout_constraintEnd_toEndOf="@+id/right_well"
+-                app:layout_constraintTop_toTopOf="parent"
+-                tools:text="factID" />
+-
+-            <TextView
+-                android:id="@+id/paemi_card"
+-                android:layout_width="0dp"
+-                android:layout_height="wrap_content"
+-                android:layout_marginStart="4dp"
+-                android:layout_marginTop="16dp"
+-                android:text="@{fact.paemi}"
+-                android:textAlignment="viewStart"
+-                android:textAllCaps="false"
+-                android:textAppearance="?attr/textAppearanceListItem"
+-                android:textStyle="bold"
+-                app:layout_constraintEnd_toStartOf="@+id/right_well"
+-                app:layout_constraintStart_toStartOf="parent"
+-                app:layout_constraintTop_toTopOf="parent"
+-                tools:text="PAEMI" />
+-
+-            <TextView
+-                android:id="@+id/data"
+-                android:layout_width="0dp"
+-                android:layout_height="wrap_content"
+-                android:text="@{fact.data}"
+-                android:textAlignment="viewStart"
+-                android:textAllCaps="false"
+-                android:textAppearance="?attr/textAppearanceListItem"
+-                android:textStyle="bold"
+-                app:layout_constraintBottom_toBottomOf="parent"
+-                app:layout_constraintEnd_toEndOf="@+id/right_well"
+-                tools:text="PAEMI" />
+-
+-            <TextView
+-                android:id="@+id/name_card"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginTop="32dp"
+-                android:adjustViewBounds="false"
+-                android:cropToPadding="false"
+-                android:scaleType="centerCrop"
+-                android:text="@{fact.name}"
+-                android:textAppearance="?attr/textAppearanceListItem"
+-                app:layout_constraintEnd_toEndOf="parent"
+-                app:layout_constraintStart_toStartOf="parent"
+-                app:layout_constraintTop_toTopOf="parent"
+-                tools:text="name" />
+-
+-            <TextView
+-                android:id="@+id/nameShort_card"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_margin="@dimen/text_margin"
+-                android:layout_marginTop="32dp"
+-                android:text="@{fact.nameShort}"
+-                android:textAppearance="?attr/textAppearanceListItem"
+-                app:layout_constraintEnd_toEndOf="parent"
+-                app:layout_constraintStart_toStartOf="parent"
+-                app:layout_constraintTop_toTopOf="parent"
+-                tools:text="nameShort" />
+-
+-            <TextView
+-                android:id="@+id/rezult"
+-                android:layout_width="0dp"
+-                android:layout_height="wrap_content"
+-                android:layout_marginTop="8dp"
+-                android:layout_marginBottom="16dp"
+-                android:text="@{fact.rezult}"
+-                android:textAlignment="viewStart"
+-                android:textAllCaps="false"
+-                android:textAppearance="?attr/textAppearanceListItem"
+-                android:textSize="14sp"
+-                app:layout_constraintBottom_toBottomOf="parent"
+-                app:layout_constraintEnd_toEndOf="@+id/right_well"
+-                app:layout_constraintStart_toStartOf="@+id/left_well"
+-                app:layout_constraintTop_toBottomOf="@+id/paemi_card"
+-                tools:text="rezult" />
+-
+-
+-            <View
+-                android:id="@+id/clickableOverlay"
+-                android:layout_width="0dp"
+-                android:layout_height="0dp"
+-                android:background="?attr/selectableItemBackground"
+-                android:onClick="@{() -> clickListener.onClick(fact)}"
+-                app:layout_constraintBottom_toBottomOf="parent"
+-                app:layout_constraintEnd_toEndOf="parent"
+-                app:layout_constraintStart_toStartOf="parent"
+-                app:layout_constraintTop_toTopOf="parent" />
+-
+-        </androidx.constraintlayout.widget.ConstraintLayout>
+-    </com.google.android.material.card.MaterialCardView>
+-</layout>
+Index: ToDo/app/src/main/res/layout/fact_detail_fragment.xml
+===================================================================
+--- ToDo/app/src/main/res/layout/fact_detail_fragment.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/layout/fact_detail_fragment.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,408 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<layout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools">
+-
+-    <data>
+-        <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
+-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
+-        <!--variable
+-            name="fact"
+-            type="com.app4web.asdzendo.todo.database.Fact" /-->
+-
+-        <variable
+-            name="viewmodel"
+-            type="com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel" />
+-
+-    </data>
+-
+-    <androidx.core.widget.NestedScrollView
+-        android:id="@+id/detail_scrollview"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:clipToPadding="false"
+-        tools:context=".ui.detail.FactDetailFragment">
+-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+-
+-        <LinearLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent"
+-            android:orientation="vertical">
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="factId:" />
+-
+-                <EditText
+-                    android:id="@+id/factId"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text="@={viewmodel.fact.factId}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="data:" />
+-
+-                <EditText
+-                    android:id="@+id/data"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text="@={viewmodel.fact.data}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="parent:" />
+-
+-                <EditText
+-                    android:id="@+id/parent"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text="@={viewmodel.fact.parent}" />
+-                    <!--android:text="@{BindingKt.longToStrext(viewmodel.fact.parent)}" /-->
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="paemi=" />
+-
+-                <EditText
+-                    android:id="@+id/paemi"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.paemi}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="nameShort=" />
+-
+-                <EditText
+-                    android:id="@+id/nameShort"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.nameShort}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="name=" />
+-
+-                <EditText
+-                    android:id="@+id/name"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.name}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="rezult=" />
+-
+-                <EditText
+-                    android:id="@+id/rezult"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.rezult}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="toWork:" />
+-
+-                <EditText
+-                    android:id="@+id/toWork"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.toWork}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="type:" />
+-
+-                <EditText
+-                    android:id="@+id/type"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text="@={viewmodel.fact.type}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="dataStart:" />
+-
+-                <EditText
+-                    android:id="@+id/dataStart"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text="@={viewmodel.fact.dataStart}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="dataEnd:" />
+-
+-                <EditText
+-                    android:id="@+id/dataEnd"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text="@={viewmodel.fact.dataEnd}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="deadLine:" />
+-
+-
+-                <!--CalendarView-->
+-                <EditText
+-                    android:id="@+id/deadLine"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.deadLine}"/>
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="duration:" />
+-
+-                <EditText
+-                    android:id="@+id/duration"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text="@={viewmodel.fact.duration}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="resources=" />
+-
+-                <EditText
+-                    android:id="@+id/resources"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.resources}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="money:" />
+-
+-                <EditText
+-                    android:id="@+id/money"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:inputType="number"
+-                    android:text='@={BC.convertIntToString(viewmodel.fact.money)}' />
+-                    <!--android:text="@{String.valueOf(viewmodel.fact.money)}" /-->
+-                    <!--android:text='@{Integer.toString(viewmodel.fact.money)}' /-->
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="close:" />
+-
+-                <EditText
+-                    android:id="@+id/close"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.close}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="defect=" />
+-
+-                <EditText
+-                    android:id="@+id/defect"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.defect}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="comment=" />
+-
+-                <EditText
+-                    android:id="@+id/comment"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.comment}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="system=" />
+-
+-                <EditText
+-                    android:id="@+id/system"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.system}" />
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="url=" />
+-
+-                <EditText
+-                    android:id="@+id/url"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={viewmodel.fact.url}" />
+-            </LinearLayout>
+-
+-            <!--LinearLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:orientation="horizontal">
+-
+-                <TextView
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="char=" />
+-
+-                <EditText
+-                    android:id="@+id/charr"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:text="@={BC.convertCharToString(viewmodel.charr)}" />
+-            </LinearLayout-->
+-
+-
+-        </LinearLayout>
+-
+-    </androidx.core.widget.NestedScrollView>
+-
+-</layout>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/layout/nav_header_to_do.xml
+===================================================================
+--- ToDo/app/src/main/res/layout/nav_header_to_do.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/layout/nav_header_to_do.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,36 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<LinearLayout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    android:layout_width="match_parent"
+-    android:layout_height="@dimen/nav_header_height"
+-    android:background="@drawable/side_nav_bar"
+-    android:gravity="bottom"
+-    android:orientation="vertical"
+-    android:paddingLeft="@dimen/activity_horizontal_margin"
+-    android:paddingTop="@dimen/activity_vertical_margin"
+-    android:paddingRight="@dimen/activity_horizontal_margin"
+-    android:paddingBottom="@dimen/activity_vertical_margin"
+-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+-
+-    <ImageView
+-        android:id="@+id/imageView"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:contentDescription="@string/nav_header_desc"
+-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+-        app:srcCompat="@mipmap/ic_launcher_round" />
+-
+-    <TextView
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+-        android:text="@string/nav_header_title"
+-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+-
+-    <TextView
+-        android:id="@+id/textView"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:text="@string/nav_header_subtitle" />
+-</LinearLayout>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/Binding.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/Binding.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/Binding.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,124 +0,0 @@
+-package com.app4web.asdzendo.todo.ui
+-
+-import android.widget.EditText
+-import androidx.databinding.BindingConversion
+-import androidx.databinding.InverseBindingAdapter
+-import androidx.databinding.InverseMethod
+-import timber.log.Timber
+-import java.text.ParseException
+-import java.text.SimpleDateFormat
+-import java.util.*
+-
+-
+-// android:text="@={Converter.dateToString(viewmodel.birthDate)}"
+-// @InverseBindingMethod
+-// android:text="@{FactDetailViewModel.fact.factId}"
+-//@InverseMethod("captureLongValue")
+-//@InverseMethod("convertLongToString")
+-@BindingConversion
+-fun convertLongToString(long: Long?): String = long?.toString() ?: ""
+-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
+-fun captureLongValue(view: EditText): Long {
+-    var value: Long = 0L
+-    try {
+-        value = view.text.toString().toLong()
+-    } catch (e: NumberFormatException) {
+-        e.printStackTrace()
+-    }
+-    return value
+-}
+-
+-//  android:text="@{FactDetailViewModel.fact.toWork}"
+-@BindingConversion
+-fun convertBooleanToString(boolean: Boolean?): String = boolean?.toString() ?: ""
+-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
+-fun convertStringToBoolean(view: EditText): Boolean?  = view.text.toString().trim().toBoolean()
+-
+-@BindingConversion
+-fun convertDateToString(date: Date?): String =
+-        if (date!=null)
+-        //    SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
+-        SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
+-        else ""
+-
+-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
+-fun captureDateValue(view: EditText): Date? {
+-    val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH)
+-    var value: Date? = Date()
+-    try {
+-        value = sdf.parse(view.text.toString())
+-    } catch (e: NumberFormatException) {
+-        e.printStackTrace()
+-    }
+-    return value
+-}
+-@BindingConversion
+-fun convertCalendarToString(calendar: Calendar?): String //= calendar.toString()
+-{
+-    if (calendar == null) return "nul"
+-    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+-    val ccc = sdf.format(calendar.time)
+-   Timber.i("ToDo convertCalendarToString $ccc ")
+-    return ccc
+-}
+-
+-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
+-fun captureCalendarValue(view: EditText): Calendar? {
+-    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+-    val value: Calendar? = Calendar.getInstance()
+-    try {
+-            value?.time = sdf.parse(view.text.toString())?: Calendar.getInstance().time
+-    } catch (e: ParseException) {
+-        e.printStackTrace()
+-    }
+-    return value
+-}
+-
+-object BindingConverters {
+-
+-    @InverseMethod(value = "convertStringToLong")
+-    @JvmStatic fun convertLongToString(long: Long?): String = long?.toString() ?: ""
+-    @JvmStatic fun convertStringToLong(text: String): Long? =
+-        try { text.toLong() } catch (e: NumberFormatException) { 0L }
+-
+-    @InverseMethod(value = "convertStringToBoolean")
+-    @JvmStatic fun convertBooleanToString(boolean: Boolean?): String = boolean?.toString() ?: ""
+-    @JvmStatic fun convertStringToBoolean(text: String): Boolean?  = text.trim().toBoolean()
+-
+-    @InverseMethod(value = "convertStringToDate")
+-    @JvmStatic fun convertDateToString(date: Date?): String =
+-            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it)}
+-    @JvmStatic fun convertStringToDate(text: String): Date? =
+-            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH) .parse(text) }
+-            catch (e: Exception) { Date()}
+-
+-    @InverseMethod(value = "convertStringToCalendar")
+-    @JvmStatic fun convertCalendarToString(calendar: Calendar?): String =
+-            calendar?.let { SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(it.time) }?:"nul"
+-    @JvmStatic fun convertStringToCalendar(text: String): Calendar? = Calendar.getInstance().let {
+-        try {
+-            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).parse(text)?:Date()
+-            it
+-        } catch (e: Exception) { it }
+-    }
+-
+-    @InverseMethod(value = "convertStringToInt")
+-    @JvmStatic fun convertIntToString(value: Int): String = value.toString()
+-    @JvmStatic fun convertStringToInt(text: String): Int =
+-               try { text.toInt() }
+-               catch (e: NumberFormatException) { 0 }
+-
+-    @InverseMethod(value = "convertStringToChar")
+-    @JvmStatic fun convertCharToString(char: Char?): String = char?.toString() ?: " "
+-    @JvmStatic fun convertStringToChar(text: String): Char? =
+-               try { text.toCharArray()[0] }
+-               catch (e: ArrayIndexOutOfBoundsException) { ' ' }
+-}
+-
+-
+-
+-// <TextView
+-//        android:id="@+id/number"
+-//        android:text='@={Converter.convertIntToString(myViewModel.number)}'
+-//
+-//        />
+\ No newline at end of file
+Index: ToDo/app/build.gradle
+===================================================================
+--- ToDo/app/build.gradle	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/build.gradle	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,84 +0,0 @@
+-plugins {
+-    id 'com.android.application'
+-    id 'kotlin-android'
+-    id 'kotlin-kapt'
+-    id "androidx.navigation.safeargs.kotlin"
+-    id 'kotlin-android-extensions'
+-}
+-
+-android {
+-    compileSdkVersion 30
+-    buildToolsVersion "30.0.2"
+-
+-    buildFeatures {
+-        dataBinding = true
+-    }
+-
+-    defaultConfig {
+-        applicationId "com.app4web.asdzendo.todo"
+-        minSdkVersion 28
+-        targetSdkVersion 30
+-        versionCode 1
+-        versionName "1.0"
+-
+-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+-    }
+-
+-    buildTypes {
+-        release {
+-            minifyEnabled false
+-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+-        }
+-    }
+-    compileOptions {
+-        sourceCompatibility JavaVersion.VERSION_1_8
+-        targetCompatibility JavaVersion.VERSION_1_8
+-    }
+-    kotlinOptions {
+-        jvmTarget = '1.8'
+-    }
+-}
+-
+-dependencies {
+-
+-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+-    implementation 'androidx.core:core-ktx:1.3.1'  // 1.5.0-alpha01
+-    implementation 'androidx.appcompat:appcompat:1.2.0'  // 1.3.0-alpha02
+-    implementation 'androidx.fragment:fragment-ktx:1.2.5'  // 1.3.0-alpha07
+-    implementation 'com.google.android.material:material:1.2.0'  // 1.3.0-alpha02'  // 1.1.0'
+-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'  // 2.0.0-rc1
+-    implementation "androidx.legacy:legacy-support-v4:1.0.0" //  обратное API от 14 android 4 -
+-
+-    
+-    implementation 'androidx.recyclerview:recyclerview:1.1.0'  // 1.2.0-alpha05
+-
+-    // Navigation
+-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
+-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+-    // implementation "androidx.navigation:navigation-runtime-ktx:2.3.0"
+-
+-    // ViewModel and LiveData
+-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'  // 2.3.0-alpha06
+-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+-
+-    // Room dependencies
+-    implementation "androidx.room:room-runtime:2.2.5"  // 2.3.0-alpha02
+-    //annotationProcessor "androidx.room:room-compiler:2.2.5" // For Kotlin use kapt instead of annotationProcessor
+-    implementation "androidx.room:room-ktx:2.2.5"   // 2.3.0-alpha02 // optional - Kotlin Extensions and Coroutines support for Room
+-    //implementation "androidx.room:room-compile:2.2.5"
+-    kapt "androidx.room:room-compiler:2.2.5"  // 2.3.0-alpha02
+-    kapt 'com.android.databinding:compiler:3.1.4' //3.2.0-alpha10'
+-
+-    // Coroutines for getting off the UI thread
+-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
+-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+-
+-    // Logging
+-    implementation "com.jakewharton.timber:timber:4.7.1"
+-
+-    testImplementation 'junit:junit:4.13'
+-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+-    testImplementation "androidx.room:room-testing:2.2.5"
+-}
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,139 +0,0 @@
+-/*
+- * Copyright 2019, The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.database
+-
+-import androidx.lifecycle.LiveData
+-import androidx.room.*
+-
+-/**
+- * Defines methods for using the Fact class with Room.
+- * Определяет методы для использования класса Fact с Room.
+- */
+-@Dao
+-interface FactDatabaseDao {
+-
+-    // Справочно: количество строк в таблице
+-    @Query("SELECT COUNT(factId) FROM fact_todo")
+-    fun getCount(): LiveData<Int>
+-
+-    /**
+-     * Добавляет в базу сразу список готовых фактов
+-     * применяется сечас для заполнения отладочными строками
+-     * подготовка строк в репозитории
+-     */
+-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+-    suspend fun insertAll(facts: List<Fact>): List<Long>
+-
+-    // стандарт : чтобы был нарастающий ID fact.factid = 0L обязательно или null
+-    @Insert  // (onConflict = OnConflictStrategy.REPLACE) - будет всавлять или запирать существующую
+-    suspend fun insert(fact: Fact): Long
+-
+-    /**
+-     * When updating a row with a value already set in a column,
+-     * replaces the old value with the new one.
+-     * При обновлении строки со значением, уже установленным в столбце,
+-     * заменяет старое значение на новое.
+-     *
+-     * @param fact new value to write
+-     */
+-    @Update // если не находит заппись то ничего не будет int - количество обновленных записей
+-    suspend fun update(fact: Fact): Int
+-
+-    @Delete  // если нет записи - ошибка int - кол-во удаленных записей
+-    suspend fun delete(fact: Fact): Int
+-
+-    /**
+-     * Selects and returns the row that matches the supplied start time, which is our key.
+-     * Выбирает и возвращает строку, которая соответствует предоставленному id  что является ключом.
+-     *
+-     * @param id startTimeMilli to match
+-     */
+-    @Query("SELECT * from fact_todo WHERE factId = :id")
+-    fun get(id: Long): Fact?
+-
+-    /**
+-     * Deletes all values from the table.
+-     * Удаляет все значения из таблицы.
+-     *
+-     * This does not delete the table, only its contents.
+-     * При этом таблица не удаляется, а только ее содержимое.
+-     */
+-    @Query("DELETE FROM fact_todo")
+-    suspend fun clear()
+-
+-    /**
+-     * Selects and returns all rows in the table,
+-     *Выбирает и возвращает все строки в таблице,
+-     * sorted by factid in descending order.
+-     * сортировка по factid в порядке убывания.
+-     */
+-    @Query("SELECT * FROM fact_todo ORDER BY factId DESC LIMIT 700")
+-    fun getAllFacts(): LiveData<List<Fact>>
+-
+-    @Query("SELECT * FROM fact_todo LIMIT 700")
+-    fun getAll(): LiveData<List<Fact>>
+-
+-    /**
+-     * Selects and returns the latest night.
+-     * Выбирает и возвращает последнюю запись.
+-     * не используется - надо для восстановления Recycler
+-     */
+-    @Query("SELECT * FROM fact_todo ORDER BY factId DESC LIMIT 1")
+-    fun getTofact(): Fact?
+-
+-    /**
+-     * Selects and returns the night with given nightId.
+-     * Выбирает и возвращает fact c id.
+-     */
+-    @Query("SELECT * from fact_todo WHERE factId = :id")
+-    fun getFactWithId(id: Long): LiveData<Fact>
+-
+-    /**
+-     * выборка фильтром PAEMI в обратной сортировке
+-     */
+-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC LIMIT 700")
+-    fun getAllPAEMIFactsID(paemi: String): LiveData<List<Fact>>
+-
+-    /**
+-     * выборка фильтром PAEMI в обратной сортировке
+-     */
+-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data , factId  LIMIT 7000")
+-    //@Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 70000")
+-    fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
+-
+-
+-    /**
+-     * выборка фильтром PAEMI по индексу в обратной сортировке
+-     */
+-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
+-    fun getAllPAEMIFactsIndex(paemi: String): LiveData<List<Fact>>
+-}
+-
+-@Dao
+-interface FactTableDao {
+-    @Query("SELECT factId, data, parent, paemi, nameShort FROM fact_todo")
+-    fun getFactTable(): LiveData<List<FactTable>>
+-
+-    @Query("SELECT factId, data, parent, paemi, nameShort FROM fact_todo ORDER BY factId DESC")
+-    fun getAllFacts(): LiveData<List<FactTable>>
+-
+-    /**
+-     * выборка фильтром PAEMI в обратной сортировке
+-     */
+-    @Query("SELECT factId, data, parent, paemi, nameShort FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC")
+-    fun getAllPAEMIFacts(paemi: String): LiveData<List<FactTable>>
+-}
+Index: ToDo/app/src/test/java/com/app4web/asdzendo/todo/ExampleUnitTest.kt
+===================================================================
+--- ToDo/app/src/test/java/com/app4web/asdzendo/todo/ExampleUnitTest.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/test/java/com/app4web/asdzendo/todo/ExampleUnitTest.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,16 +0,0 @@
+-package com.app4web.asdzendo.todo
+-
+-import org.junit.Test
+-import org.junit.Assert.*
+-
+-/**
+- * Example local unit test, which will execute on the development machine (host).
+- *
+- * See [testing documentation](http://d.android.com/tools/testing).
+- */
+-class ExampleUnitTest {
+-    @Test
+-    fun addition_isCorrect() {
+-        assertEquals(4, 2 + 2)
+-    }
+-}
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,110 +0,0 @@
+-package com.app4web.asdzendo.todo.ui.todo
+-
+-import android.content.res.Configuration
+-import android.os.Bundle
+-import android.view.*
+-import android.widget.Toast
+-import androidx.fragment.app.Fragment
+-import androidx.fragment.app.viewModels
+-import androidx.navigation.fragment.findNavController
+-import androidx.recyclerview.widget.LinearLayoutManager
+-import com.app4web.asdzendo.todo.R
+-import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
+-import com.app4web.asdzendo.todo.launcher.COUNTSFact
+-import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
+-import timber.log.Timber
+-
+-/**
+- * A fragment representing a recycler list of Items.
+- */
+-class ToDoFragment : Fragment() {
+-
+-    private var orientation: Int = 0
+-    private val todoViewModel: ToDoViewModel by viewModels {
+-        ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
+-    }
+-
+-    override fun onCreate(savedInstanceState: Bundle?) {
+-        super.onCreate(savedInstanceState)
+-        // Добавляет и обрабатывает меню три точки для этого фрагмента
+-        setHasOptionsMenu(true)
+-        Timber.i("ToDo Recycler Fragment onCreate")
+-        orientation = resources.configuration.orientation
+-        // Вывести в заголовок количество записей в базе не работает
+-       // todoViewModel.count().observe(this) { count -> activity?.actionBar?.title = "ToDoToDo $count записей" }
+-    }
+-
+-    override fun onCreateView(
+-            inflater: LayoutInflater, container: ViewGroup?,
+-            savedInstanceState: Bundle?): View? {
+-        Timber.i("ToDo Recycler Fragment onCreateView")
+-        // Get a reference to the binding object and inflate the fragment views.
+-        // Получить ссылку на объект привязки и раздуть представления фрагментов.
+-        val binding = ToDoRecyclerListBinding.inflate(inflater, container, false)
+-
+-        // Вывести в заголовок количество записей в базе не работает - срабатывает из Activity
+-        todoViewModel.count().observe(viewLifecycleOwner) { count -> activity?.actionBar?.title = "ToDoToDo $count записей" }
+-
+-        binding.viewmodel = todoViewModel
+-        binding.lifecycleOwner = viewLifecycleOwner
+-
+-        // Говорит можно объявить и в RecyclerView XML
+-        val manager = LinearLayoutManager(activity)
+-        binding.recyclerList.layoutManager = manager
+-
+-        // Говорит можно объявить и в RecyclerView XML
+-        val adapter = ToDoAdapter(FactListener { factID ->
+-            todoViewModel.onFactClicked(factID)
+-        })
+-        binding.recyclerList.adapter = adapter
+-
+-        todoViewModel.facts.observe(viewLifecycleOwner) {
+-            it?.let {
+-                //adapter.submitList(it)
+-                when (orientation) {
+-                    Configuration.ORIENTATION_PORTRAIT -> adapter.addSubmitCard(it)
+-                    Configuration.ORIENTATION_LANDSCAPE -> adapter.addHeaderAndSubmitList(it)
+-                }
+-
+-                // 23.10 Наконец, обновите, SleepTrackerFragment чтобы передать список DataItem вместо списка SleepNight
+-                // и вызвать новый метод addHeaderAndSubmitList вместо метода submitList:
+-                // LiveData observers are sometimes passed null, so make sure you check for null.
+-                // Наблюдатели живых данных иногда передаются null, поэтому убедитесь, что вы проверяете наличие null.
+-            }
+-        }
+-
+-        todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
+-            factID?.let {
+-                this.findNavController().navigate(
+-                        ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID,todoViewModel.PAEMI.value.toString()))
+-                 todoViewModel.navigateToFactDetailNavigated()
+-            }
+-        }
+-
+-        binding.bottomNavView.setOnNavigationItemSelectedListener { paemi ->
+-            Timber.i("ToDo ToDoFragment  setOnNavigationItemSelectedListener PAEMI $paemi")
+-            todoViewModel.onClickBottomNavView(paemi)
+-            }
+-
+-        return binding.root
+-    }
+-    // Добавляет и обрабатывает меню три точки для этого фрагмента
+-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+-        inflater.inflate(R.menu.to_do, menu)
+-        super.onCreateOptionsMenu(menu, inflater)
+-    }
+-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+-        when (item.itemId) {
+-            R.id.fact_base_creating -> {
+-                todoViewModel.addFactDatabase(COUNTSFact) // Дозаполнить заново базу данных
+-                Toast.makeText(activity,"База добавлено  $COUNTSFact * 7 = ${COUNTSFact * 7} записей ", Toast.LENGTH_SHORT).show()
+-            }
+-            R.id.fact_base_clearing -> {
+-                todoViewModel.clear()
+-                Toast.makeText(activity,"База очищена ", Toast.LENGTH_SHORT).show()
+-            }
+-            else -> return false
+-        }
+-        return true
+-    }
+-}
+\ No newline at end of file
+Index: ToDo/gradlew.bat
+===================================================================
+--- ToDo/gradlew.bat	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/gradlew.bat	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,84 +0,0 @@
+-@if "%DEBUG%" == "" @echo off
+-@rem ##########################################################################
+-@rem
+-@rem  Gradle startup script for Windows
+-@rem
+-@rem ##########################################################################
+-
+-@rem Set local scope for the variables with windows NT shell
+-if "%OS%"=="Windows_NT" setlocal
+-
+-set DIRNAME=%~dp0
+-if "%DIRNAME%" == "" set DIRNAME=.
+-set APP_BASE_NAME=%~n0
+-set APP_HOME=%DIRNAME%
+-
+-@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+-set DEFAULT_JVM_OPTS=
+-
+-@rem Find java.exe
+-if defined JAVA_HOME goto findJavaFromJavaHome
+-
+-set JAVA_EXE=java.exe
+-%JAVA_EXE% -version >NUL 2>&1
+-if "%ERRORLEVEL%" == "0" goto init
+-
+-echo.
+-echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+-echo.
+-echo Please set the JAVA_HOME variable in your environment to match the
+-echo location of your Java installation.
+-
+-goto fail
+-
+-:findJavaFromJavaHome
+-set JAVA_HOME=%JAVA_HOME:"=%
+-set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+-
+-if exist "%JAVA_EXE%" goto init
+-
+-echo.
+-echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
+-echo.
+-echo Please set the JAVA_HOME variable in your environment to match the
+-echo location of your Java installation.
+-
+-goto fail
+-
+-:init
+-@rem Get command-line arguments, handling Windows variants
+-
+-if not "%OS%" == "Windows_NT" goto win9xME_args
+-
+-:win9xME_args
+-@rem Slurp the command line arguments.
+-set CMD_LINE_ARGS=
+-set _SKIP=2
+-
+-:win9xME_args_slurp
+-if "x%~1" == "x" goto execute
+-
+-set CMD_LINE_ARGS=%*
+-
+-:execute
+-@rem Setup the command line
+-
+-set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
+-
+-@rem Execute Gradle
+-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %CMD_LINE_ARGS%
+-
+-:end
+-@rem End local scope for the variables with windows NT shell
+-if "%ERRORLEVEL%"=="0" goto mainEnd
+-
+-:fail
+-rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
+-rem the _cmd.exe /c_ return code!
+-if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
+-exit /b 1
+-
+-:mainEnd
+-if "%OS%"=="Windows_NT" endlocal
+-
+-:omega
+Index: ToDo/app/src/main/res/values/colors.xml
+===================================================================
+--- ToDo/app/src/main/res/values/colors.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/values/colors.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<resources>
+-    <color name="purple_200">#FFBB86FC</color>
+-    <color name="purple_500">#FF6200EE</color>
+-    <color name="purple_700">#FF3700B3</color>
+-    <color name="teal_200">#FF03DAC5</color>
+-    <color name="teal_700">#FF018786</color>
+-    <color name="black">#FF000000</color>
+-    <color name="white">#FFFFFFFF</color>
+-</resources>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/menu/activity_main_drawer.xml
+===================================================================
+--- ToDo/app/src/main/res/menu/activity_main_drawer.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/menu/activity_main_drawer.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,21 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<menu
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    tools:showIn="navigation_view">
+-
+-    <group android:checkableBehavior="single">
+-
+-        <item
+-            android:id="@+id/todoFragment"
+-            android:icon="@drawable/ic_home"
+-            android:title="todo таблица" />
+-
+-        <item
+-            android:id="@+id/factDetailFragment"
+-            android:icon="@drawable/ic_home"
+-            android:title="factDetail" />
+-
+-    </group>
+-
+-</menu>
+\ No newline at end of file
+Index: ToDo/settings.gradle
+===================================================================
+--- ToDo/settings.gradle	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/settings.gradle	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,2 +0,0 @@
+-rootProject.name = "ToDo"
+-include ':app'
+Index: ToDo/app/src/main/res/layout/activity_to_do.xml
+===================================================================
+--- ToDo/app/src/main/res/layout/activity_to_do.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/layout/activity_to_do.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,80 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<!-- Разметка Main Activity -->
+-<layout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools">
+-
+-    <data>
+-        <!-- ToDoActitityViewModel пока не используется -->
+-        <variable
+-            name="viewmodel"
+-            type="com.app4web.asdzendo.todo.launcher.ToDoActitityViewModel" />
+-    </data>
+-
+-    <androidx.drawerlayout.widget.DrawerLayout
+-        android:id="@+id/drawer_layout"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        tools:openDrawer="start">
+-
+-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+-            android:id="@+id/coordinator_layout"
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent"
+-            tools:context=".ToDoActivity">
+-
+-            <com.google.android.material.appbar.AppBarLayout
+-                android:id="@+id/app_bar_layout"
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:theme="@style/Theme.ToDo.AppBarOverlay">
+-
+-                <com.google.android.material.appbar.CollapsingToolbarLayout
+-                    android:id="@+id/toolbar_layout"
+-                    android:layout_width="match_parent"
+-                    android:layout_height="wrap_content"
+-                    android:fitsSystemWindows="true"
+-                    app:collapsedTitleGravity="center"
+-                    app:collapsedTitleTextAppearance="@style/TextAppearance.ToDo.Toolbar.Text"
+-                    app:contentScrim="?attr/colorSurface"
+-                    app:layout_scrollFlags="scroll|snap"
+-                    app:statusBarScrim="?attr/colorSurface"
+-                    app:titleEnabled="false"
+-                    app:toolbarId="@id/toolbar">
+-
+-                    <com.google.android.material.appbar.MaterialToolbar
+-                        android:id="@+id/toolbar"
+-                        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="?attr/actionBarSize"
+-                        android:background="?attr/colorPrimary"
+-                        app:layout_collapseMode="parallax"
+-                        app:popupTheme="@style/Theme.ToDo.PopupOverlay" />
+-
+-                </com.google.android.material.appbar.CollapsingToolbarLayout>
+-
+-            </com.google.android.material.appbar.AppBarLayout>
+-
+-            <fragment
+-                android:id="@+id/nav_host_fragment"
+-                android:name="androidx.navigation.fragment.NavHostFragment"
+-                android:layout_width="match_parent"
+-                android:layout_height="match_parent"
+-                app:defaultNavHost="true"
+-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+-                app:navGraph="@navigation/mobile_navigation" />
+-
+-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+-
+-        <com.google.android.material.navigation.NavigationView
+-            android:id="@+id/nav_view"
+-            android:layout_width="wrap_content"
+-            android:layout_height="match_parent"
+-            android:layout_gravity="start"
+-            app:headerLayout="@layout/nav_header_to_do"
+-            app:menu="@menu/activity_main_drawer" />
+-
+-    </androidx.drawerlayout.widget.DrawerLayout>
+-
+-</layout>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/values/strings.xml
+===================================================================
+--- ToDo/app/src/main/res/values/strings.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/values/strings.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,9 +0,0 @@
+-<resources>
+-    <string name="app_name">ToDo</string>
+-
+-    <string name="action_settings">Settings</string>
+-
+-    <string name="nav_header_title">To Do</string>
+-    <string name="nav_header_subtitle">ToDo.ASdzenDO@app4web.com</string>
+-    <string name="nav_header_desc">Navigation header</string>
+-</resources>
+\ No newline at end of file
+Index: ToDo/app/.gitignore
+===================================================================
+--- ToDo/app/.gitignore	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/.gitignore	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,1 +0,0 @@
+-/build
+\ No newline at end of file
+Index: ToDo/gradle.properties
+===================================================================
+--- ToDo/gradle.properties	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/gradle.properties	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,21 +0,0 @@
+-# Project-wide Gradle settings.
+-# IDE (e.g. Android Studio) users:
+-# Gradle settings configured through the IDE *will override*
+-# any settings specified in this file.
+-# For more details on how to configure your build environment visit
+-# http://www.gradle.org/docs/current/userguide/build_environment.html
+-# Specifies the JVM arguments used for the daemon process.
+-# The setting is particularly useful for tweaking memory settings.
+-org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+-# When configured, Gradle will run in incubating parallel mode.
+-# This option should only be used with decoupled projects. More details, visit
+-# http://www.gradle.org/docs/current/userguide/multi_project_builds.html#sec:decoupled_projects
+-# org.gradle.parallel=true
+-# AndroidX package structure to make it clearer which packages are bundled with the
+-# Android operating system, and which are packaged with your app"s APK
+-# https://developer.android.com/topic/libraries/support-library/androidx-rn
+-android.useAndroidX=true
+-# Automatically convert third-party libraries to use AndroidX
+-android.enableJetifier=true
+-# Kotlin code style for this project: "official" or "obsolete":
+-kotlin.code.style=official
+\ No newline at end of file
+Index: ToDo/app/src/main/res/layout/to_do_header_list_item.xml
+===================================================================
+--- ToDo/app/src/main/res/layout/to_do_header_list_item.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/layout/to_do_header_list_item.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,26 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<layout
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-    <!-- Data to make available to the XML via data binding. In this case,
+-         the whole ViewModel, so that we can access the LiveData,
+-         click handlers, and state variables. -->
+-    <!-- Данные, чтобы сделать доступными для XML с помощью привязки данных. В этом случае,
+-    вся модель представления, так что мы можем получить доступ к живым данным,
+-    щелкните обработчики и переменные состояния. -->
+-    <data>
+-        <variable
+-            name="viewmodel"
+-            type="com.app4web.asdzendo.todo.ui.todo.ToDoViewModel" />
+-    </data>
+-<!-- Заготовка для заголовка вставлять в Recycler -->
+-<TextView
+-    android:id="@+id/header_text"
+-    android:layout_width="match_parent"
+-    android:layout_height="wrap_content"
+-    android:background="@color/purple_200"
+-    android:gravity="center"
+-    android:padding="8dp"
+-    android:text="шапка таблички для сортировки"
+-    android:textAppearance="?android:attr/textAppearanceLarge" />
+-</layout>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabase.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabase.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabase.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,131 +0,0 @@
+-/*
+- * Copyright 2019, The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.database
+-
+-import android.content.Context
+-import androidx.room.Database
+-import androidx.room.Room
+-import androidx.room.RoomDatabase
+-import androidx.room.TypeConverters
+-import com.app4web.asdzendo.todo.launcher.BASE_IN_MEMORY
+-import com.app4web.asdzendo.todo.launcher.FACT_TODO_DATABASE_NAME
+-
+-/**
+- * A database that stores Fact information.
+- * База данных, которая хранит информацию о ночном сне.
+- * And a global method to get access to the database.
+- * И глобальный метод получения доступа к базе данных.
+- *
+- * This pattern is pretty much the same for any database, so you can reuse it.
+- * Этот шаблон практически одинаков для любой базы данных, поэтому вы можете использовать его повторно.
+- */
+-// вызывается из ToDoInjectorUtils для создания/подключения базы данных
+-// при создания/подключения FactRepository через getFactRepository
+-// для передачи в ViewModel через ViewModelFactory
+-// а ViewModel создаются/подключаются из фрагментов
+-// Fragment <- ViewModel <- ViewModelFactory <- provideToDoActitityViewModelFactory
+-// <- getFactRepository <- FactRepository <- FactDatabase <- FactDatabaseDao <- @Entity Fact
+-@Database(entities = [Fact::class], version = 1, exportSchema = false)
+-//@TypeConverters(CalendarConverters::class)                  // т.е в файле Converters.kt лежат конвертеры дат - две функции sf
+-//@TypeConverters(DataConverters::class)
+-//@TypeConverters(CalendarConverters::class, DateConverters::class, CharConverters::class)
+-abstract class FactDatabase : RoomDatabase() {
+-    /**
+-     * Connects the database to the DAO.
+-     * Подключает базу данных к DAO.
+-     */
+-    abstract val factDatabaseDao: FactDatabaseDao
+-    //abstract fun factDatabaseDaoD(): FactDatabaseDao  // Дает Ошибку трансляции fs
+-    /**
+-     * Define a companion object, this allows us to add functions on the FactDatabase class.
+-     * Определите сопутствующий объект, это позволит нам добавить функции в класс базы данных Fact.
+-     *
+-     * For example, clients can call `FactDatabase.getInstance(context)`
+-     * to instantiate a new FactDatabase.
+-     * Например, клиенты могут вызвать "базу данных фактов".getInstance (контекст)`
+-     * создать экземпляр новой базы данных фактов.
+-     *
+-     */
+-    companion object {
+-        /**
+-         * INSTANCE will keep a reference to any database returned via getInstance.
+-         * Экземпляр будет хранить ссылку на любую базу данных, возвращенную через getInstance.
+-         *
+-         * This will help us avoid repeatedly initializing the database, which is expensive.
+-         * Это поможет нам избежать многократной инициализации базы данных, которая является дорогостоящей.
+-         *
+-         *  The value of a volatile variable will never be cached, and all writes and
+-         *  reads will be done to and from the main memory. It means that changes made by one
+-         *  thread to shared data are visible to other threads.
+-         *  Значение переменной volatile никогда не будет кэшироваться,
+-         *  а все записи и записи будут выполняться в режиме реального времени.
+-         * чтение будет выполняться в основную память и из нее.
+-         * Это означает, что изменения, внесенные одним потоком к общим данным виден другим потокам.
+-         */
+-        // For Singleton instantiation
+-        //  Для одноэлементный экземпляр SunFlower
+-        // instance хранит и отдает ссылку на FactDatabase по требованию getInstance
+-        @Volatile private var instance: FactDatabase? = null
+-
+-        // INSTANCE Переменная будет хранить ссылку на базу данных, когда один был создан.
+-        // Это поможет вам избежать повторного открытия соединений с базой данных, что дорого.
+-
+-        /**
+-         * Helper function to get the database.
+-         * Вспомогательная функция для получения базы данных.
+-         *
+-         * If a database has already been retrieved, the previous database will be returned.
+-         * Otherwise, create a new database.
+-         * Если база данных уже была получена, то будет возвращена предыдущая база данных.
+-         * В противном случае создайте новую базу данных.
+-         *
+-         * This function is threadsafe, and callers should cache the result for multiple database
+-         * calls to avoid overhead.
+-         * Эта функция ориентирована на многопотоковое исполнение, и нужно кэшировать результаты для нескольких баз данных
+-         * звонки, чтобы избежать накладных расходов.
+-         *
+-         * This is an example of a simple Singleton pattern that takes another Singleton as an
+-         * argument in Kotlin.
+-         * Это пример простого Одноэлементного шаблона, который принимает другой Одноэлемент в качестве
+-         * спор в Котлине.
+-         *
+-         * To learn more about Singleton read the wikipedia article:
+-         * Чтобы узнать больше о синглтоне читайте статью в Википедии:
+-         * https://en.wikipedia.org/wiki/Singleton_pattern
+-         *
+-         * @param context The application context Singleton, used to get access to the filesystem.
+-         */
+-        // getInstance() метод с Context параметром, который понадобится построителю базы данных.
+-        fun getInstance(context: Context): FactDatabase =
+-            instance ?: synchronized(this) {     // только один поток выполнения одновременно может войти в этот блок кода,
+-                instance ?: buildDatabase(context).also { instance = it }
+-            }
+-        // Создайте и предварительно заполните базу данных.
+-        // Create and pre-populate the database. See this article for more details:
+-        // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
+-        private fun buildDatabase(context: Context): FactDatabase =
+-            if (BASE_IN_MEMORY)
+-            Room.inMemoryDatabaseBuilder(context, FactDatabase::class.java)
+-                    .fallbackToDestructiveMigration()
+-                    .build()
+-            else
+-                Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME)
+-                    .fallbackToDestructiveMigration()
+-                    .build()
+-
+-    }
+-}
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoApplication.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoApplication.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoApplication.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,125 +0,0 @@
+-/*
+- * Copyright 2018, The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- *
+- */
+-
+-package com.app4web.asdzendo.todo.launcher
+-
+-import android.app.Application
+-import kotlinx.coroutines.CoroutineScope
+-import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.launch
+-import timber.log.Timber
+-
+-/**
+- * Override application to setup background work via WorkManager
+- * Переопределение приложения для настройки фоновой работы через Диспетчер работ
+- */
+-
+-class ToDoApplication : Application() {
+-
+-    /**
+-     * onCreate is called before the first screen is shown to the user.
+-     * onCreate вызывается до того, как пользователю будет показан первый экран.
+-     *
+-     * Use it to setup any background tasks, running expensive setup operations in a background
+-     * thread to avoid delaying app start.
+-     * Используйте его для настройки любых фоновых задач, выполняя дорогостоящие операции настройки в фоновом режиме
+-     * поток, чтобы избежать задержки запуска приложения.
+-     */
+-    override fun onCreate() {
+-        super.onCreate()
+-        timberInit()  // Инициализировать Timber не блокирует основной поток:
+-    }
+-    private fun timberInit() = // Инициализация Timber
+-            CoroutineScope(Dispatchers.Default).launch {
+-                Timber.plant(Timber.DebugTree())
+-                Timber.i("ToDoApplication timber Init ")
+-            }
+-}
+-    /**
+-     * Setup WorkManager background job to 'fetch' new network data daily.
+-     * Настройка работы менеджер фоновых заданий, чтобы "взять" новую сеть данных ежедневно.
+-     */
+-// Важно отметить, что WorkManager.initialize должен вызываться изнутри onCreate без использования фонового потока,
+-// чтобы избежать проблем, возникающих при инициализации после использования WorkManager.
+-    // Шаг 1: Настройка повторяющейся работы
+-// Сделайте запрос PeriodWorkRequest: Это должно бежать один раз каждый день.
+-  /*  private fun setupRecurringWork() {
+-        // Определите ограничения: чтобы предотвратить выполнение работы, когда нет доступа к сети или устройство разряжено.
+-        val constraints = Constraints.Builder()
+-                .setRequiredNetworkType(NetworkType.UNMETERED)  // Unlimited
+-                .setRequiresBatteryNotLow(true)                 // Battery не разряжена
+-                .setRequiresCharging(true)                      // Стоит на зарядке
+-                .apply {
+-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+-                        setRequiresDeviceIdle(true)             // Устройство не используется
+-                    }
+-                }.build()  // Используйте build()метод для генерации ограничений из компоновщика.
+-            // переменную, которая использует PeriodicWorkRequestBuilder для создания PeriodicWorkRequest для вас RefreshDataWorker.
+-        /*val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(1, TimeUnit.DAYS)
+-                .setConstraints(constraints) //  Добавьте ограничения
+-                .build()
+-         */
+-        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(15, TimeUnit.MINUTES)
+-                .setConstraints(constraints)
+-                .build()
+-
+-        // val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(16, TimeUnit.MINUTES)
+-        //       .build()
+-
+-        //  Запланируйте работу как уникальную:
+-        // Получить экземпляр WorkManager и позвонить, enqueueUniquePeriodicWork чтобы запланировать работу.
+-        Timber.d("Periodic Work request for sync is scheduled")
+-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+-                RefreshDataWorker.WORK_NAME,
+-                ExistingPeriodicWorkPolicy.KEEP,
+-                repeatingRequest)
+-    }*/
+-    // Если существует ожидающая (незавершенная) работа с тем же именем,
+-    // ExistingPeriodicWorkPolicy.KEEP параметр заставляет WorkManager сохранить предыдущую периодическую работу
+-    // и отклонить новый запрос на работу.
+-
+-
+-
+-
+-// В приложении для Android Application класс является базовым классом,
+-// который содержит все другие компоненты, такие как действия и службы.
+-// Когда создается процесс для вашего приложения или пакета,
+-// создается экземпляр Application класса (или любого подкласса Application) перед любым другим классом.
+-// Класс является хорошим местом , чтобы запланировать WorkManager.
+-
+-/*
+-Шаг 2: Запланируйте WorkRequest с WorkManager
+-После того, как вы определите свой WorkRequest, вы можете запланировать это с WorkManager помощью enqueueUniquePeriodicWork()метода.
+-Этот метод позволяет добавить уникальное имя PeriodicWorkRequest в очередь,
+-где одновременно PeriodicWorkRequest может быть активным только одно из определенных имен.
+-
+-Например, вы можете захотеть, чтобы была активна только одна операция синхронизации.
+-Если выполняется одна операция синхронизации, вы можете разрешить ее выполнение или заменить ее новой работой,
+-используя ExistingPeriodicWorkPolicy .
+-
+-Чтобы узнать больше о способах планирования WorkRequest, см. WorkManagerДокументацию.
+- */
+-
+-/*
+-Лучшая практика:
+-onCreate()метод работает в основном потоке.
+-Выполнение длительной операции в onCreate() может заблокировать поток пользовательского интерфейса
+-и вызвать задержку загрузки приложения.
+-Чтобы избежать этой проблемы, запустите такие задачи, как инициализация Timber и планирование WorkManager
+-из основного потока внутри сопрограммы.
+- */
+-
+Index: ToDo/app/src/main/res/menu/detail.xml
+===================================================================
+--- ToDo/app/src/main/res/menu/detail.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/menu/detail.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,21 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto">
+-
+-        <item
+-            android:id="@+id/Add_fact"
+-            android:orderInCategory="100"
+-            android:title="Добавить факт"
+-            app:showAsAction="never" />
+-        <item
+-            android:id="@+id/Update_fact"
+-            android:orderInCategory="100"
+-            android:title="Обновить факт"
+-            app:showAsAction="never" />
+-        <item
+-            android:id="@+id/Delete_fact"
+-            android:orderInCategory="100"
+-            android:title="Удалить факт"
+-            app:showAsAction="never" />
+-
+-</menu>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/values-night/themes.xml
+===================================================================
+--- ToDo/app/src/main/res/values-night/themes.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/values-night/themes.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,16 +0,0 @@
+-<resources xmlns:tools="http://schemas.android.com/tools">
+-    <!-- Base application theme. -->
+-    <style name="Theme.ToDo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+-        <!-- Primary brand color. -->
+-        <item name="colorPrimary">@color/purple_200</item>
+-        <item name="colorPrimaryVariant">@color/purple_700</item>
+-        <item name="colorOnPrimary">@color/black</item>
+-        <!-- Secondary brand color. -->
+-        <item name="colorSecondary">@color/teal_200</item>
+-        <item name="colorSecondaryVariant">@color/teal_200</item>
+-        <item name="colorOnSecondary">@color/black</item>
+-        <!-- Status bar color. -->
+-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+-        <!-- Customize your theme here. -->
+-    </style>
+-</resources>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoCONSTANTS.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoCONSTANTS.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoCONSTANTS.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,12 +0,0 @@
+-package com.app4web.asdzendo.todo.launcher
+-
+-const val FACT_TODO_DATABASE_NAME = "FACT_TODO"
+-//Создайте область сопрограммы для использования в вашем приложении чтобы не блокировать onCreate:
+-var COUNTSFact = 65L
+-//val APPlicationScope = CoroutineScope(Dispatchers.Default)
+-//lateinit var  FactdataSource: FactDatabaseDao
+-val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
+-//val PAEMI: List<Char> = arrayListOf(' ','P','A','E','M','I','S')
+-//lateinit var  factRepository: FactRepository
+-var BASE_IN_MEMORY = true
+-//var BASE_IN_MEMORY = false
+Index: ToDo/app/src/main/res/navigation/mobile_navigation.xml
+===================================================================
+--- ToDo/app/src/main/res/navigation/mobile_navigation.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/navigation/mobile_navigation.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,41 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<navigation
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/mobile_navigation"
+-    app:startDestination="@id/todoFragment">
+-
+-    <fragment
+-        android:id="@+id/todoFragment"
+-        android:name="com.app4web.asdzendo.todo.ui.todo.ToDoFragment"
+-        android:label="ToDo"
+-        tools:layout="@layout/to_do_recycler_list" >
+-        <action
+-            android:id="@+id/action_todoFragment_to_factDetailFragment"
+-            app:destination="@id/factDetailFragment" />
+-    </fragment>
+-
+-    <fragment
+-        android:id="@+id/factDetailFragment"
+-        android:name="com.app4web.asdzendo.todo.ui.detail.FactDetailFragment"
+-        android:label="FactDetailFragment"
+-        tools:layout="@layout/fact_detail_fragment">
+-
+-        <argument
+-            android:name="factID"
+-            android:defaultValue="0L"
+-            app:argType="long" />
+-
+-        <argument
+-            android:name="paemi"
+-            android:defaultValue="S"
+-            app:argType="string" />
+-
+-        <action
+-            android:id="@+id/action_factDetailFragment_to_todoFragment"
+-            app:destination="@id/todoFragment" />
+-
+-    </fragment>
+-
+-</navigation>
+\ No newline at end of file
+Index: ToDo/app/src/androidTest/java/com/app4web/asdzendo/todo/ExampleInstrumentedTest.kt
+===================================================================
+--- ToDo/app/src/androidTest/java/com/app4web/asdzendo/todo/ExampleInstrumentedTest.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/androidTest/java/com/app4web/asdzendo/todo/ExampleInstrumentedTest.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,22 +0,0 @@
+-package com.app4web.asdzendo.todo
+-
+-import androidx.test.platform.app.InstrumentationRegistry
+-import androidx.test.ext.junit.runners.AndroidJUnit4
+-import org.junit.Test
+-import org.junit.runner.RunWith
+-import org.junit.Assert.*
+-
+-/**
+- * Instrumented test, which will execute on an Android device.
+- *
+- * See [testing documentation](http://d.android.com/tools/testing).
+- */
+-@RunWith(AndroidJUnit4::class)
+-class ExampleInstrumentedTest {
+-    @Test
+-    fun useAppContext() {
+-        // Context of the app under test.
+-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+-        assertEquals("com.app4web.asdzendo.todo", appContext.packageName)
+-    }
+-}
+\ No newline at end of file
+Index: ToDo/.idea/.gitignore
+===================================================================
+--- ToDo/.idea/.gitignore	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/.idea/.gitignore	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: ToDo/app/src/main/AndroidManifest.xml
+===================================================================
+--- ToDo/app/src/main/AndroidManifest.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/AndroidManifest.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,25 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-    package="com.app4web.asdzendo.todo">
+-    <!--uses-permission android:name="android.permission.INTERNET" /-->
+-    <!-- Используется Application до Activity для заказа WorkManager -->
+-
+-    <application
+-        android:name=".launcher.ToDoApplication"
+-        android:allowBackup="true"
+-        android:icon="@mipmap/ic_launcher"
+-        android:label="@string/app_name"
+-        android:roundIcon="@mipmap/ic_launcher_round"
+-        android:supportsRtl="true"
+-        android:theme="@style/Theme.ToDo">
+-        <activity android:name=".launcher.ToDoActivity"
+-            android:theme="@style/Theme.ToDo.NoActionBar">
+-            <intent-filter>
+-                <action android:name="android.intent.action.MAIN" />
+-
+-                <category android:name="android.intent.category.LAUNCHER" />
+-            </intent-filter>
+-        </activity>
+-    </application>
+-
+-</manifest>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/menu/main.xml
+===================================================================
+--- ToDo/app/src/main/res/menu/main.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/menu/main.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,86 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto">
+-
+-
+-    <item
+-        android:id="@+id/action_settings"
+-        android:orderInCategory="100"
+-        android:title="@string/action_settings"
+-        app:showAsAction="never" >
+-    </item>
+-    <item
+-        android:id="@+id/action_reboot"
+-        android:orderInCategory="100"
+-        android:title="Перегрузить"
+-        app:showAsAction="never" />
+-
+-
+-    <item
+-        android:id="@+id/main_action_base"
+-        android:orderInCategory="100"
+-        android:title="Где база данных"
+-        app:showAsAction="never" >
+-    <menu>
+-        <group android:checkableBehavior="single">
+-        <item
+-            android:id="@+id/main_action_base_in_memory"
+-            android:orderInCategory="100"
+-            android:title="База в памяти"
+-            app:showAsAction="never" />
+-        <item
+-            android:id="@+id/main_action_base_on_disk"
+-            android:orderInCategory="100"
+-            android:title="База на диске"
+-            app:showAsAction="never" />
+-        </group>
+-    </menu>
+-    </item>
+-    <item
+-        android:id="@+id/main_action_constfact"
+-        android:orderInCategory="100"
+-        android:title="Размер Пачки"
+-        app:showAsAction="never">
+-        <menu>
+-        <group android:checkableBehavior="single">
+-            <item
+-                android:id="@+id/main_action_constfact_1"
+-                android:orderInCategory="100"
+-                android:title="Размер Пачки 7"
+-                app:showAsAction="never" />
+-            <item
+-                android:id="@+id/main_action_constfact_10"
+-                android:orderInCategory="100"
+-                android:title="Размер Пачки 70"
+-                app:showAsAction="never" />
+-            <item
+-                android:id="@+id/main_action_constfact_100"
+-                android:orderInCategory="100"
+-                android:checked="true"
+-                android:title="Размер Пачки 700"
+-                app:showAsAction="never" />
+-            <item
+-                android:id="@+id/main_action_constfact_1000"
+-                android:orderInCategory="100"
+-                android:title="Размер Пачки 7000"
+-                app:showAsAction="never" />
+-            <item
+-                android:id="@+id/main_action_constfact_10_000"
+-                android:orderInCategory="100"
+-                android:title="Размер Пачки 70 тыс"
+-                app:showAsAction="never" />
+-            <item
+-                android:id="@+id/main_action_constfact_100_000"
+-                android:orderInCategory="100"
+-                android:title="Размер Пачки 350 тыс"
+-                app:showAsAction="never" />
+-            <item
+-                android:id="@+id/main_action_constfact_1000_000"
+-                android:orderInCategory="100"
+-                android:title="Размер Пачки 7 млн"
+-                app:showAsAction="never" />
+-        </group>
+-        </menu>
+-    </item>
+-
+-</menu>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/mipmap-anydpi/ic_launcher.xml
+===================================================================
+--- ToDo/app/src/main/res/mipmap-anydpi/ic_launcher.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/mipmap-anydpi/ic_launcher.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+-    <background android:drawable="@drawable/ic_launcher_background" />
+-    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+-</adaptive-icon>
+\ No newline at end of file
+Index: ToDo/.idea/jarRepositories.xml
+===================================================================
+--- ToDo/.idea/jarRepositories.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/.idea/jarRepositories.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,30 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="RemoteRepositoriesConfiguration">
+-    <remote-repository>
+-      <option name="id" value="central" />
+-      <option name="name" value="Maven Central repository" />
+-      <option name="url" value="https://repo1.maven.org/maven2" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="jboss.community" />
+-      <option name="name" value="JBoss Community repository" />
+-      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="BintrayJCenter" />
+-      <option name="name" value="BintrayJCenter" />
+-      <option name="url" value="https://jcenter.bintray.com/" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="maven" />
+-      <option name="name" value="maven" />
+-      <option name="url" value="https://dl.bintray.com/kotlin/kotlin-eap" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="Google" />
+-      <option name="name" value="Google" />
+-      <option name="url" value="https://dl.google.com/dl/android/maven2/" />
+-    </remote-repository>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,67 +0,0 @@
+-/*
+- * Copyright 2019, The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.database
+-
+-import androidx.room.*
+-import java.util.*
+-
+-
+-/**
+- * Represents one record of the fact of life of an idea (I), plan(P), action(A), event(Y), money(M).
+- * Представляет собой один запись факта жизни идеи(I), плана(P), действия(A), события(E), денег(M).
+- */
+-//@Fts4           // Полнотекстовый поиск Дает ОШИБКУ
+-@Entity(tableName = "fact_todo",
+-        indices = [Index(value = ["paemi", "data", "factId"],name = "date_id_index")])
+-       // indices = @Index(value = {"data" , "factId"},name = "date_id_index"))
+-@TypeConverters(CharConverters::class, CalendarConverters::class, DateConverters::class)
+-data class Fact(
+-        @ColumnInfo(index = true)
+-        @PrimaryKey(autoGenerate = true)
+-        var factId: Long = 0L,  // пускай нумеруется сам -  никогда не меняется (надо бы не удалять запись 0L)
+-        @ColumnInfo(index = true)
+-        var data: Date? = Date(), // System.currentTimeMillis(),  // Сейчас - дата и время создания записи
+-        var parent: Long = 0L, // Какая запись (неважно какого типа) породила эту
+-        @ColumnInfo(index = true)
+-        var paemi: String? = "S",  // идеи(I), плана(P), действия(A), события(E), денег(M) служебная(S)
+-        var nameShort: String = "", // Факт PAEMI кратко
+-        var name: String = "",      // Факт PAEMI Полностью
+-        var rezult: String = "", // ожидаемый или полученный или получившийся РЕЗУЛЬТАТ
+-        var toWork: Boolean? = false, // закпущена в работу или снята с работы(отказ или удалена)
+-        var type: Long = 0L, // List<Long>, // Номер ссылки в доп справочнике, нужно множественную
+-        var dataStart: Date? = Date(), //Date.from(LocalDateTime.now().atStartOfDay(ZoneId.systemDefault()).toInstant())
+-        var dataEnd: Date? = Date(), //LocalDate,
+-        var deadLine: Calendar = Calendar.getInstance(), // = data, //LocalDate,
+-        var duration: Long? = dataStart?.time?.let { dataEnd?.time?.minus(it) },// 0L, //Period,
+-        var resources: String = "",
+-        var money: Int = 0,
+-        var close: Boolean? = false,  // Факт закрыт
+-        var defect: String = "",  // Халтура недоделки
+-        //  var parentList: List<Long>,   // Ссылки на родителей надо делать ?
+-        //  var childList: List<Long>,    // Ссылка на подчиненных надо делать ?
+-        var comment: String = "",       // просто свободный комментарий для User
+-        var system: String = "",       // Специальный информация только для меня
+-        var url: String = "https://developer.android.com/guide"              //List<URL>
+-)
+-
+-data class FactTable(
+-        var factId: Long = 0L,  // пускай нумеруется сам -  никогда не меняется (надо бы не удалять запись 0L)
+-        var data: Date? = Date(), // System.currentTimeMillis(),  // Сейчас - дата и время создания записи
+-        var parent: Long = 0L, // Какая запись (неважно какого типа) породила эту
+-        var paemi: String? = "S",  // идеи(I), плана(P), действия(A), события(E), денег(M) служебная(S)
+-        var nameShort: String = "" // Факт PAEMI кратко
+-)
+Index: ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml
+===================================================================
+--- ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,69 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-    <data>
+-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
+-        <variable
+-            name="fact"
+-            type="com.app4web.asdzendo.todo.database.Fact"/>
+-        <variable
+-            name="clickListener"
+-            type="com.app4web.asdzendo.todo.ui.todo.FactListener"/>
+-    </data>
+-<LinearLayout
+-    android:layout_width="wrap_content"
+-    android:layout_height="wrap_content"
+-    android:orientation="horizontal"
+-    android:onClick="@{() -> clickListener.onClick(fact)}">
+-
+-    <TextView
+-        android:id="@+id/item_number"
+-        android:layout_width="64sp"
+-        android:layout_height="wrap_content"
+-        android:text="@{fact.factId}"
+-        android:layout_margin="@dimen/text_margin"
+-        android:textAppearance="?attr/textAppearanceListItem" />
+-
+-    <TextView
+-        android:id="@+id/paemi"
+-        android:layout_width="16sp"
+-        android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@{fact.paemi}"
+-        android:textAppearance="?attr/textAppearanceListItem" />
+-
+-    <TextView
+-        android:id="@+id/data"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:text="@{fact.data}"
+-        android:layout_margin="@dimen/text_margin"
+-        android:textAppearance="?attr/textAppearanceListItem" />
+-
+-    <TextView
+-        android:id="@+id/nameShort"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@{fact.nameShort}"
+-        android:textAppearance="?attr/textAppearanceListItem" />
+-
+-    <!--TextView
+-        android:id="@+id/name"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@{fact.name}"
+-        android:textAppearance="?attr/textAppearanceListItem" /-->
+-
+-    <TextView
+-        android:id="@+id/rezult"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@{fact.rezult}"
+-        android:textAppearance="?attr/textAppearanceListItem" />
+-
+-</LinearLayout>
+-
+-</layout>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,124 +0,0 @@
+-/*
+- * Copyright 2018 Google LLC
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     https://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.database
+-
+-import com.app4web.asdzendo.todo.launcher.PAEMI
+-import kotlinx.coroutines.CoroutineScope
+-import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.launch
+-import timber.log.Timber
+-import java.util.*
+-
+-
+-
+-/**
+- * Repository module for handling data operations.
+- * Модуль репозитория для обработки операций с данными.
+- * вызывается из всех ViewModels сам вызывает FactDatabaseDao функции
+- */
+-class FactRepository private constructor(private val factDao: FactDatabaseDao) {
+-    private val applicationScope = CoroutineScope(Dispatchers.Default)
+-
+-    // Возвращает обычное Fact?
+-    fun get(factID:Long): Fact? = factDao.get(factID)
+-
+-    fun insert(fact: Fact?) =
+-            applicationScope.launch {
+-                var newFact = Fact()
+-                if (fact != null) newFact = fact
+-                newFact.factId = 0L
+-                factDao.insert(newFact)
+-            }
+-
+-    fun update(fact: Fact?) =
+-            applicationScope.launch {
+-                if (fact != null)
+-                   if (get(fact.factId) != null)
+-                        factDao.update(fact)
+-            }
+-
+-    fun delete(fact: Fact?) =
+-            applicationScope.launch {
+-                if (fact != null)
+-                    if (get(fact.factId) != null)
+-                        factDao.delete(fact)
+-            }
+-
+-    fun addFactDatabase(countFacts: Long = 65L) =  // Дозаполнение начальных данных
+-        applicationScope.launch {
+-            val addCount = factDao.insertAll(factContent(countFacts))
+-            Timber.i("ToDoFactRepository Add Database Строк записи = $countFacts * 7 = ${addCount.size}")
+-        }
+-
+-    fun clear() =
+-        applicationScope.launch {
+-            factDao.clear() // Заполнить заново базу данных
+-            Timber.i("ToDoFactRepository fact_base_clearing База очищена  ")
+-        }
+-    // @Query("clearAllTables FROM fact_todo")
+-    // suspend fun clearAllTables() = appDB.clearAllTables()
+-
+-    // LiveData<Int>
+-    fun count() = factDao.getCount()
+-
+-    // отдает LiveData<List<Fact>>
+-    fun getAll() = factDao.getAll()
+-
+-    // отдает LiveData<List<Fact>>
+-    fun getAllFacts() = factDao.getAllFacts()
+-
+-    // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
+-    fun getAllPAEMIFacts(paemi: String) = factDao.getAllPAEMIFacts(paemi)
+-
+-    // отдает LiveData<Fact>
+-    fun getFactWithId(factID: Long) = factDao.getFactWithId(factID)
+-
+-
+-    // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7
+-    private fun factContent(countFacts: Long = 65L): MutableList<Fact>  {
+-
+-        //val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
+-        val FACTS: MutableList<Fact> = ArrayList()
+-        //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
+-        // Add some sample items.
+-        for (id in 1L..countFacts)
+-            for (paemi in PAEMI) {
+-                val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
+-                with (fact) {
+-                    data = Date(Date().time - (countFacts -(0..1000).random()) * 86400000L)
+-                    //data = Date(Date().time - (countFacts -(0..100).random()*id) * 86400000L)
+-                    dataStart = Date(Date().time - (countFacts - id+1) * 1000)
+-                    dataEnd = Date(Date().time -( countFacts - id+1) * 100)
+-                    deadLine = Calendar.getInstance()
+-                    deadLine.add(Calendar.DATE,id.toInt())
+-                    duration = dataStart?.time?.let { dataEnd?.time?.minus(it) }
+-                }
+-                FACTS.add(fact)
+-                //     FACT_MAP[fact.factId] = fact
+-            }
+-        return FACTS
+-    }
+-
+-    // Вызывает создание/восстановление ссылки на этот репозиторий с привязкой FactDatabaseDao
+-    companion object {    // For Singleton instantiation
+-        @Volatile private var instance: FactRepository? = null
+-        fun getInstance(factDao: FactDatabaseDao) =
+-                instance ?: synchronized(this) {
+-                    instance ?: FactRepository(factDao).also { instance = it }
+-                }
+-    }
+-}
+Index: ToDo/app/src/main/res/drawable/ic_launcher_foreground.xml
+===================================================================
+--- ToDo/app/src/main/res/drawable/ic_launcher_foreground.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/drawable/ic_launcher_foreground.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,30 +0,0 @@
+-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:aapt="http://schemas.android.com/aapt"
+-    android:width="108dp"
+-    android:height="108dp"
+-    android:viewportWidth="108"
+-    android:viewportHeight="108">
+-    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
+-        <aapt:attr name="android:fillColor">
+-            <gradient
+-                android:endX="85.84757"
+-                android:endY="92.4963"
+-                android:startX="42.9492"
+-                android:startY="49.59793"
+-                android:type="linear">
+-                <item
+-                    android:color="#44000000"
+-                    android:offset="0.0" />
+-                <item
+-                    android:color="#00000000"
+-                    android:offset="1.0" />
+-            </gradient>
+-        </aapt:attr>
+-    </path>
+-    <path
+-        android:fillColor="#FFFFFF"
+-        android:fillType="nonZero"
+-        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
+-        android:strokeWidth="1"
+-        android:strokeColor="#00000000" />
+-</vector>
+\ No newline at end of file
+Index: ToDo/app/src/main/res/layout/to_do_recycler_list.xml
+===================================================================
+--- ToDo/app/src/main/res/layout/to_do_recycler_list.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/res/layout/to_do_recycler_list.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,63 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<!-- Wrapping the layout into /layout to make it available with data binding. -->
+-<!-- Обертывание макета в /layout, чтобы сделать его доступным с привязкой данных. -->
+-<layout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools">
+-
+-    <!-- Data to make available to the XML via data binding. In this case,
+-         the whole ViewModel, so that we can access the LiveData,
+-         click handlers, and state variables. -->
+-    <!-- Данные, чтобы сделать доступными для XML с помощью привязки данных. В этом случае,
+-    вся модель представления, так что мы можем получить доступ к живым данным,
+-    щелкните обработчики и переменные состояния. -->
+-    <data>
+-        <import type= "android.view.MenuItem"/>
+-        <variable
+-            name="viewmodel"
+-            type="com.app4web.asdzendo.todo.ui.todo.ToDoViewModel" />
+-    </data>
+-
+-
+-<FrameLayout
+-
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent">
+-
+-    <androidx.recyclerview.widget.RecyclerView
+-        android:id="@+id/recycler_list"
+-        android:name=".ui.todo.ToDoFragment"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:layout_marginLeft="16dp"
+-        android:layout_marginRight="16dp"
+-        app:layoutManager="LinearLayoutManager"
+-        tools:context=".ui.todo.ToDoFragment"
+-        tools:listitem="@layout/to_do_recycler_list_item" />
+-
+-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+-        android:id="@+id/fab"
+-        style="@style/Widget.MaterialComponents.FloatingActionButton"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_gravity="bottom|center_horizontal"
+-        android:layout_margin="@dimen/fab_margin"
+-        app:layout_anchor="@id/bottom_nav_view"
+-        app:srcCompat="@drawable/ic_plus"
+-        android:onClick="@{() -> viewmodel.fabClick()}"/>
+-
+-    <!-- Прокручиваемый вид здесь com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior-->
+-    <com.google.android.material.bottomnavigation.BottomNavigationView
+-        android:id="@+id/bottom_nav_view"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:layout_gravity="bottom|center_horizontal"
+-        android:background="?android:attr/windowBackground"
+-        android:onClick="@{() -> viewmodel.onClickBottomNavView()}"
+-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+-        app:menu="@menu/bottom_nav_menu" />
+-
+-</FrameLayout>
+-
+-</layout>
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailViewModelFactory.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailViewModelFactory.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/detail/FactDetailViewModelFactory.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,42 +0,0 @@
+-/*
+- * Copyright 2018, The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.ui.detail
+-
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.ViewModelProvider
+-import com.app4web.asdzendo.todo.database.FactRepository
+-import timber.log.Timber
+-
+-/**
+- * This is pretty much boiler plate code for a ViewModel Factory.
+- * Это в значительной степени шаблонный код для фабрики ViewModel.
+- *
+- * Provides the key for the night and the SleepDatabaseDao to the ViewModel.
+- * Предоставляет ключ для night и SleepDatabaseDao в ViewModel.
+- */
+-class FactDetailViewModelFactory(
+-        private val factRepository: FactRepository,
+-        private val factID: Long,
+-        private val paemi: String
+-) : ViewModelProvider.Factory {
+-    init { Timber.i("ToDo Detail ViewModel Factory ask viewmodel ")}
+-    @Suppress("unchecked_cast")
+-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+-            Timber.i("ToDo Detail ViewModel Factory ViewModel created")
+-            return FactDetailViewModel(factRepository, factID, paemi) as T
+-    }
+-}
+\ No newline at end of file
+Index: ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivityViewModelFactory.kt
+===================================================================
+--- ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivityViewModelFactory.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivityViewModelFactory.kt	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
+@@ -1,41 +0,0 @@
+-/*
+- * Copyright 2018, The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *     http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package com.app4web.asdzendo.todo.launcher
+-
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.ViewModelProvider
+-import com.app4web.asdzendo.todo.database.FactRepository
+-import timber.log.Timber
+-
+-/**
+- * This is pretty much boiler plate code for a ViewModel Factory.
+- * Это в значительной степени шаблонный код для фабрики ViewModel.
+- *
+- * Provides the SleepDatabaseDao and context to the ViewModel.
+- * Предоставляет SleepDatabaseDao и контекст для ViewModel.
+- */
+-class ToDoActivityViewModelFactory(
+-        private val repository: FactRepository,
+-        ) : ViewModelProvider.Factory {
+-    init { Timber.i("ToDoViewModelFactory ask ToDoViewModel ")}
+-
+-    @Suppress("unchecked_cast")
+-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+-            Timber.i("ToDoViewModelFactory ToDoViewModel created")
+-            return ToDoActitityViewModel(repository) as T
+-    }
+-}
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"NONE\" />\r\n  </component>\r\n  <component name=\"BranchesTreeState\">\r\n    <expand>\r\n      <path>\r\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"LOCAL_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n      </path>\r\n      <path>\r\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"REMOTE_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n      </path>\r\n      <path>\r\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"REMOTE_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"GROUP_NODE:origin\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n      </path>\r\n    </expand>\r\n    <select>\r\n      <path>\r\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"LOCAL_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"BRANCH:master\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n      </path>\r\n    </select>\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"02f57b58-8d3f-4b70-b6bc-ada1af348fea\" name=\"Default Changelist\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1fZZjiDm6tIeKoXmfjib6KVTYyf\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"android.sdk.path\" value=\"$PROJECT_DIR$/../_AndroidSDK\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/../2019_APP4WEB\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"org.jetbrains.plugins.github.ui.GithubSettingsConfigurable\" />\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"02f57b58-8d3f-4b70-b6bc-ada1af348fea\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1596427711065</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1596427711065</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Start PAEMI\">\r\n      <created>1596427895325</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1596427895326</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Start ToDo\">\r\n      <created>1597035651525</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1597035651525</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"master\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Start PAEMI\" />\r\n    <MESSAGE value=\"Start ToDo\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Start ToDo\" />\r\n  </component>\r\n  <component name=\"WindowStateProjectService\">\r\n    <state x=\"586\" y=\"93\" key=\"CommitChangelistDialog2\" timestamp=\"1597035650702\">\r\n      <screen x=\"0\" y=\"0\" width=\"1920\" height=\"1040\" />\r\n    </state>\r\n    <state x=\"586\" y=\"93\" key=\"CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040\" timestamp=\"1597035650702\" />\r\n    <state x=\"2659\" y=\"260\" key=\"FileChooserDialogImpl\" timestamp=\"1598560426320\">\r\n      <screen x=\"1920\" y=\"0\" width=\"1920\" height=\"1040\" />\r\n    </state>\r\n    <state x=\"739\" y=\"260\" key=\"FileChooserDialogImpl/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040\" timestamp=\"1596427763753\" />\r\n    <state x=\"2659\" y=\"260\" key=\"FileChooserDialogImpl/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040\" timestamp=\"1598560426320\" />\r\n    <state x=\"833\" y=\"417\" key=\"Github.ShareDialog\" timestamp=\"1596428032646\">\r\n      <screen x=\"0\" y=\"0\" width=\"1920\" height=\"1040\" />\r\n    </state>\r\n    <state x=\"833\" y=\"417\" key=\"Github.ShareDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040\" timestamp=\"1596428032646\" />\r\n    <state x=\"2381\" y=\"164\" key=\"SettingsEditor\" timestamp=\"1598560569780\">\r\n      <screen x=\"1920\" y=\"0\" width=\"1920\" height=\"1040\" />\r\n    </state>\r\n    <state x=\"2381\" y=\"164\" key=\"SettingsEditor/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040\" timestamp=\"1598560569780\" />\r\n    <state x=\"551\" y=\"239\" key=\"Vcs.Push.Dialog.v2\" timestamp=\"1597035657858\">\r\n      <screen x=\"0\" y=\"0\" width=\"1920\" height=\"1040\" />\r\n    </state>\r\n    <state x=\"551\" y=\"239\" key=\"Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040\" timestamp=\"1597035657858\" />\r\n    <state x=\"719\" y=\"426\" key=\"git4idea.remote.GitConfigureRemotesDialog\" timestamp=\"1597351902263\">\r\n      <screen x=\"0\" y=\"0\" width=\"1920\" height=\"1040\" />\r\n    </state>\r\n    <state x=\"719\" y=\"426\" key=\"git4idea.remote.GitConfigureRemotesDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040\" timestamp=\"1597351902263\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(revision bb97a4b49a3ba1403f66eb34865de62465eb2b21)
++++ .idea/workspace.xml	(date 1599167284702)
+@@ -29,11 +29,8 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
+-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/Fact.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list_item.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/ToDo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/build.gradle" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -82,7 +79,21 @@
+       <option name="project" value="LOCAL" />
+       <updated>1597035651525</updated>
+     </task>
+-    <option name="localTasksCounter" value="3" />
++    <task id="LOCAL-00003" summary="Start ToDo&#10;ToDo 4">
++      <created>1599098858218</created>
++      <option name="number" value="00003" />
++      <option name="presentableId" value="LOCAL-00003" />
++      <option name="project" value="LOCAL" />
++      <updated>1599098858218</updated>
++    </task>
++    <task id="LOCAL-00004" summary="Start ToDo&#10;ToDo 4">
++      <created>1599098893002</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1599098893002</updated>
++    </task>
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -112,13 +123,15 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="Start PAEMI" />
+     <MESSAGE value="Start ToDo" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Start ToDo" />
++    <MESSAGE value="Start ToDo&#10;ToDo 4" />
++    <option name="LAST_COMMIT_MESSAGE" value="Start ToDo&#10;ToDo 4" />
+   </component>
+   <component name="WindowStateProjectService">
+-    <state x="586" y="93" key="CommitChangelistDialog2" timestamp="1597035650702">
+-      <screen x="0" y="0" width="1920" height="1040" />
++    <state x="2506" y="93" key="CommitChangelistDialog2" timestamp="1599098892417">
++      <screen x="1920" y="0" width="1920" height="1040" />
+     </state>
+     <state x="586" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035650702" />
++    <state x="2506" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1599098892417" />
+     <state x="2659" y="260" key="FileChooserDialogImpl" timestamp="1598560426320">
+       <screen x="1920" y="0" width="1920" height="1040" />
+     </state>
+@@ -132,10 +145,11 @@
+       <screen x="1920" y="0" width="1920" height="1040" />
+     </state>
+     <state x="2381" y="164" key="SettingsEditor/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1598560569780" />
+-    <state x="551" y="239" key="Vcs.Push.Dialog.v2" timestamp="1597035657858">
+-      <screen x="0" y="0" width="1920" height="1040" />
++    <state x="2471" y="239" key="Vcs.Push.Dialog.v2" timestamp="1599098894998">
++      <screen x="1920" y="0" width="1920" height="1040" />
+     </state>
+     <state x="551" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035657858" />
++    <state x="2471" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1599098894998" />
+     <state x="719" y="426" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1597351902263">
+       <screen x="0" y="0" width="1920" height="1040" />
+     </state>

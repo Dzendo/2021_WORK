@@ -17,6 +17,7 @@
 package com.app4web.asdzendo.todo.database
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 
 /**
@@ -84,9 +85,14 @@ interface FactDatabaseDao {
     @Query("SELECT * FROM fact_todo ORDER BY factId DESC LIMIT 700")
     fun getAllFacts(): LiveData<List<Fact>>
 
+    @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
+    fun getAllFactsPage():PagingSource<Int, Fact>
+
     @Query("SELECT * FROM fact_todo LIMIT 700")
     fun getAll(): LiveData<List<Fact>>
 
+    @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
+    fun getAllPage(): PagingSource<Int, Fact>
     /**
      * Selects and returns the latest night.
      * Выбирает и возвращает последнюю запись.
@@ -111,9 +117,12 @@ interface FactDatabaseDao {
     /**
      * выборка фильтром PAEMI в обратной сортировке
      */
-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data , factId  LIMIT 7000")
-    //@Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 70000")
+    //@Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data , factId  LIMIT 7000")
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
     fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
+
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC")
+    fun getAllPAEMIFactsPage(paemi: String?):  PagingSource<Int, Fact>
 
 
     /**

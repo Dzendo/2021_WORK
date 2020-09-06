@@ -2,16 +2,20 @@ package com.app4web.asdzendo.todo.ui.todo
 
 import android.view.MenuItem
 import androidx.lifecycle.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
 class ToDoViewModel internal constructor(
     private val factRepository: FactRepository
 ) : ViewModel() {
 
-    var PAEMI: MutableLiveData<String> = MutableLiveData<String>("Z")
+    val PAEMI: MutableLiveData<String> = MutableLiveData<String>("Z")
 
     init { Timber.i("ToDoViewModel created PAEMI= ${PAEMI.value}")}
     /**
@@ -29,6 +33,14 @@ class ToDoViewModel internal constructor(
                 else -> factRepository.getAllPAEMIFacts(paemi)
             }
         }
+
+    val factsPage :  Flow<PagingData<Fact>>
+        get() = //Pager( PagingConfig(  pageSize = 60, enablePlaceholders = true, maxSize = 200 )){factRepository.getAllPage()}.flow
+             when (PAEMI.value) {
+                "Z" -> { Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllPage()}.flow}
+                " " -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllFactsPage()}.flow
+                else -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllPAEMIFactsPage(PAEMI.value)}.flow
+            }
 
     /**
      * Called when the ViewModel is dismantled.

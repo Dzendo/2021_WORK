@@ -69,8 +69,6 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             factDao.clear() // Заполнить заново базу данных
             Timber.i("ToDoFactRepository fact_base_clearing База очищена  ")
         }
-    // @Query("clearAllTables FROM fact_todo")
-    // suspend fun clearAllTables() = appDB.clearAllTables()
 
     // LiveData<Int>
     fun count() = factDao.getCount()
@@ -78,18 +76,27 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     // отдает LiveData<List<Fact>>
     fun getAll() = factDao.getAll()
 
+    // отдает PagingSource<Int, Fact>
+    fun getAllPage() = factDao.getAllPage()
+
     // отдает LiveData<List<Fact>>
     fun getAllFacts() = factDao.getAllFacts()
 
+    // отдает PagingSource<Int, Fact>
+    fun getAllFactsPage() = factDao.getAllFactsPage()
+
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
     fun getAllPAEMIFacts(paemi: String) = factDao.getAllPAEMIFacts(paemi)
+
+    // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
+    fun getAllPAEMIFactsPage(paemi: String?) = factDao.getAllPAEMIFactsPage(paemi)
 
     // отдает LiveData<Fact>
     fun getFactWithId(factID: Long) = factDao.getFactWithId(factID)
 
 
     // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7
-    private fun factContent(countFacts: Long = 65L): MutableList<Fact>  {
+    private fun factContent(countFacts: Long = 65L): List<Fact>  {
 
         //val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
         val FACTS: MutableList<Fact> = ArrayList()
@@ -99,7 +106,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             for (paemi in PAEMI) {
                 val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
                 with (fact) {
-                    data = Date(Date().time - (countFacts -(0..1000).random()) * 86400000L)
+                    data = Date(Date().time - (countFacts/2 -id - 50 + (0..100).random()) * 86400000L)
                     //data = Date(Date().time - (countFacts -(0..100).random()*id) * 86400000L)
                     dataStart = Date(Date().time - (countFacts - id+1) * 1000)
                     dataEnd = Date(Date().time -( countFacts - id+1) * 100)
@@ -110,6 +117,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
                 FACTS.add(fact)
                 //     FACT_MAP[fact.factId] = fact
             }
+        Timber.i("ToDoFactRepository Add List Строк записи = $countFacts * 7 = ${countFacts * 7}")
         return FACTS
     }
 

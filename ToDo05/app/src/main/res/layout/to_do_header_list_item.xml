@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Data to make available to the XML via data binding. In this case,
+         the whole ViewModel, so that we can access the LiveData,
+         click handlers, and state variables. -->
+    <!-- Данные, чтобы сделать доступными для XML с помощью привязки данных. В этом случае,
+    вся модель представления, так что мы можем получить доступ к живым данным,
+    щелкните обработчики и переменные состояния. -->
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.app4web.asdzendo.todo.ui.todo.ToDoViewModel" />
+    </data>
+<!-- Заготовка для заголовка вставлять в Recycler -->
+<TextView
+    android:id="@+id/header_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/purple_200"
+    android:gravity="center"
+    android:padding="8dp"
+    android:text="шапка таблички для сортировки"
+    android:textAppearance="?android:attr/textAppearanceLarge" />
+</layout>

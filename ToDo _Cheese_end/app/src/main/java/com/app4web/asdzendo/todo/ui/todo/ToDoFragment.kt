@@ -1,5 +1,6 @@
 package com.app4web.asdzendo.todo.ui.todo
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -22,7 +23,7 @@ import timber.log.Timber
  */
 class ToDoFragment : Fragment() {
 
-
+    private var orientation: Int = 0
     private val todoViewModel: ToDoViewModel by viewModels {
         ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
     }
@@ -32,6 +33,9 @@ class ToDoFragment : Fragment() {
         // Добавляет и обрабатывает меню три точки для этого фрагмента
         setHasOptionsMenu(true)
         Timber.i("ToDo Recycler Fragment onCreate")
+        orientation = resources.configuration.orientation
+        // Вывести в заголовок количество записей в базе не работает
+       // todoViewModel.count().observe(this) { count -> activity?.actionBar?.title = "ToDoToDo $count записей" }
     }
 
     override fun onCreateView(
@@ -52,6 +56,14 @@ class ToDoFragment : Fragment() {
         val manager = LinearLayoutManager(activity)
         binding.recyclerList.layoutManager = manager
 
+        // Говорит можно объявить и в RecyclerView XML
+        val adapter = ToDoAdapter(FactListener { factID ->
+            todoViewModel.onFactClicked(factID)
+        })
+        // Адаптер для Pager 3.0
+        val adapterP = ToDoPageAdapter(FactListener { factID ->
+            todoViewModel.onFactClicked(factID)})
+
         val adapterPage = ToDoPageAdapter(FactListener { factID ->
             todoViewModel.onFactClicked(factID)})
 
@@ -63,6 +75,21 @@ class ToDoFragment : Fragment() {
             lifecycleScope.launch {
                 @OptIn(ExperimentalCoroutinesApi::class)
                 todoViewModel.factsPage.collectLatest { adapterPage.submitData(it) }
+            }
+        }
+
+        todoViewModel.facts.observe(viewLifecycleOwner) {
+            it?.let {
+                //adapter.submitList(it)
+                when (orientation) {
+                    Configuration.ORIENTATION_PORTRAIT -> adapter.addSubmitCard(it)
+                    Configuration.ORIENTATION_LANDSCAPE -> adapter.addHeaderAndSubmitList(it)
+                }
+
+                // 23.10 Наконец, обновите, SleepTrackerFragment чтобы передать список DataItem вместо списка SleepNight
+                // и вызвать новый метод addHeaderAndSubmitList вместо метода submitList:
+                // LiveData observers are sometimes passed null, so make sure you check for null.
+                // Наблюдатели живых данных иногда передаются null, поэтому убедитесь, что вы проверяете наличие null.
             }
         }
 

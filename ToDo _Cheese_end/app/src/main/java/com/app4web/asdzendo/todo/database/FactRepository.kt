@@ -74,6 +74,9 @@ class FactRepository private constructor( val factDao: FactDatabaseDao) {
     fun count() = factDao.getCount()
 
     // отдает LiveData<List<Fact>>
+    //fun getAll() = factDao.getAll()
+
+    // отдает LiveData<List<Fact>>
     fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>

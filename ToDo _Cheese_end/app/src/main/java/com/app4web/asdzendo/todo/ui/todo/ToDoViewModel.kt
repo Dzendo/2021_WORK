@@ -25,6 +25,15 @@ class ToDoViewModel internal constructor(
    // private val viewModelJob = Job()
    // private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    val facts: LiveData<List<Fact>>
+        get() = PAEMI.switchMap { paemi ->
+            when (paemi) {
+                "Z" -> factRepository.getAll()
+                " " -> factRepository.getAllFacts()
+                else -> factRepository.getAllPAEMIFacts(paemi)
+            }
+        }
+
     val factsPage :  Flow<PagingData<Fact>>
         get() = //Pager( PagingConfig(  pageSize = 60, enablePlaceholders = true, maxSize = 200 )){factRepository.getAllPage()}.flow
              when (PAEMI.value) {

@@ -40,6 +40,7 @@ class FactDetailViewModel(
                 MutableLiveData(Fact(paemi = paemi, nameShort = "новый Факт", name = "Факт полностью: новый"))
            else factRepository.getFactWithId(factID)
         fact.addSource(fact0L, fact::setValue)
+        val  _fact1 = Transformations.switchMap(fact0L) { it -> MutableLiveData<Fact?>(it)}  // AS
     }
 
     init { Timber.i("ToDo Detail ViewModel")}

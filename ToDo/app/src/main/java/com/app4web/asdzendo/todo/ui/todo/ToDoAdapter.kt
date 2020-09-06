@@ -3,7 +3,6 @@ package com.app4web.asdzendo.todo.ui.todo
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.app4web.asdzendo.todo.database.Fact
@@ -18,8 +17,6 @@ import kotlinx.coroutines.withContext
 /**
  * [RecyclerView.Adapter] that can display a [DataItem].
  */
-
-
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 private const val ITEM_VIEW_TYPE_CARD = 2
@@ -150,15 +147,15 @@ class FactDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean = oldItem == newItem
 }
 // Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
-class FactListener(val clickListener: (factId: Int) -> Unit) {
+class FactListener(val clickListener: (factId: Long) -> Unit) {
     fun onClick(fact: Fact) = clickListener(fact.factId)
 }
 // 23.1. Внизу SleepNightAdapter добавьте запечатанный класс с именем DataItem:
 sealed class DataItem {
-    abstract val id: Int
+    abstract val id: Long
 
     object Header: DataItem() {
-        override val id = Int.MIN_VALUE
+        override val id = Long.MIN_VALUE
     }
     data class FactItem(val fact: Fact): DataItem() {
         override val id = fact.factId

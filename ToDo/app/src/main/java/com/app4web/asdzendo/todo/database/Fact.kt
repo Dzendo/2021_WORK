@@ -32,7 +32,7 @@ import java.util.*
 data class Fact(
         @ColumnInfo(index = true)
         @PrimaryKey(autoGenerate = true)
-        var factId: Int = 0,  // пускай нумеруется сам -  никогда не меняется (надо бы не удалять запись 0L)
+        var factId: Long = 0L,  // пускай нумеруется сам -  никогда не меняется (надо бы не удалять запись 0L)
         @ColumnInfo(index = true)
         var data: Date? = Date(), // System.currentTimeMillis(),  // Сейчас - дата и время создания записи
         var parent: Long = 0L, // Какая запись (неважно какого типа) породила эту

@@ -8,7 +8,7 @@ import timber.log.Timber
 
 class FactDetailViewModel(
         private val factRepository: FactRepository,
-        factID: Int = 0,
+        factID: Long = 0L,
         paemi: String = " ",
 ): ViewModel() {
     init { Timber.i("TODO FactDetailViewModel created $factID")}
@@ -36,7 +36,7 @@ class FactDetailViewModel(
     fun getFact() = fact
 
     init {
-        val fact0L: LiveData<Fact> = if (factID == 0)
+        val fact0L: LiveData<Fact> = if (factID == 0L)
                 MutableLiveData(Fact(paemi = paemi, nameShort = "новый Факт", name = "Факт полностью: новый"))
            else factRepository.getFactWithId(factID)
         fact.addSource(fact0L, fact::setValue)

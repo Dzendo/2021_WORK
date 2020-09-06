@@ -34,7 +34,7 @@ class FactRepository private constructor( val factDao: FactDatabaseDao) {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     // Возвращает обычное Fact?
-    fun get(factID:Int): Fact? = factDao.get(factID)
+    fun get(factID:Long): Fact? = factDao.get(factID)
 
     fun insert(fact: Fact?) =
             applicationScope.launch {
@@ -83,9 +83,6 @@ class FactRepository private constructor( val factDao: FactDatabaseDao) {
     fun getAllPage() = factDao.getAllPage()
 
     // отдает LiveData<List<Fact>>
-    fun getAllP() = factDao.getAllP()
-
-    // отдает LiveData<List<Fact>>
     fun getAllFacts() = factDao.getAllFacts()
 
     // отдает PagingSource<Int, Fact>
@@ -98,7 +95,7 @@ class FactRepository private constructor( val factDao: FactDatabaseDao) {
     fun getAllPAEMIFactsPage(paemi: String?) = factDao.getAllPAEMIFactsPage(paemi)
 
     // отдает LiveData<Fact>
-    fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)
+    fun getFactWithId(factID: Long) = factDao.getFactWithId(factID)
 
 
     // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7

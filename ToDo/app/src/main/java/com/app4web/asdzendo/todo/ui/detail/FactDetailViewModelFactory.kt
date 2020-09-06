@@ -30,7 +30,7 @@ import timber.log.Timber
  */
 class FactDetailViewModelFactory(
         private val factRepository: FactRepository,
-        private val factID: Int,
+        private val factID: Long,
         private val paemi: String
 ) : ViewModelProvider.Factory {
     init { Timber.i("ToDo Detail ViewModel Factory ask viewmodel ")}

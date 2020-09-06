@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={BC.convertIntToString(viewmodel.fact.factId)}" />
+                    android:text="@={BC.convertLongToString(viewmodel.fact.factId)}" />
             </LinearLayout>
 
             <LinearLayout

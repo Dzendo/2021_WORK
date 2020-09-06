@@ -21,7 +21,7 @@
         android:id="@+id/item_number"
         android:layout_width="64sp"
         android:layout_height="wrap_content"
-        android:text="@{BC.convertIntToString(fact.factId)}"
+        android:text="@{BC.convertLongToString(fact.factId)}"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem" />
 

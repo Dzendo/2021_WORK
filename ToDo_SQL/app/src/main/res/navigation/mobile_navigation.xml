@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/todoFragment">
+
+    <fragment
+        android:id="@+id/todoFragment"
+        android:name="com.app4web.asdzendo.todo.ui.todo.ToDoFragment"
+        android:label="ToDo"
+        tools:layout="@layout/to_do_recycler_list" >
+        <action
+            android:id="@+id/action_todoFragment_to_factDetailFragment"
+            app:destination="@id/factDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/factDetailFragment"
+        android:name="com.app4web.asdzendo.todo.ui.detail.FactDetailFragment"
+        android:label="FactDetailFragment"
+        tools:layout="@layout/fact_detail_fragment">
+
+        <argument
+            android:name="factID"
+            android:defaultValue="0L"
+            app:argType="long" />
+
+        <argument
+            android:name="paemi"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_factDetailFragment_to_todoFragment"
+            app:destination="@id/todoFragment" />
+
+    </fragment>
+
+</navigation>

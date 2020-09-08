@@ -82,17 +82,23 @@ interface FactDatabaseDao {
      * sorted by factid in descending order.
      * сортировка по factid в порядке убывания.
      */
-    @Query("SELECT * FROM fact_todo ORDER BY factId DESC LIMIT 700")
-    fun getAllFacts(): LiveData<List<Fact>>
+    @Query("SELECT * FROM fact_todo  ORDER BY data DESC LIMIT 700")
+    fun getAllFacts(): List<Fact>
 
-    @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
+    @Query("SELECT * FROM fact_todo  ORDER BY factId ASC")
     fun getAllFactsPage():PagingSource<Int, Fact>
+
+   // @Query("SELECT * FROM fact_todo WHERE data>:FilterDateStart & data<:FilterDateEnd ORDER BY data DESC")
+   // fun getAllFactsPage(FilterDateStart: Long, FilterDateEnd:Long):PagingSource<Int, Fact>
 
     @Query("SELECT * FROM fact_todo LIMIT 700")
     fun getAll(): LiveData<List<Fact>>
 
-    @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
-    fun getAllPage(): PagingSource<Int, Fact>
+    @Query("SELECT * FROM fact_todo WHERE data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC")
+    fun getAllPage(FilterDateStart: Long, FilterDateEnd:Long): PagingSource<Int, Fact>
+
+    //@Query("SELECT * FROM fact_todo ORDER BY factId DESC")
+    //fun getAllPage(): PagingSource<Int, Fact>
     /**
      * Selects and returns the latest night.
      * Выбирает и возвращает последнюю запись.
@@ -121,8 +127,11 @@ interface FactDatabaseDao {
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
     fun getAllPAEMIFacts(paemi: String): LiveData<List<Fact>>
 
-    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC")
-    fun getAllPAEMIFactsPage(paemi: String?):  PagingSource<Int, Fact>
+    @Query("SELECT * FROM fact_todo WHERE paemi = :paemi AND data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC, factId DESC")
+    fun getAllPAEMIFactsPage(paemi: String?,FilterDateStart: Long, FilterDateEnd:Long):  PagingSource<Int, Fact>
+
+   // @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC")
+   // fun getAllPAEMIFactsPage(paemi: String?):  PagingSource<Int, Fact>
 
 
     /**

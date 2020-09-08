@@ -16,6 +16,8 @@
 
 package com.app4web.asdzendo.todo.database
 
+import com.app4web.asdzendo.todo.launcher.FilterDateEnd
+import com.app4web.asdzendo.todo.launcher.FilterDateStart
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,19 +79,21 @@ class FactRepository private constructor( val factDao: FactDatabaseDao) {
     fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
-    fun getAllPage() = factDao.getAllPage()
+    fun getAllPage() = factDao.getAllPage(FilterDateStart.time,FilterDateEnd.time)
 
     // отдает LiveData<List<Fact>>
     fun getAllFacts() = factDao.getAllFacts()
 
     // отдает PagingSource<Int, Fact>
-    fun getAllFactsPage() = factDao.getAllFactsPage()
+    fun getAllFactsPage() =
+            factDao.getAllFactsPage()
 
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
     fun getAllPAEMIFacts(paemi: String) = factDao.getAllPAEMIFacts(paemi)
 
     // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
-    fun getAllPAEMIFactsPage(paemi: String?) = factDao.getAllPAEMIFactsPage(paemi)
+    fun getAllPAEMIFactsPage(paemi: String?) =
+            factDao.getAllPAEMIFactsPage(paemi,FilterDateStart.time,FilterDateEnd.time)
 
     // отдает LiveData<Fact>
     fun getFactWithId(factID: Long) = factDao.getFactWithId(factID)

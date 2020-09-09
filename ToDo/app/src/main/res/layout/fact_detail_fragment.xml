@@ -6,10 +6,7 @@
 
     <data>
         <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
-        <!--variable
-            name="fact"
-            type="com.app4web.asdzendo.todo.database.Fact" /-->
+        <import type="com.app4web.asdzendo.todo.launcher.PAEMI"/>
 
         <variable
             name="viewmodel"
@@ -45,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={BC.convertLongToString(viewmodel.fact.factId)}" />
+                    android:text="@={BC.convertIntToString(viewmodel.fact.factId)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -63,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.data}" />
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.data)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -81,8 +78,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.parent}" />
-                    <!--android:text="@{BindingKt.longToStrext(viewmodel.fact.parent)}" /-->
+                    android:text="@={BC.convertIntToString(viewmodel.fact.parent)}" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -99,7 +96,8 @@
                     android:id="@+id/paemi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewmodel.fact.paemi}" />
+                    android:text="@={BC.convertPaemiToString(viewmodel.fact.paemi)}" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -167,7 +165,7 @@
                     android:id="@+id/toWork"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewmodel.fact.toWork}" />
+                    android:text="@={BC.convertBooleanToString(viewmodel.fact.toWork)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -185,7 +183,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.type}" />
+                    android:text="@={BC.convertIntToString(viewmodel.fact.type)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -203,7 +201,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.dataStart}" />
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.dataStart)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -221,7 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.dataEnd}" />
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.dataEnd)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -234,13 +232,11 @@
                     android:layout_height="wrap_content"
                     android:text="deadLine:" />
 
-
-                <!--CalendarView-->
                 <EditText
                     android:id="@+id/deadLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewmodel.fact.deadLine}"/>
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.deadLine)}"/>
             </LinearLayout>
 
             <LinearLayout
@@ -258,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.duration}" />
+                    android:text="@={BC.convertLongToString(viewmodel.fact.duration)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -294,8 +290,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:text='@={BC.convertIntToString(viewmodel.fact.money)}' />
-                    <!--android:text="@{String.valueOf(viewmodel.fact.money)}" /-->
-                    <!--android:text='@{Integer.toString(viewmodel.fact.money)}' /-->
+
             </LinearLayout>
 
             <LinearLayout
@@ -312,7 +307,7 @@
                     android:id="@+id/close"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewmodel.fact.close}" />
+                    android:text="@={BC.convertBooleanToString(viewmodel.fact.close)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -382,24 +377,6 @@
                     android:layout_height="wrap_content"
                     android:text="@={viewmodel.fact.url}" />
             </LinearLayout>
-
-            <!--LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="char=" />
-
-                <EditText
-                    android:id="@+id/charr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@={BC.convertCharToString(viewmodel.charr)}" />
-            </LinearLayout-->
-
 
         </LinearLayout>
 

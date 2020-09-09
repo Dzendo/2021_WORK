@@ -32,11 +32,11 @@ import java.util.*
  * Модуль репозитория для обработки операций с данными.
  * вызывается из всех ViewModels сам вызывает FactDatabaseDao функции
  */
-class FactRepository private constructor(private val factDao: FactDatabaseDao) {
+class FactRepository private constructor( val factDao: FactDatabaseDao) {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     // Возвращает обычное Fact?
-    fun get(factID:Int): Fact? = factDao.get(factID)
+    fun get(factID:Long): Fact? = factDao.get(factID)
 
     fun insert(fact: Fact?) =
             applicationScope.launch {
@@ -79,7 +79,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
-    fun getAllPage() = factDao.getAllPage()
+    fun getAllPage() = factDao.getAllPage(FilterDateStart.time,FilterDateEnd.time)
 
     // отдает LiveData<List<Fact>>
     fun getAllFacts() = factDao.getAllFacts()
@@ -89,14 +89,14 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             factDao.getAllFactsPage()
 
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
-    fun getAllPAEMIFacts(paemi: Int) = factDao.getAllPAEMIFacts(paemi)
+    fun getAllPAEMIFacts(paemi: String) = factDao.getAllPAEMIFacts(paemi)
 
     // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
-    fun getAllPAEMIFactsPage(paemi: PAEMI) =
-            factDao.getAllPAEMIFactsPage(paemi,FilterDateStart.timeInMillis,FilterDateEnd.timeInMillis)
+    fun getAllPAEMIFactsPage(paemi: String?) =
+            factDao.getAllPAEMIFactsPage(paemi,FilterDateStart.time,FilterDateEnd.time)
 
     // отдает LiveData<Fact>
-    fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)
+    fun getFactWithId(factID: Long) = factDao.getFactWithId(factID)
 
 
     // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7
@@ -107,22 +107,16 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
         //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
         // Add some sample items.
         for (id in 1L..countFacts)
-            for (paemi in PAEMI.values()) {
+            for (paemi in PAEMI) {
                 val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
                 with (fact) {
-                    //calendar.add(Calendar.DAY_OF_YEAR, daysToAdd)
-                    data = GregorianCalendar.getInstance()
-                    data.set(GregorianCalendar.YEAR,(2000..2040).random())
-                    data.set(GregorianCalendar.DAY_OF_YEAR,(1..365).random())
-
-                   /* data = Date(Date().time - (countFacts/2 -id - 50 + (0..100).random()) * 86400000L)
+                    data = Date(Date().time - (countFacts/2 -id - 50 + (0..100).random()) * 86400000L)
                     //data = Date(Date().time - (countFacts -(0..100).random()*id) * 86400000L)
                     dataStart = Date(Date().time - (countFacts - id+1) * 1000)
                     dataEnd = Date(Date().time -( countFacts - id+1) * 100)
                     deadLine = Calendar.getInstance()
                     deadLine.add(Calendar.DATE,id.toInt())
                     duration = dataStart?.time?.let { dataEnd?.time?.minus(it) }
-                    */
                 }
                 FACTS.add(fact)
                 //     FACT_MAP[fact.factId] = fact

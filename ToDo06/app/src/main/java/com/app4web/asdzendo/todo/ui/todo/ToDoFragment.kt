@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
 import com.app4web.asdzendo.todo.launcher.COUNTSFact
-import com.app4web.asdzendo.todo.launcher.PAEMI
 import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -60,7 +59,7 @@ class ToDoFragment : Fragment() {
 
         // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
         // когда список меняется
-        todoViewModel.paemi.observe(viewLifecycleOwner) {
+        todoViewModel.PAEMI.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 @OptIn(ExperimentalCoroutinesApi::class)
                 todoViewModel.factsPage.collectLatest { adapterPage.submitData(it) }
@@ -70,7 +69,7 @@ class ToDoFragment : Fragment() {
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
             factID?.let {
                 this.findNavController().navigate(
-                        ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID,todoViewModel.paemi.value?.name?: PAEMI.N.name))
+                        ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID,todoViewModel.PAEMI.value.toString()))
                  todoViewModel.navigateToFactDetailNavigated()
             }
         }

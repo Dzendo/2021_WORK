@@ -2,7 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
+        <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
+
         <variable
             name="fact"
             type="com.app4web.asdzendo.todo.database.Fact"/>
@@ -20,7 +21,7 @@
             android:id="@+id/item_number"
             android:layout_width="64sp"
             android:layout_height="wrap_content"
-            android:text="@{fact.factId}"
+            android:text="@{BC.convertIntToString(fact.factId)}"
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
 
@@ -29,14 +30,14 @@
             android:layout_width="16sp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="@{fact.paemi}"
+            android:text="@{BC.convertPaemiToString(fact.paemi)}"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             android:id="@+id/data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{fact.data}"
+            android:text="@{BC.convertCalendarToString(fact.data)}"
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
 
@@ -47,14 +48,6 @@
             android:layout_margin="@dimen/text_margin"
             android:text="@{fact.nameShort}"
             android:textAppearance="?attr/textAppearanceListItem" />
-
-        <!--TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@{fact.name}"
-            android:textAppearance="?attr/textAppearanceListItem" /-->
 
         <TextView
             android:id="@+id/rezult"

@@ -24,12 +24,12 @@
 
         <argument
             android:name="factID"
-            android:defaultValue="0L"
-            app:argType="long" />
+            android:defaultValue="0"
+            app:argType="integer" />
 
         <argument
             android:name="paemi"
-            android:defaultValue="S"
+            android:defaultValue="N"
             app:argType="string" />
 
         <action

@@ -4,6 +4,7 @@ import android.widget.EditText
 import androidx.databinding.BindingConversion
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseMethod
+import com.app4web.asdzendo.todo.launcher.PAEMI
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -15,7 +16,7 @@ import java.util.*
 // android:text="@{FactDetailViewModel.fact.factId}"
 //@InverseMethod("captureLongValue")
 //@InverseMethod("convertLongToString")
-@BindingConversion
+/*@BindingConversion
 fun convertLongToString(long: Long?): String = long?.toString() ?: ""
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
 fun captureLongValue(view: EditText): Long {
@@ -28,7 +29,13 @@ fun captureLongValue(view: EditText): Long {
     return value
 }
 
-//  android:text="@{FactDetailViewModel.fact.toWork}"
+@BindingConversion
+fun convertIntToString(value: Int): String = value.toString()
+@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
+fun convertStringToInt(text: String): Int =
+        try { text.toInt() }
+        catch (e: NumberFormatException) { 0 }
+
 @BindingConversion
 fun convertBooleanToString(boolean: Boolean?): String = boolean?.toString() ?: ""
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
@@ -56,15 +63,14 @@ fun captureDateValue(view: EditText): Date? {
 fun convertCalendarToString(calendar: Calendar?): String //= calendar.toString()
 {
     if (calendar == null) return "nul"
-    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+    val sdf = SimpleDateFormat("dd.MM.yyyy")
     val ccc = sdf.format(calendar.time)
    Timber.i("ToDo convertCalendarToString $ccc ")
     return ccc
 }
-
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
 fun captureCalendarValue(view: EditText): Calendar? {
-    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+    val sdf = SimpleDateFormat("dd.MM.yyyy")
     val value: Calendar? = Calendar.getInstance()
     try {
             value?.time = sdf.parse(view.text.toString())?: Calendar.getInstance().time
@@ -73,7 +79,7 @@ fun captureCalendarValue(view: EditText): Calendar? {
     }
     return value
 }
-
+*/
 object BindingConverters {
 
     @InverseMethod(value = "convertStringToLong")
@@ -87,17 +93,17 @@ object BindingConverters {
 
     @InverseMethod(value = "convertStringToDate")
     @JvmStatic fun convertDateToString(date: Date?): String =
-            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it)}
+            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").format(it)}
     @JvmStatic fun convertStringToDate(text: String): Date? =
-            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH) .parse(text) }
+            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS") .parse(text) }
             catch (e: Exception) { Date()}
 
     @InverseMethod(value = "convertStringToCalendar")
     @JvmStatic fun convertCalendarToString(calendar: Calendar?): String =
-            calendar?.let { SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(it.time) }?:"nul"
+            calendar?.let { SimpleDateFormat("dd.MM.yyyy").format(it.time) }?:"nul"
     @JvmStatic fun convertStringToCalendar(text: String): Calendar? = Calendar.getInstance().let {
         try {
-            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).parse(text)?:Date()
+            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").parse(text)?:Date()
             it
         } catch (e: Exception) { it }
     }
@@ -113,12 +119,12 @@ object BindingConverters {
     @JvmStatic fun convertStringToChar(text: String): Char? =
                try { text.toCharArray()[0] }
                catch (e: ArrayIndexOutOfBoundsException) { ' ' }
+
+    @InverseMethod(value = "convertStringToPaemi")
+    @JvmStatic fun convertPaemiToString(paemi: PAEMI?): String? = paemi?.name
+    @JvmStatic fun convertStringToPaemi(text: String): PAEMI? =
+            try { PAEMI.valueOf(text) }
+            catch (e: IllegalArgumentException) {
+                PAEMI.N
+            }
 }
-
-
-
-// <TextView
-//        android:id="@+id/number"
-//        android:text='@={Converter.convertIntToString(myViewModel.number)}'
-//
-//        />

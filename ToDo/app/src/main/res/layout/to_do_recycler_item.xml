@@ -23,7 +23,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
+        <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
+
         <variable
             name="fact"
             type="com.app4web.asdzendo.todo.database.Fact" />
@@ -67,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="@{fact.factId}"
+                android:text="@{BC.convertIntToString(fact.factId)}"
                 app:layout_constraintEnd_toEndOf="@+id/right_well"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="factID" />
@@ -78,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
-                android:text="@{fact.paemi}"
+                android:text="@{BC.convertPaemiToString(fact.paemi)}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textAppearance="?attr/textAppearanceListItem"
@@ -92,29 +93,14 @@
                 android:id="@+id/data"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{fact.data}"
+                android:text="@{BC.convertCalendarToString(fact.data)}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/right_well"
-                tools:text="PAEMI" />
-
-            <!--TextView
-                android:id="@+id/name_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:adjustViewBounds="false"
-                android:cropToPadding="false"
-                android:scaleType="centerCrop"
-                android:text="@{fact.name}"
-                android:textAppearance="?attr/textAppearanceListItem"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="name" /-->
+                tools:text="Data" />
 
             <TextView
                 android:id="@+id/nameShort_card"
@@ -143,9 +129,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/right_well"
                 app:layout_constraintStart_toStartOf="@+id/left_well"
-                app:layout_constraintTop_toBottomOf="@+id/paemi_card"
-                tools:text="rezult" />
-
+                tools:text="rezult"
+                app:layout_constraintTop_toBottomOf="@+id/paemi_card"/>
 
             <View
                 android:id="@+id/clickableOverlay"

@@ -3,16 +3,17 @@ package com.app4web.asdzendo.todo.ui.detail
 import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
-import com.app4web.asdzendo.todo.launcher.PAEMI
 import timber.log.Timber
 
 
 class FactDetailViewModel(
         private val factRepository: FactRepository,
-        factID: Int = 0,
-        paemi: PAEMI = PAEMI.N,
+        factID: Long = 0L,
+        paemi: String = " ",
 ): ViewModel() {
     init { Timber.i("TODO FactDetailViewModel created $factID")}
+
+   // val factid = factID.toString()  // Временно для TextView поменять на адаптер
 
     /**
      * Hold a reference to FactDatabase via its FactDatabaseDao.
@@ -26,19 +27,22 @@ class FactDetailViewModel(
      */
    // private val viewModelJob = Job()
 
+    private  var _fact1: MutableLiveData<Fact?> = MutableLiveData<Fact?>()
+    val fact1: LiveData<Fact?>
+        get() = _fact1  // AS
+
+
     private val fact = MediatorLiveData<Fact>()
     fun getFact() = fact
 
-    //val fact1 = getFact().value
-    //var paemistring = getFact().value.paemi //PAEMI.values()[(getFact().value!!).paemi].name  // Временно для TextView поменять на адаптер
-
     init {
-        val fact0L: LiveData<Fact> = if (factID == 0)
+        val fact0L: LiveData<Fact> = if (factID == 0L)
                 MutableLiveData(Fact(paemi = paemi, nameShort = "новый Факт", name = "Факт полностью: новый"))
-                 else factRepository.getFactWithId(factID)
+           else factRepository.getFactWithId(factID)
         fact.addSource(fact0L, fact::setValue)
-        Timber.i("ToDo FactDetailViewModel $factID")
     }
+
+    init { Timber.i("ToDo Detail ViewModel")}
 
     // Добавляет и обрабатывает меню три точки для этого фрагмента
      fun update() {
@@ -84,4 +88,5 @@ class FactDetailViewModel(
     fun backupNull() {
         _backup.value = null
     }
+
 }

@@ -64,15 +64,14 @@ fun captureDateValue(view: EditText): Date? {
 fun convertCalendarToString(calendar: Calendar?): String //= calendar.toString()
 {
     if (calendar == null) return "nul"
-    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+    val sdf = SimpleDateFormat("dd.MM.yyyy")
     val ccc = sdf.format(calendar.time)
    Timber.i("ToDo convertCalendarToString $ccc ")
     return ccc
 }
-
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
 fun captureCalendarValue(view: EditText): Calendar? {
-    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+    val sdf = SimpleDateFormat("dd.MM.yyyy")
     val value: Calendar? = Calendar.getInstance()
     try {
             value?.time = sdf.parse(view.text.toString())?: Calendar.getInstance().time
@@ -95,17 +94,17 @@ object BindingConverters {
 
     @InverseMethod(value = "convertStringToDate")
     @JvmStatic fun convertDateToString(date: Date?): String =
-            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it)}
+            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").format(it)}
     @JvmStatic fun convertStringToDate(text: String): Date? =
-            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH) .parse(text) }
+            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS") .parse(text) }
             catch (e: Exception) { Date()}
 
     @InverseMethod(value = "convertStringToCalendar")
     @JvmStatic fun convertCalendarToString(calendar: Calendar?): String =
-            calendar?.let { SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(it.time) }?:"nul"
+            calendar?.let { SimpleDateFormat("dd.MM.yyyy").format(it.time) }?:"nul"
     @JvmStatic fun convertStringToCalendar(text: String): Calendar? = Calendar.getInstance().let {
         try {
-            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).parse(text)?:Date()
+            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").parse(text)?:Date()
             it
         } catch (e: Exception) { it }
     }

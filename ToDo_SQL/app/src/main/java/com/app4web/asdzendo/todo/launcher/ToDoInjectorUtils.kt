@@ -45,6 +45,6 @@ object ToDoInjectorUtils {
     fun provideToDoViewModelFactory(context: Context): ToDoViewModelFactory =
         ToDoViewModelFactory(getFactRepository(context))
 
-    fun provideFactDetailViewModelFactory(context: Context, factId: Long, paemi: Int): FactDetailViewModelFactory =
+    fun provideFactDetailViewModelFactory(context: Context, factId: Int, paemi: Int): FactDetailViewModelFactory =
         FactDetailViewModelFactory(getFactRepository(context), factId, paemi)
 }

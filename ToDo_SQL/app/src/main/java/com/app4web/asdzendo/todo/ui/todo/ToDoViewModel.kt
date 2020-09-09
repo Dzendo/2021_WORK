@@ -33,7 +33,7 @@ class ToDoViewModel internal constructor(
         get() = //Pager( PagingConfig(  pageSize = 60, enablePlaceholders = true, maxSize = 200 )){factRepository.getAllPage()}.flow
              when (paemi.value) {
                 Z -> { Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllPage()}.flow}
-                NUL -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllFactsPage()}.flow
+                N -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllFactsPage()}.flow
                 else -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllPAEMIFactsPage(paemi.value?.ordinal?:0)}.flow
             }
 
@@ -53,12 +53,12 @@ class ToDoViewModel internal constructor(
     }*/
 
     //07.4.5 Задача: обрабатывать щелчки элементов
-    private val _navigateToFactDetail = MutableLiveData<Long>()
+    private val _navigateToFactDetail = MutableLiveData<Int>()
     val navigateToFactDetail
         get() = _navigateToFactDetail
     // Шаг 1: навигация по клику
     // функцию обработчика щелчков.
-    fun onFactClicked(factid: Long){
+    fun onFactClicked(factid: Int){
         _navigateToFactDetail.value = factid
     }
     // Определите метод для вызова после завершения навигации приложения
@@ -67,7 +67,7 @@ class ToDoViewModel internal constructor(
     }
 
     fun fabClick() {
-        _navigateToFactDetail.value = 0L
+        _navigateToFactDetail.value = 0
         Timber.i("ToDotimber ToDoFragment Recycler ViewModel fabClick() SnackbarTrue() ${paemi.value?.name}")
     }
 
@@ -82,7 +82,7 @@ class ToDoViewModel internal constructor(
             R.id.money ->  M
             else -> S
         }
-        if (oldPaemi == paemi.value) paemi.value = NUL
+        if (oldPaemi == paemi.value) paemi.value = N
         Timber.i("ToDoViewModel onClickBottomNavView ${paemi.value?.name}}")
         return true
     }

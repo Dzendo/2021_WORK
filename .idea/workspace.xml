@@ -28,19 +28,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoSettingActivity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/activity_to_do_setting.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactDatabaseDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoCONSTANTS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoCONSTANTS.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/build.gradle" afterDir="false" />
-    </list>
+    <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

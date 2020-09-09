@@ -79,7 +79,7 @@ class FactViewHolder private constructor(private val binding: ToDoRecyclerItemBi
     }
 }
 // Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
-class FactListener(val clickListener: (factId: Long) -> Unit) {
+class FactListener(val clickListener: (factId: Int) -> Unit) {
     fun onClick(fact: Fact) = clickListener(fact.factId)
 }
 

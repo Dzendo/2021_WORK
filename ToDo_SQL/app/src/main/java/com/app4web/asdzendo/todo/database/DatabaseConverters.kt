@@ -1,7 +1,6 @@
 package com.app4web.asdzendo.todo.database
 
 import androidx.room.TypeConverter
-import com.app4web.asdzendo.todo.launcher.PAEMI
 import java.util.*
 
 // @TypeConverters(DatabaseConverters::class)
@@ -34,8 +33,9 @@ class DateConverters {
 
 class CalendarConverters {
     @TypeConverter fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
-    @TypeConverter fun datestampToCalendar(value: Long): Calendar = // Calendar.getInstance()
-        Calendar.getInstance().apply { timeInMillis = value }
+    @TypeConverter fun datestampToCalendar(value: Long): Calendar =
+            Calendar.getInstance().apply { timeInMillis = value }
+
 }
 
 class CharConverters {

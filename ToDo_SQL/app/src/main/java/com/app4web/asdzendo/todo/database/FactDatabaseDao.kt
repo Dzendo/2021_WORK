@@ -65,7 +65,7 @@ interface FactDatabaseDao {
      * @param id startTimeMilli to match
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
-    fun get(id: Long): Fact?
+    fun get(id: Int): Fact?
 
     /**
      * Deletes all values from the table.
@@ -113,7 +113,7 @@ interface FactDatabaseDao {
      * Выбирает и возвращает fact c id.
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
-    fun getFactWithId(id: Long): LiveData<Fact>
+    fun getFactWithId(id: Int): LiveData<Fact>
 
     /**
      * выборка фильтром PAEMI в обратной сортировке

@@ -23,9 +23,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.app4web.asdzendo.todo.launcher.PAEMI"/>
         <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
+
         <variable
             name="fact"
             type="com.app4web.asdzendo.todo.database.Fact" />
@@ -94,29 +93,14 @@
                 android:id="@+id/data"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{fact.data}"
+                android:text="@{BC.convertCalendarToString(fact.data)}"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/right_well"
-                tools:text="PAEMI" />
-
-            <!--TextView
-                android:id="@+id/name_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:adjustViewBounds="false"
-                android:cropToPadding="false"
-                android:scaleType="centerCrop"
-                android:text="@{fact.name}"
-                android:textAppearance="?attr/textAppearanceListItem"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="name" /-->
+                tools:text="Data" />
 
             <TextView
                 android:id="@+id/nameShort_card"

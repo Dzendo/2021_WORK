@@ -17,10 +17,13 @@
 package com.app4web.asdzendo.todo.launcher
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.app4web.asdzendo.todo.database.FactDatabase
 import com.app4web.asdzendo.todo.database.FactRepository
-import com.app4web.asdzendo.todo.ui.detail.FactDetailViewModelFactory
-import com.app4web.asdzendo.todo.ui.todo.ToDoViewModelFactory
+import com.app4web.asdzendo.todo.ui.todo.ToDoViewModel
+import com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel
+import timber.log.Timber
 
 /**
  * Static methods used to inject classes needed for various Activities and Fragments.
@@ -45,6 +48,48 @@ object ToDoInjectorUtils {
     fun provideToDoViewModelFactory(context: Context): ToDoViewModelFactory =
         ToDoViewModelFactory(getFactRepository(context))
 
-    fun provideFactDetailViewModelFactory(context: Context, factId: Int, paemi: Int): FactDetailViewModelFactory =
+    fun provideFactDetailViewModelFactory(context: Context, factId: Int, paemi: PAEMI)
+            : FactDetailViewModelFactory =
         FactDetailViewModelFactory(getFactRepository(context), factId, paemi)
+}
+/**
+ * This is pretty much boiler plate code for a ViewModel Factory.
+ * Это в значительной степени шаблонный код для фабрики ViewModel.
+ */
+
+class ToDoActivityViewModelFactory(
+        private val repository: FactRepository,
+) : ViewModelProvider.Factory {
+    init { Timber.i("ToDoViewModelFactory ask ToDoViewModel ")}
+
+    @Suppress("unchecked_cast")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        Timber.i("ToDoViewModelFactory ToDoViewModel created")
+        return ToDoActitityViewModel(repository) as T
+    }
+}
+
+class ToDoViewModelFactory(
+        private val repository: FactRepository,
+) : ViewModelProvider.Factory {
+    init { Timber.i("ToDoViewModelFactory ask ToDoViewModel ")}
+
+    @Suppress("unchecked_cast")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        Timber.i("ToDoViewModelFactory ToDoViewModel created")
+        return ToDoViewModel(repository) as T
+    }
+}
+
+class FactDetailViewModelFactory(
+        private val factRepository: FactRepository,
+        private val factID: Int,
+        private val paemi: PAEMI
+) : ViewModelProvider.Factory {
+    init { Timber.i("ToDo Detail ViewModel Factory ask viewmodel ")}
+    @Suppress("unchecked_cast")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        Timber.i("ToDo Detail ViewModel Factory ViewModel created")
+        return FactDetailViewModel(factRepository, factID, paemi) as T
+    }
 }

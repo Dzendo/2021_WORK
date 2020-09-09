@@ -16,7 +16,7 @@ import java.util.*
 // android:text="@{FactDetailViewModel.fact.factId}"
 //@InverseMethod("captureLongValue")
 //@InverseMethod("convertLongToString")
-@BindingConversion
+/*@BindingConversion
 fun convertLongToString(long: Long?): String = long?.toString() ?: ""
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
 fun captureLongValue(view: EditText): Long {
@@ -36,7 +36,6 @@ fun convertStringToInt(text: String): Int =
         try { text.toInt() }
         catch (e: NumberFormatException) { 0 }
 
-//  android:text="@{FactDetailViewModel.fact.toWork}"
 @BindingConversion
 fun convertBooleanToString(boolean: Boolean?): String = boolean?.toString() ?: ""
 @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
@@ -80,7 +79,7 @@ fun captureCalendarValue(view: EditText): Calendar? {
     }
     return value
 }
-
+*/
 object BindingConverters {
 
     @InverseMethod(value = "convertStringToLong")
@@ -122,9 +121,10 @@ object BindingConverters {
                catch (e: ArrayIndexOutOfBoundsException) { ' ' }
 
     @InverseMethod(value = "convertStringToPaemi")
-    @JvmStatic fun convertPaemiToString(paemi: Int?): String? =
-            paemi?.let{ PAEMI.values()[paemi].name}
-    @JvmStatic fun convertStringToPaemi(text: String): Int? =
-            try { PAEMI.valueOf(text).ordinal }
-            catch (e: IllegalArgumentException) { 0 }
+    @JvmStatic fun convertPaemiToString(paemi: PAEMI?): String? = paemi?.name
+    @JvmStatic fun convertStringToPaemi(text: String): PAEMI? =
+            try { PAEMI.valueOf(text) }
+            catch (e: IllegalArgumentException) {
+                PAEMI.N
+            }
 }

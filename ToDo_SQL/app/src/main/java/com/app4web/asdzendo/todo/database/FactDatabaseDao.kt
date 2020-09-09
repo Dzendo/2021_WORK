@@ -19,17 +19,19 @@ package com.app4web.asdzendo.todo.database
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
+import com.app4web.asdzendo.todo.launcher.PAEMI
 
 /**
  * Defines methods for using the Fact class with Room.
  * Определяет методы для использования класса Fact с Room.
  */
 @Dao
+@TypeConverters(CalendarConverters::class, PaemiConverters::class)
 interface FactDatabaseDao {
 
     // Справочно: количество строк в таблице
     //  SELECT count(*) FROM employee;
-    @Query("SELECT COUNT(factId) FROM fact_todo")
+    @Query("SELECT COUNT(*) FROM fact_todo")
     fun getCount(): LiveData<Int>
 
     /**
@@ -41,7 +43,7 @@ interface FactDatabaseDao {
     suspend fun insertAll(facts: List<Fact>): List<Long>
 
     // стандарт : чтобы был нарастающий ID fact.factid = 0L обязательно или null
-    @Insert  // (onConflict = OnConflictStrategy.REPLACE) - будет всавлять или запирать существующую
+    @Insert  // (onConflict = OnConflictStrategy.REPLACE) - будет всавлять или затирать существующую
     suspend fun insert(fact: Fact): Long
 
     /**
@@ -83,23 +85,18 @@ interface FactDatabaseDao {
      * sorted by factid in descending order.
      * сортировка по factid в порядке убывания.
      */
-    @Query("SELECT * FROM fact_todo  ORDER BY data DESC LIMIT 700")
-    fun getAllFacts(): List<Fact>
-
-    @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
-    fun getAllFactsPage():PagingSource<Int, Fact>
-
-   // @Query("SELECT * FROM fact_todo WHERE data>:FilterDateStart & data<:FilterDateEnd ORDER BY data DESC")
-   // fun getAllFactsPage(FilterDateStart: Long, FilterDateEnd:Long):PagingSource<Int, Fact>
-
     @Query("SELECT * FROM fact_todo LIMIT 700")
     fun getAll(): LiveData<List<Fact>>
 
-    @Query("SELECT * FROM fact_todo WHERE data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC")
-    fun getAllPage(FilterDateStart: Long, FilterDateEnd:Long): PagingSource<Int, Fact>
+    @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
+    fun getAllPage(): PagingSource<Int, Fact>
 
-    //@Query("SELECT * FROM fact_todo ORDER BY factId DESC")
-    //fun getAllPage(): PagingSource<Int, Fact>
+    @Query("SELECT * FROM fact_todo  ORDER BY data DESC LIMIT 700")
+    fun getAllFacts(): List<Fact>
+
+    @Query("SELECT * FROM fact_todo ORDER BY data ASC")
+    fun getAllFactsPage():PagingSource<Int, Fact>
+
     /**
      * Selects and returns the latest night.
      * Выбирает и возвращает последнюю запись.
@@ -124,22 +121,18 @@ interface FactDatabaseDao {
     /**
      * выборка фильтром PAEMI в обратной сортировке
      */
-    //@Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data , factId  LIMIT 7000")
+
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
     fun getAllPAEMIFacts(paemi: Int): LiveData<List<Fact>>
 
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi AND data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC, factId DESC")
-    fun getAllPAEMIFactsPage(paemi: Int,FilterDateStart: Long, FilterDateEnd:Long):  PagingSource<Int, Fact>
-
-   // @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC")
-   // fun getAllPAEMIFactsPage(paemi: String?):  PagingSource<Int, Fact>
-
+    fun getAllPAEMIFactsPage(paemi: PAEMI,FilterDateStart: Long, FilterDateEnd:Long):  PagingSource<Int, Fact>
 
     /**
      * выборка фильтром PAEMI по индексу в обратной сортировке
      */
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
-    fun getAllPAEMIFactsIndex(paemi: Int): LiveData<List<Fact>>
+    fun getAllPAEMIFactsIndex(paemi: PAEMI): LiveData<List<Fact>>
 }
 
 @Dao

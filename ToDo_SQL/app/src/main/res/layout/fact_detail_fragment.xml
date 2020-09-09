@@ -5,12 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.app4web.asdzendo.todo.launcher.PAEMI"/>
         <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
-        <!--variable
-            name="fact"
-            type="com.app4web.asdzendo.todo.database.Fact" /-->
+        <import type="com.app4web.asdzendo.todo.launcher.PAEMI"/>
 
         <variable
             name="viewmodel"
@@ -64,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.data}" />
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.data)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -169,7 +165,7 @@
                     android:id="@+id/toWork"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewmodel.fact.toWork}" />
+                    android:text="@={BC.convertBooleanToString(viewmodel.fact.toWork)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -205,7 +201,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.dataStart}" />
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.dataStart)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -223,7 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.dataEnd}" />
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.dataEnd)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -240,7 +236,7 @@
                     android:id="@+id/deadLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewmodel.fact.deadLine}"/>
+                    android:text="@={BC.convertCalendarToString(viewmodel.fact.deadLine)}"/>
             </LinearLayout>
 
             <LinearLayout
@@ -258,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@={viewmodel.fact.duration}" />
+                    android:text="@={BC.convertLongToString(viewmodel.fact.duration)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -311,7 +307,7 @@
                     android:id="@+id/close"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewmodel.fact.close}" />
+                    android:text="@={BC.convertBooleanToString(viewmodel.fact.close)}" />
             </LinearLayout>
 
             <LinearLayout

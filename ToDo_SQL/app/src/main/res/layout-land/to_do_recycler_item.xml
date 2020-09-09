@@ -3,7 +3,7 @@
 
     <data>
         <import type="com.app4web.asdzendo.todo.ui.BindingConverters"  alias="BC"/>
-        <!--import type="com.app4web.asdzendo.todo.ui.BindingKt"/-->
+
         <variable
             name="fact"
             type="com.app4web.asdzendo.todo.database.Fact"/>
@@ -37,7 +37,7 @@
             android:id="@+id/data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{fact.data}"
+            android:text="@{BC.convertCalendarToString(fact.data)}"
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
 
@@ -48,14 +48,6 @@
             android:layout_margin="@dimen/text_margin"
             android:text="@{fact.nameShort}"
             android:textAppearance="?attr/textAppearanceListItem" />
-
-        <!--TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@{fact.name}"
-            android:textAppearance="?attr/textAppearanceListItem" /-->
 
         <TextView
             android:id="@+id/rezult"

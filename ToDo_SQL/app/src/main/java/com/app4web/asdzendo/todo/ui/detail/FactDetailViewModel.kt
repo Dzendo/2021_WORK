@@ -10,7 +10,7 @@ import timber.log.Timber
 class FactDetailViewModel(
         private val factRepository: FactRepository,
         factID: Int = 0,
-        paemi: Int = 0,
+        paemi: PAEMI = PAEMI.N,
 ): ViewModel() {
     init { Timber.i("TODO FactDetailViewModel created $factID")}
 
@@ -29,7 +29,6 @@ class FactDetailViewModel(
     private val fact = MediatorLiveData<Fact>()
     fun getFact() = fact
 
-
     //val fact1 = getFact().value
     //var paemistring = getFact().value.paemi //PAEMI.values()[(getFact().value!!).paemi].name  // Временно для TextView поменять на адаптер
 
@@ -38,10 +37,8 @@ class FactDetailViewModel(
                 MutableLiveData(Fact(paemi = paemi, nameShort = "новый Факт", name = "Факт полностью: новый"))
                  else factRepository.getFactWithId(factID)
         fact.addSource(fact0L, fact::setValue)
-        Timber.i("ToDo FactDetailViewModel ${fact0L}")
+        Timber.i("ToDo FactDetailViewModel $factID")
     }
-
-    init { Timber.i("ToDo FactDetailViewModel  ${getFact().value}")}
 
     // Добавляет и обрабатывает меню три точки для этого фрагмента
      fun update() {
@@ -87,5 +84,4 @@ class FactDetailViewModel(
     fun backupNull() {
         _backup.value = null
     }
-
 }

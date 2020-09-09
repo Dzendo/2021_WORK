@@ -28,8 +28,7 @@ import java.util.*
 //@Fts4           // Полнотекстовый поиск Дает ОШИБКУ
 @Entity(tableName = "fact_todo",
         indices = [Index(value = ["paemi", "data", "factId"],name = "date_id_index")])
-       // indices = @Index(value = {"data" , "factId"},name = "date_id_index"))
-@TypeConverters(CharConverters::class, CalendarConverters::class, DateConverters::class)
+@TypeConverters(CalendarConverters::class, PaemiConverters::class)
 data class Fact(
 
         @PrimaryKey(autoGenerate = true)
@@ -39,7 +38,7 @@ data class Fact(
         var data: Calendar = GregorianCalendar.getInstance(), // System.currentTimeMillis(),  // Сейчас - дата и время создания записи
         var parent: Int = 0, // Какая запись (неважно какого типа) породила эту
         @ColumnInfo(index = true)
-        var paemi: Int = PAEMI.N.ordinal,  // идеи(I), плана(P), действия(A), события(E), денег(M) служебная(S)
+        var paemi: PAEMI = PAEMI.N, //PAEMI.N.ordinal,  // идеи(I), плана(P), действия(A), события(E), денег(M) служебная(S)
         var nameShort: String = "", // Факт PAEMI кратко
         var name: String = "",      // Факт PAEMI Полностью
         var rezult: String = "", // ожидаемый или полученный или получившийся РЕЗУЛЬТАТ

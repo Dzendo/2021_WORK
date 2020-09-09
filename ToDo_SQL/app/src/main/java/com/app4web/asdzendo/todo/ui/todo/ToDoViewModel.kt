@@ -27,14 +27,12 @@ class ToDoViewModel internal constructor(
    // private val viewModelJob = Job()
    // private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    //val a = factRepository.getAllFacts()
-
     val factsPage :  Flow<PagingData<Fact>>
         get() = //Pager( PagingConfig(  pageSize = 60, enablePlaceholders = true, maxSize = 200 )){factRepository.getAllPage()}.flow
              when (paemi.value) {
                 Z -> { Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllPage()}.flow}
                 N -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllFactsPage()}.flow
-                else -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllPAEMIFactsPage(paemi.value?.ordinal?:0)}.flow
+                else -> Pager( PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )){factRepository.getAllPAEMIFactsPage(paemi.value?:N)}.flow
             }
 
     /**

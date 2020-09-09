@@ -79,7 +79,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
-    fun getAllPage() = factDao.getAllPage(FilterDateStart.timeInMillis,FilterDateEnd.timeInMillis)
+    fun getAllPage() = factDao.getAllPage()
 
     // отдает LiveData<List<Fact>>
     fun getAllFacts() = factDao.getAllFacts()
@@ -92,7 +92,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun getAllPAEMIFacts(paemi: Int) = factDao.getAllPAEMIFacts(paemi)
 
     // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
-    fun getAllPAEMIFactsPage(paemi: Int) =
+    fun getAllPAEMIFactsPage(paemi: PAEMI) =
             factDao.getAllPAEMIFactsPage(paemi,FilterDateStart.timeInMillis,FilterDateEnd.timeInMillis)
 
     // отдает LiveData<Fact>
@@ -108,7 +108,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
         // Add some sample items.
         for (id in 1L..countFacts)
             for (paemi in PAEMI.values()) {
-                val fact = Fact(paemi = paemi.ordinal, nameShort = "$id Факт", name = "Факт полностью: $id")
+                val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
                 with (fact) {
                     //calendar.add(Calendar.DAY_OF_YEAR, daysToAdd)
                     data = GregorianCalendar.getInstance()

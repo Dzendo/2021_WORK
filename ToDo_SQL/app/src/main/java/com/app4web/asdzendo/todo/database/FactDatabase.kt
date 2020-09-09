@@ -40,9 +40,7 @@ import com.app4web.asdzendo.todo.launcher.FACT_TODO_DATABASE_NAME
 // Fragment <- ViewModel <- ViewModelFactory <- provideToDoActitityViewModelFactory
 // <- getFactRepository <- FactRepository <- FactDatabase <- FactDatabaseDao <- @Entity Fact
 @Database(entities = [Fact::class], version = 1, exportSchema = false)
-//@TypeConverters(CalendarConverters::class)                  // т.е в файле Converters.kt лежат конвертеры дат - две функции sf
-//@TypeConverters(DataConverters::class)
-//@TypeConverters(CalendarConverters::class, DateConverters::class, CharConverters::class)
+//@TypeConverters(CalendarConverters::class, PaemiConverters::class)
 abstract class FactDatabase : RoomDatabase() {
     /**
      * Connects the database to the DAO.
@@ -126,6 +124,5 @@ abstract class FactDatabase : RoomDatabase() {
                 Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME)
                     .fallbackToDestructiveMigration()
                     .build()
-
     }
 }

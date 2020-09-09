@@ -11,6 +11,7 @@ import com.app4web.asdzendo.todo.databinding.FactDetailFragmentBinding
 import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
 import timber.log.Timber
 import com.app4web.asdzendo.todo.R
+import com.app4web.asdzendo.todo.launcher.PAEMI
 
 
 class FactDetailFragment : Fragment() {
@@ -18,7 +19,7 @@ class FactDetailFragment : Fragment() {
     private val args: FactDetailFragmentArgs by navArgs()
 
     private val factDetailViewModel: FactDetailViewModel by viewModels {
-        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(), args.factID, args.paemi)
+        ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(), args.factID, PAEMI.valueOf(args.paemi))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,6 @@ class FactDetailFragment : Fragment() {
 
         // Get a reference to the binding object and inflate the fragment views.
         // Получить ссылку на объект привязки и раздуть представления фрагментов.
-
         val binding = FactDetailFragmentBinding.inflate(inflater, container, false)
 
         // To use the View Model with data binding, you have to explicitly
@@ -45,7 +45,6 @@ class FactDetailFragment : Fragment() {
         // дайте объекту привязки ссылку на него.
         binding.viewmodel = factDetailViewModel
         binding.lifecycleOwner = viewLifecycleOwner //this
-       // binding.fact = factDetailViewModel.getFact().value
 
         // Для возврата в таблицу по нажатию любой кнопки
         factDetailViewModel.backup.observe(viewLifecycleOwner) {

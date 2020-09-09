@@ -75,7 +75,7 @@ class ToDoActivity : AppCompatActivity() {
             R.id.main_action_constfact_100 -> COUNTSFact = 100L
             R.id.main_action_constfact_1000 -> COUNTSFact = 1_000L
             R.id.main_action_constfact_10_000 -> COUNTSFact = 10_000L
-            R.id.main_action_constfact_100_000 -> COUNTSFact = 50_000L
+            R.id.main_action_constfact_100_000 -> COUNTSFact = 30_000L
             R.id.main_action_constfact_1000_000 -> COUNTSFact = 1_000_000L
             else -> {
                 super.onOptionsItemSelected(item); return false

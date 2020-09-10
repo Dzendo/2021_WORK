@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.app4web.asdzendo.todo.launcher.PAEMI
+import java.util.*
 
 /**
  * Defines methods for using the Fact class with Room.
@@ -126,7 +127,7 @@ interface FactDatabaseDao {
     fun getAllPAEMIFacts(paemi: Int): LiveData<List<Fact>>
 
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi AND data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC, factId DESC")
-    fun getAllPAEMIFactsPage(paemi: PAEMI,FilterDateStart: Long, FilterDateEnd:Long):  PagingSource<Int, Fact>
+    fun getAllPAEMIFactsPage(paemi: PAEMI, FilterDateStart: Calendar, FilterDateEnd: Calendar): PagingSource<Int, Fact>
 
     /**
      * выборка фильтром PAEMI по индексу в обратной сортировке

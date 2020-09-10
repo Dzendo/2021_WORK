@@ -98,12 +98,22 @@ object BindingConverters {
             try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS") .parse(text) }
             catch (e: Exception) { Date()}
 
+    @InverseMethod(value = "convertStrToCalendar")
+    @JvmStatic fun convertCalendarToStr(calendar: Calendar?): String =
+            calendar?.let { SimpleDateFormat("dd.MM.yyyy").format(it.time) }?:"nul"
+    @JvmStatic fun convertStrToCalendar(text: String): Calendar? = Calendar.getInstance().let {
+        try {
+            it.time = SimpleDateFormat("dd.MM.yyyy").parse(text)
+            it
+        } catch (e: Exception) { it }
+    }
+
     @InverseMethod(value = "convertStringToCalendar")
     @JvmStatic fun convertCalendarToString(calendar: Calendar?): String =
-            calendar?.let { SimpleDateFormat("dd.MM.yyyy").format(it.time) }?:"nul"
+            calendar?.let { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").format(it.time) }?:"nul"
     @JvmStatic fun convertStringToCalendar(text: String): Calendar? = Calendar.getInstance().let {
         try {
-            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").parse(text)?:Date()
+            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").parse(text)
             it
         } catch (e: Exception) { it }
     }

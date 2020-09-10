@@ -87,7 +87,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
 
     // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
     fun getAllPAEMIFactsPage(paemi: PAEMI) =
-            factDao.getAllPAEMIFactsPage(paemi,FilterDateStart.timeInMillis,FilterDateEnd.timeInMillis)
+            factDao.getAllPAEMIFactsPage(paemi,FilterDateStart,FilterDateEnd)
 
     // отдает LiveData<Fact>
     fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)

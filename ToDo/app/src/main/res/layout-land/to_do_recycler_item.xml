@@ -37,7 +37,7 @@
             android:id="@+id/data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{BC.convertCalendarToString(fact.data)}"
+            android:text="@{BC.convertCalendarToStr(fact.data)}"
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
 

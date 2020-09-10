@@ -15,5 +15,5 @@ class ToDoActitityViewModel internal constructor(
 
     fun count() = factRepository.count()
 
-    fun addFactDatabase(COUNTSFact: Long) = factRepository.addFactDatabase(COUNTSFact)
+    fun addFactDatabase(COUNTSFact: Int) = factRepository.addFactDatabase(COUNTSFact)
 }

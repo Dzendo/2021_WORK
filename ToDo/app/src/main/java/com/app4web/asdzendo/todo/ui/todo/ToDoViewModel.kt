@@ -10,7 +10,11 @@ import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import com.app4web.asdzendo.todo.launcher.PAEMI.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ToDoViewModel internal constructor(
@@ -19,11 +23,20 @@ class ToDoViewModel internal constructor(
 
     val paemi: MutableLiveData<PAEMI> = MutableLiveData<PAEMI>(Z)
 
-    init { Timber.i("ToDoViewModel created PAEMI= ${paemi.value?.name}")}
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
+     * Любая сопрограмма, запущенная в этой области, автоматически отменяется, если ViewModel очищается
      */
+    init {
+        viewModelScope.launch {
+            val viewModelJob = Job()
+            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+            // Coroutine that will be canceled when the ViewModel is cleared.
+        }
+    Timber.i("ToDoViewModel created PAEMI= ${paemi.value?.name}")
+    }
+
    // private val viewModelJob = Job()
    // private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
@@ -51,7 +64,7 @@ class ToDoViewModel internal constructor(
     }*/
 
     //07.4.5 Задача: обрабатывать щелчки элементов
-    private val _navigateToFactDetail = MutableLiveData<Int>()
+    private val _navigateToFactDetail = MutableLiveData<Int?>()
     val navigateToFactDetail
         get() = _navigateToFactDetail
     // Шаг 1: навигация по клику
@@ -93,7 +106,7 @@ class ToDoViewModel internal constructor(
     // Добавляет и обрабатывает меню три точки для этого фрагмента
     fun clear() = factRepository.clear()
 
-    fun addFactDatabase(COUNTSFact: Long) = factRepository.addFactDatabase(COUNTSFact)
+    fun addFactDatabase(COUNTSFact: Int) = factRepository.addFactDatabase(COUNTSFact)
 
     fun count() = factRepository.count()
 }

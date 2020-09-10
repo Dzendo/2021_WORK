@@ -30,7 +30,7 @@
         <argument
             android:name="paemi"
             android:defaultValue="N"
-            app:argType="string" />
+            app:argType="com.app4web.asdzendo.todo.launcher.PAEMI" />
 
         <action
             android:id="@+id/action_factDetailFragment_to_todoFragment"

@@ -70,13 +70,13 @@ class ToDoActivity : AppCompatActivity() {
             R.id.main_action_base_in_memory -> BASE_IN_MEMORY = true
             R.id.main_action_base_on_disk -> BASE_IN_MEMORY = false
 
-            R.id.main_action_constfact_1 -> COUNTSFact = 1L
-            R.id.main_action_constfact_10 -> COUNTSFact = 10L
-            R.id.main_action_constfact_100 -> COUNTSFact = 100L
-            R.id.main_action_constfact_1000 -> COUNTSFact = 1_000L
-            R.id.main_action_constfact_10_000 -> COUNTSFact = 10_000L
-            R.id.main_action_constfact_100_000 -> COUNTSFact = 30_000L
-            R.id.main_action_constfact_1000_000 -> COUNTSFact = 1_000_000L
+            R.id.main_action_constfact_1 -> COUNTSFact = 1
+            R.id.main_action_constfact_10 -> COUNTSFact = 10
+            R.id.main_action_constfact_100 -> COUNTSFact = 100
+            R.id.main_action_constfact_1000 -> COUNTSFact = 1_000
+            R.id.main_action_constfact_10_000 -> COUNTSFact = 10_000
+            R.id.main_action_constfact_100_000 -> COUNTSFact = 100_000
+            R.id.main_action_constfact_1000_000 -> COUNTSFact = 1_000_000
             else -> {
                 super.onOptionsItemSelected(item); return false
             }
@@ -86,14 +86,14 @@ class ToDoActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        savedInstanceState.putInt("COUNTSFact", COUNTSFact.toInt())
+        savedInstanceState.putInt("COUNTSFact", COUNTSFact)
         savedInstanceState.putBoolean("BASE_IN_MEMORY", BASE_IN_MEMORY);
         super.onSaveInstanceState(savedInstanceState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        COUNTSFact = savedInstanceState.getInt("COUNTSFact").toLong()
+        COUNTSFact = savedInstanceState.getInt("COUNTSFact")
         BASE_IN_MEMORY = savedInstanceState.getBoolean("BASE_IN_MEMORY");
     }
 }

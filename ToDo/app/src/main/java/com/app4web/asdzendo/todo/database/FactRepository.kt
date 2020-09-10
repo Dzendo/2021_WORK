@@ -60,12 +60,6 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
                         factDao.delete(fact)
             }
 
-    fun addFactDatabase(countFacts: Long = 65L) =  // Дозаполнение начальных данных
-        applicationScope.launch {
-            val addCount = factDao.insertAll(factContent(countFacts))
-            Timber.i("ToDoFactRepository Add Database Строк записи = $countFacts * 7 = ${addCount.size}")
-        }
-
     fun clear() =
         applicationScope.launch {
             factDao.clear() // Заполнить заново базу данных
@@ -98,15 +92,33 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     // отдает LiveData<Fact>
     fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)
 
-
+    // Дозаполнение начальных данных
+    suspend fun addFactDatabaseAll(countFacts: Int = 100) =
+        applicationScope.launch {
+            val addCount = factDao.insertAll(factContent(countFacts))
+            Timber.i("ToDoFactRepository Add Database Строк записи = $countFacts * 7 = ${addCount.size}")
+        }
+    fun addFactDatabase(countFacts: Int = 1000) {
+         applicationScope.launch {
+            for (count in 1..(countFacts / 10_000)) {
+                val job100 = applicationScope.launch {
+                    val addCount = factDao.insertAll(factContent(10000))
+                }
+                 job100.join() // wait until child coroutine completes
+                Timber.i("ToDoFactRepository Add Database Пачка записи = ${count}--> ${countFacts/10_000}")
+            }
+            addFactDatabaseAll(countFacts % 10000)
+            Timber.i("ToDoFactRepository Add Database Последняя записи = ${countFacts % 1000 * 7}")
+        }
+    }
     // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7
-    private fun factContent(countFacts: Long = 65L): List<Fact>  {
+    private fun factContent(count: Int = 100): List<Fact>  {
 
-        //val PAEMI: List<String> = arrayListOf(" ","P","A","E","M","I","S")
+
         val FACTS: MutableList<Fact> = ArrayList()
-        //private val PAEMI_MAP: MutableMap<Long, Fact> = HashMap()
+
         // Add some sample items.
-        for (id in 1L..countFacts)
+        for (id in 1..count)
             for (paemi in PAEMI.values()) {
                 val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
                 with (fact) {
@@ -114,20 +126,10 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
                     data = GregorianCalendar.getInstance()
                     data.set(GregorianCalendar.YEAR,(2000..2040).random())
                     data.set(GregorianCalendar.DAY_OF_YEAR,(1..365).random())
-
-                   /* data = Date(Date().time - (countFacts/2 -id - 50 + (0..100).random()) * 86400000L)
-                    //data = Date(Date().time - (countFacts -(0..100).random()*id) * 86400000L)
-                    dataStart = Date(Date().time - (countFacts - id+1) * 1000)
-                    dataEnd = Date(Date().time -( countFacts - id+1) * 100)
-                    deadLine = Calendar.getInstance()
-                    deadLine.add(Calendar.DATE,id.toInt())
-                    duration = dataStart?.time?.let { dataEnd?.time?.minus(it) }
-                    */
                 }
                 FACTS.add(fact)
-                //     FACT_MAP[fact.factId] = fact
             }
-        Timber.i("ToDoFactRepository Add List Строк записи = $countFacts * 7 = ${countFacts * 7}")
+        Timber.i("ToDoFactRepository Add List Строк записи = $count * 7 = ${count * 7}")
         return FACTS
     }
 

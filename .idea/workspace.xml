@@ -34,6 +34,11 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -76,7 +81,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597035651525</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="End ToDo Main SQL&#10;Start ToDo Sprav">
+      <created>1599624863170</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1599624863170</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -106,13 +118,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Start PAEMI" />
     <MESSAGE value="Start ToDo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start ToDo" />
+    <MESSAGE value="End ToDo Main SQL&#10;Start ToDo Sprav" />
+    <option name="LAST_COMMIT_MESSAGE" value="End ToDo Main SQL&#10;Start ToDo Sprav" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="586" y="93" key="CommitChangelistDialog2" timestamp="1597035650702">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2506" y="93" key="CommitChangelistDialog2" timestamp="1599624861100">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035650702" />
+    <state x="2506" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1599624861100" />
     <state x="2659" y="260" key="FileChooserDialogImpl" timestamp="1598560426320">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -126,10 +140,11 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2381" y="164" key="SettingsEditor/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1598560569780" />
-    <state x="551" y="239" key="Vcs.Push.Dialog.v2" timestamp="1597035657858">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2471" y="239" key="Vcs.Push.Dialog.v2" timestamp="1599624880041">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="551" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035657858" />
+    <state x="2471" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1599624880041" />
     <state x="719" y="426" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1597351902263">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

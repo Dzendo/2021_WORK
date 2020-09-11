@@ -13,9 +13,9 @@ import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
 import com.app4web.asdzendo.todo.launcher.COUNTSFact
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -59,12 +59,19 @@ class ToDoFragment : Fragment() {
         binding.recyclerList.adapter = adapterPage
 
         // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
-        // когда список меняется
-        todoViewModel.paemi.observe(viewLifecycleOwner) {
-            lifecycleScope.launch {
-                @OptIn(ExperimentalCoroutinesApi::class)
-                todoViewModel.factsPage.collectLatest { adapterPage.submitData(it) }
-            }
+        // когда список меняется Cancel не работает
+        todoViewModel.paemi.observe(viewLifecycleOwner) {paemi ->
+           // lifecycleScope.launch {
+                val factsJob = lifecycleScope.launch {
+            //        while (isActive)
+                        @OptIn(ExperimentalCoroutinesApi::class)
+                        todoViewModel.factsPage.cancellable().collectLatest {
+                            if (paemi==PAEMI.M)
+                                cancel()
+                            adapterPage.submitData(it) }
+                }
+            //    factsJob.cancel() // отменяет задание и ждет его завершения
+            //}
         }
 
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->

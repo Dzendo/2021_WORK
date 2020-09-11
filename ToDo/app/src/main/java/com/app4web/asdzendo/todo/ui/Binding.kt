@@ -93,27 +93,27 @@ object BindingConverters {
 
     @InverseMethod(value = "convertStringToDate")
     @JvmStatic fun convertDateToString(date: Date?): String =
-            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").format(it)}
+            (date?:Date()).let{SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it)}
     @JvmStatic fun convertStringToDate(text: String): Date? =
-            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS") .parse(text) }
+            try { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH) .parse(text) }
             catch (e: Exception) { Date()}
 
     @InverseMethod(value = "convertStrToCalendar")
     @JvmStatic fun convertCalendarToStr(calendar: Calendar?): String =
-            calendar?.let { SimpleDateFormat("dd.MM.yyyy").format(it.time) }?:"nul"
+            calendar?.let { SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).format(it.time) }?:"nul"
     @JvmStatic fun convertStrToCalendar(text: String): Calendar? = Calendar.getInstance().let {
         try {
-            it.time = SimpleDateFormat("dd.MM.yyyy").parse(text)
+            it.time = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH).parse(text)?:it.time
             it
         } catch (e: Exception) { it }
     }
 
     @InverseMethod(value = "convertStringToCalendar")
     @JvmStatic fun convertCalendarToString(calendar: Calendar?): String =
-            calendar?.let { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").format(it.time) }?:"nul"
+            calendar?.let { SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(it.time) }?:"nul"
     @JvmStatic fun convertStringToCalendar(text: String): Calendar? = Calendar.getInstance().let {
         try {
-            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS").parse(text)
+            it.time = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).parse(text)?:it.time
             it
         } catch (e: Exception) { it }
     }

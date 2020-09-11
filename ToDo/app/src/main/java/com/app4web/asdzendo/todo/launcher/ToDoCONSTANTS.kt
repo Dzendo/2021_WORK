@@ -10,10 +10,10 @@ var COUNTSFact = 100
 var BASE_IN_MEMORY = false
 var FACT_TODO_DATABASE_NAME = "FACT_TODO_ENUM"
 var FilterDateStart: Calendar = GregorianCalendar.getInstance().also {
-    it.set(2019, 0, 1,0,0,0)}
+    it.set(2020, 8, 1,0,0,0)}
 
 var FilterDateEnd:   Calendar = GregorianCalendar.getInstance().also {
-    it.set(2021, 11, 31,23,59,59)}
+    it.set(2020, 8, 31,23,59,59)}
 
     enum class PAEMI(val paemiString:String = " "){
         N("Null"),

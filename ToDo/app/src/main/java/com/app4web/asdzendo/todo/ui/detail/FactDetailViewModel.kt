@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
 import com.app4web.asdzendo.todo.launcher.PAEMI
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -33,39 +34,42 @@ class FactDetailViewModel(
     //var paemistring = getFact().value.paemi //PAEMI.values()[(getFact().value!!).paemi].name  // Временно для TextView поменять на адаптер
 
     init {
-        val fact0L: LiveData<Fact> = if (factID == 0)
+        viewModelScope.launch {
+            val fact0L: LiveData<Fact> = if (factID == 0)
                 MutableLiveData(Fact(paemi = paemi, nameShort = "новый Факт", name = "Факт полностью: новый"))
-                 else factRepository.getFactWithId(factID)
-        fact.addSource(fact0L, fact::setValue)
-        Timber.i("ToDo FactDetailViewModel $factID")
+            else factRepository.getFactWithId(factID)
+            fact.addSource(fact0L, fact::setValue)
+            Timber.i("ToDo FactDetailViewModel $factID")
+        }
     }
 
     // Добавляет и обрабатывает меню три точки для этого фрагмента
      fun update() {
-     //   withContext(Dispatchers.IO) {
+        viewModelScope.launch {
          fact.value?.rezult = " Изм ${fact.value?.factId} " + fact.value?.rezult
          factRepository.update(fact.value)
-     //   }
+        }
          Timber.i("ToDo Detail ViewModel update ${fact.value?.factId} ")
          backupTrue()
      }
 
      fun insert()  {
-        // viewModelScope.launch {    // coroutine стоит в репозитории, наверно здесь не надо???
+         viewModelScope.launch {    // coroutine стоит в репозитории, наверно здесь не надо???
              //   withContext(Dispatchers.IO) {
          fact.value?.rezult = " Доб " + fact.value?.rezult
          factRepository.insert(fact.value)
              //   }
-         //}
+         }
 
         Timber.i("ToDo Detail ViewModel insert ${fact.value?.rezult}")
          backupTrue()
      }
 
      fun delete() {
+         viewModelScope.launch {
       //  withContext(Dispatchers.IO) {
          factRepository.delete(fact.value)
-      //  }
+        }
          Timber.i("ToDo Detail ViewModel delete ${fact.value?.factId}")
          backupTrue()
      }

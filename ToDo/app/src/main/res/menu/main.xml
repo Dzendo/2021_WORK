@@ -46,38 +46,38 @@
             <item
                 android:id="@+id/main_action_constfact_1"
                 android:orderInCategory="100"
-                android:title="Размер Пачки 7"
+                android:title="Размер Пачки 8"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/main_action_constfact_10"
                 android:orderInCategory="100"
-                android:title="Размер Пачки 70"
+                android:title="Размер Пачки 80"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/main_action_constfact_100"
                 android:orderInCategory="100"
                 android:checked="true"
-                android:title="Размер Пачки 700"
+                android:title="Размер Пачки 800"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/main_action_constfact_1000"
                 android:orderInCategory="100"
-                android:title="Размер Пачки 7000"
+                android:title="Размер Пачки 8000"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/main_action_constfact_10_000"
                 android:orderInCategory="100"
-                android:title="Размер Пачки 70 тыс"
+                android:title="Размер Пачки 80 тыс"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/main_action_constfact_100_000"
                 android:orderInCategory="100"
-                android:title="Размер Пачки 350 тыс"
+                android:title="Размер Пачки 800 тыс"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/main_action_constfact_1000_000"
                 android:orderInCategory="100"
-                android:title="Размер Пачки 7 млн"
+                android:title="Размер Пачки 8 млн"
                 app:showAsAction="never" />
         </group>
         </menu>

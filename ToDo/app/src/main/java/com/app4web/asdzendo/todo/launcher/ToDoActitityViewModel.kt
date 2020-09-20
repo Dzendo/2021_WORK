@@ -1,7 +1,9 @@
 package com.app4web.asdzendo.todo.launcher
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app4web.asdzendo.todo.database.FactRepository
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ToDoActitityViewModel internal constructor(
@@ -15,5 +17,5 @@ class ToDoActitityViewModel internal constructor(
 
     fun count() = factRepository.count()
 
-    fun addFactDatabase(COUNTSFact: Int) = factRepository.addFactDatabase(COUNTSFact)
+    fun addFactDatabase(COUNTSFact: Int) =  viewModelScope.launch {factRepository.addFactDatabase(COUNTSFact)}
 }

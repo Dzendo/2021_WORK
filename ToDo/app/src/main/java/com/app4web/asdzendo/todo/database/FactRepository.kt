@@ -16,12 +16,15 @@
 
 package com.app4web.asdzendo.todo.database
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.app4web.asdzendo.todo.launcher.FilterDateEnd
 import com.app4web.asdzendo.todo.launcher.FilterDateStart
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 
@@ -35,62 +38,69 @@ import java.util.*
 class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
-    // Возвращает обычное Fact?
-    fun get(factID:Int): Fact? = factDao.get(factID)
+    val pagingConfig = PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )
 
-    fun insert(fact: Fact?) =
-            applicationScope.launch {
+    // Возвращает обычное Fact?
+    suspend fun get(factID:Int): Fact? = factDao.get(factID)
+
+    suspend fun insert(fact: Fact?) =
+            //applicationScope.launch {
+            withContext(Dispatchers.IO) {
                 var newFact = Fact()
                 if (fact != null) newFact = fact
                 newFact.factId = 0
                 factDao.insert(newFact)
             }
 
-    fun update(fact: Fact?) =
-            applicationScope.launch {
+    suspend fun update(fact: Fact?) =
+            withContext(Dispatchers.IO) {
                 if (fact != null)
                    if (get(fact.factId) != null)
                         factDao.update(fact)
             }
 
-    fun delete(fact: Fact?) =
-            applicationScope.launch {
+    suspend fun delete(fact: Fact?) =
+            withContext(Dispatchers.IO) {
                 if (fact != null)
                     if (get(fact.factId) != null)
                         factDao.delete(fact)
             }
 
-    fun clear() =
-        applicationScope.launch {
-            factDao.clear() // Заполнить заново базу данных
-            Timber.i("ToDoFactRepository fact_base_clearing База очищена  ")
-        }
+    suspend fun clear() =  factDao.clear() // Заполнить заново базу данных
 
-    // LiveData<Int>
     fun count() = factDao.getCount()
 
+    fun getAllPageCollect(paemi:PAEMI) =
+
+              when (paemi) {
+                PAEMI.Z -> Pager(pagingConfig) { getAllPage() }.flow
+                PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }.flow
+                else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) }.flow
+            }
+
+
+
     // отдает LiveData<List<Fact>>
-    fun getAll() = factDao.getAll()
+    suspend fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
     fun getAllPage() = factDao.getAllPage()
 
     // отдает LiveData<List<Fact>>
-    fun getAllFacts() = factDao.getAllFacts()
+    suspend fun getAllFacts() = factDao.getAllFacts()
 
     // отдает PagingSource<Int, Fact>
-    fun getAllFactsPage() =
-            factDao.getAllFactsPage()
+    fun getAllFactsPage() = factDao.getAllFactsPage()
 
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
-    fun getAllPAEMIFacts(paemi: Int) = factDao.getAllPAEMIFacts(paemi)
+    suspend fun getAllPAEMIFacts(paemi: Int) = factDao.getAllPAEMIFacts(paemi)
 
     // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
     fun getAllPAEMIFactsPage(paemi: PAEMI) =
             factDao.getAllPAEMIFactsPage(paemi,FilterDateStart,FilterDateEnd)
 
     // отдает LiveData<Fact>
-    fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)
+    suspend fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)
 
     // Дозаполнение начальных данных
     suspend fun addFactDatabaseAll(countFacts: Int = 100) =
@@ -98,7 +108,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             val addCount = factDao.insertAll(factContent(countFacts))
             Timber.i("ToDoFactRepository Add Database Строк записи = $countFacts * 7 = ${addCount.size}")
         }
-    fun addFactDatabase(countFacts: Int = 1000) {
+    suspend fun addFactDatabase(countFacts: Int = 1000) {
          applicationScope.launch {
             for (count in 1..(countFacts / 10_000)) {
                 val job100 = applicationScope.launch {
@@ -112,8 +122,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
         }
     }
     // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7
-    private fun factContent(count: Int = 100): List<Fact>  {
-
+    suspend fun factContent(count: Int = 100): List<Fact>  {
 
         val FACTS: MutableList<Fact> = ArrayList()
 

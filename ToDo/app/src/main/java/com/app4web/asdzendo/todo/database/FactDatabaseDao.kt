@@ -68,7 +68,7 @@ interface FactDatabaseDao {
      * @param id startTimeMilli to match
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
-    fun get(id: Int): Fact?
+    suspend fun get(id: Int): Fact?
 
     /**
      * Deletes all values from the table.
@@ -93,7 +93,7 @@ interface FactDatabaseDao {
     fun getAllPage(): PagingSource<Int, Fact>
 
     @Query("SELECT * FROM fact_todo  ORDER BY data DESC LIMIT 700")
-    fun getAllFacts(): List<Fact>
+    suspend fun getAllFacts(): List<Fact>
 
     @Query("SELECT * FROM fact_todo ORDER BY data ASC")
     fun getAllFactsPage():PagingSource<Int, Fact>
@@ -104,13 +104,13 @@ interface FactDatabaseDao {
      * не используется - надо для восстановления Recycler
      */
     @Query("SELECT * FROM fact_todo ORDER BY factId DESC LIMIT 1")
-    fun getTofact(): Fact?
+    suspend fun getTofact(): Fact?
 
     /**
      * Selects and returns the night with given nightId.
      * Выбирает и возвращает fact c id.
      */
-    @Query("SELECT * from fact_todo WHERE factId = :id")
+    @Query("SELECT * from fact_todo WHERE factId = :id Limit 1")
     fun getFactWithId(id: Int): LiveData<Fact>
 
     /**

@@ -27,6 +27,7 @@ class ToDoFragment : Fragment() {
     private val todoViewModel: ToDoViewModel by viewModels {
         ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
     }
+    var iscancelFlow = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,35 +44,12 @@ class ToDoFragment : Fragment() {
         // Получить ссылку на объект привязки и раздуть представления фрагментов.
         val binding = ToDoRecyclerListBinding.inflate(inflater, container, false)
 
-        // Вывести в заголовок количество записей в базе не работает - срабатывает из Activity
-        todoViewModel.count().observe(viewLifecycleOwner) { count -> activity?.actionBar?.title = "ToDoToDo $count записей" }
-
         binding.viewmodel = todoViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.recyclerList.adapter = todoViewModel.adapterPage
 
-        // Говорит можно объявить и в RecyclerView XML
-        val manager = LinearLayoutManager(activity)
-        binding.recyclerList.layoutManager = manager
-
-        val adapterPage = ToDoPageAdapter(FactListener { factID ->
-            todoViewModel.onFactClicked(factID)})
-
-        binding.recyclerList.adapter = adapterPage
-
-        // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
-        // когда список меняется Cancel не работает
-        todoViewModel.paemi.observe(viewLifecycleOwner) {paemi ->
-           // lifecycleScope.launch {
-                val factsJob = lifecycleScope.launch {
-            //        while (isActive)
-                        @OptIn(ExperimentalCoroutinesApi::class)
-                        todoViewModel.factsPage.cancellable().collectLatest {
-                            if (paemi==PAEMI.M)
-                                cancel()
-                            adapterPage.submitData(it) }
-                }
-            //    factsJob.cancel() // отменяет задание и ждет его завершения
-            //}
+        todoViewModel.paemi.observe(viewLifecycleOwner) { paemi: PAEMI? ->
+            todoViewModel.factsPageChange()
         }
 
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
@@ -103,6 +81,11 @@ class ToDoFragment : Fragment() {
             R.id.fact_base_clearing -> {
                 todoViewModel.clear()
                 Toast.makeText(activity,"База очищена ", Toast.LENGTH_SHORT).show()
+                Timber.i("ToDoFactRepository fact_base_clearing База очищена  ")
+            }
+            R.id.isCancel -> {
+                iscancelFlow = true
+                Toast.makeText(activity,"Отмена ", Toast.LENGTH_SHORT).show()
             }
             else -> return false
         }

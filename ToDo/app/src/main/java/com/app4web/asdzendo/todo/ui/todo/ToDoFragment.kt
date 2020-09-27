@@ -7,15 +7,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
 import com.app4web.asdzendo.todo.launcher.COUNTSFact
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -27,6 +27,15 @@ class ToDoFragment : Fragment() {
     private val todoViewModel: ToDoViewModel by viewModels {
         ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
     }
+   // init {
+        var paemiJob: Job? = null
+        val toDoFragmentJob = Job()
+        val uiScope = CoroutineScope(Dispatchers.Main + toDoFragmentJob)
+        // Coroutine that will be canceled when the ViewModel is cleared.
+
+       // Timber.i("ToDoViewModel created PAEMI= ${paemi.value?.name}")
+   // }
+
     var iscancelFlow = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +43,7 @@ class ToDoFragment : Fragment() {
         // Добавляет и обрабатывает меню три точки для этого фрагмента
         setHasOptionsMenu(true)
         Timber.i("ToDo Recycler Fragment onCreate")
+
     }
 
     override fun onCreateView(
@@ -49,7 +59,11 @@ class ToDoFragment : Fragment() {
         binding.recyclerList.adapter = todoViewModel.adapterPage
 
         todoViewModel.paemi.observe(viewLifecycleOwner) { paemi: PAEMI? ->
-            todoViewModel.factsPageChange()
+              paemiJob?.cancel()
+              paemiJob = uiScope.launch {
+              //paemiJob = viewLifecycleOwner.lifecycleScope.launch {
+                todoViewModel.factsPageChange()
+            }
         }
 
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
@@ -59,11 +73,6 @@ class ToDoFragment : Fragment() {
                  todoViewModel.navigateToFactDetailNavigated()
             }
         }
-
-        binding.bottomNavView.setOnNavigationItemSelectedListener { paemi ->
-            Timber.i("ToDo ToDoFragment  setOnNavigationItemSelectedListener PAEMI $paemi")
-            todoViewModel.onClickBottomNavView(paemi)
-            }
 
         return binding.root
     }

@@ -39,6 +39,7 @@ class ToDoActivity : AppCompatActivity() {
 
         // Вывести в заголовок количество записей в базе
         val bas = if (BASE_IN_MEMORY) "M" else "D"
+
         mainViewModel.count().observe(this) { count -> title = "ToDo$bas=$count" }
 
         mainBinding.viewmodel = mainViewModel

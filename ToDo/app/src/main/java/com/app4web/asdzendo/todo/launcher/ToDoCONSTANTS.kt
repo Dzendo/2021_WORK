@@ -28,5 +28,5 @@ var FilterDateEnd:   Calendar = GregorianCalendar.getInstance().also {
         E("Event"),
         M("Money"),
         S("System"),
-        Z("Rezerv")
+        R("Rezerv")
     }

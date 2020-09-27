@@ -71,21 +71,37 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
     fun count() = factDao.getCount()
 
     fun getAllPageCollect(paemi:PAEMI) =
+           // withContext(Dispatchers.IO) {
+                when (paemi) {
+                    PAEMI.R -> Pager(pagingConfig) {  getAllPage()  }
+                    PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }
+                    else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) }
+                }
+            //}
 
-              when (paemi) {
-                PAEMI.Z -> Pager(pagingConfig) { getAllPage() }.flow
+    /*when (paemi) {
+        PAEMI.Z -> Pager(pagingConfig) { getAllPage() }.flow
+        PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }.flow
+        else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) }.flow
+    }*/
+   /* suspend fun setAllPageCollect(paemi:PAEMI) =
+
+            when (paemi) {
+                PAEMI.R -> Pager(pagingConfig) { getAllPage() }.flow
                 PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }.flow
                 else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) }.flow
             }
-
+    */
 
 
     // отдает LiveData<List<Fact>>
     suspend fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
-    fun getAllPage() = factDao.getAllPage()
-
+     fun getAllPage() =
+           // withContext(Dispatchers.IO) {
+                factDao.getAllPage()
+           // }
     // отдает LiveData<List<Fact>>
     suspend fun getAllFacts() = factDao.getAllFacts()
 

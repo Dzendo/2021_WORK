@@ -2,24 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/idea"
+        android:id="@+id/Idea"
         android:icon="@drawable/ic_home"
         android:title="Idea" />
     <item
-        android:id="@+id/plan"
+        android:id="@+id/Plan"
         android:icon="@drawable/ic_home"
         android:title="Plan" />
     <item
-        android:id="@+id/action"
+        android:id="@+id/Action"
         android:icon="@drawable/ic_home"
         android:title="Action" />
     <item
-        android:id="@+id/event"
+        android:id="@+id/Event"
         android:icon="@drawable/ic_home"
         android:title="Event" />
 
     <item
-        android:id="@+id/money"
+        android:id="@+id/Money"
         android:icon="@drawable/ic_home"
         android:title="Money" />
 

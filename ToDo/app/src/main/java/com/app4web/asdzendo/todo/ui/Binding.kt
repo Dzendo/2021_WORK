@@ -1,14 +1,26 @@
 package com.app4web.asdzendo.todo.ui
 
-import android.widget.EditText
-import androidx.databinding.BindingConversion
-import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseMethod
 import com.app4web.asdzendo.todo.launcher.PAEMI
-import timber.log.Timber
-import java.text.ParseException
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.*
+
+// Пока не потребовался , т.к. впрямую указал листенер в XML:
+// app:OnNavigationItemSelectedListener = "@{viewmodel::onClickBottomNavView}"
+
+// из XML BottomNavigationView меняет(подставляет) listener на указанный (ему будет передаваться выбранный пункт меню)
+// app:onNavigationItemSelected = "@{viewmodel::onClickBottomNavView}" РАБОТАЕТ
+//   <!-- https://issue.life/questions/45132691 -->
+/*
+    @BindingAdapter("onNavigationItemSelected")
+    fun setOnNavigationItemSelectedListener(view: BottomNavigationView,
+                                            listener: BottomNavigationView.OnNavigationItemSelectedListener?)
+            { view.setOnNavigationItemSelectedListener(listener) }
+ */
+
+
 
 
 // android:text="@={Converter.dateToString(viewmodel.birthDate)}"

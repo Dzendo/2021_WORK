@@ -59,9 +59,9 @@ class ToDoFragment : Fragment() {
         binding.recyclerList.adapter = todoViewModel.adapterPage
 
         todoViewModel.paemi.observe(viewLifecycleOwner) { paemi: PAEMI? ->
-              paemiJob?.cancel()
-              paemiJob = uiScope.launch {
-              //paemiJob = viewLifecycleOwner.lifecycleScope.launch {
+             // paemiJob?.cancel()
+             // paemiJob = uiScope.launch {
+              paemiJob = viewLifecycleOwner.lifecycleScope.launch {
                 todoViewModel.factsPageChange()
             }
         }

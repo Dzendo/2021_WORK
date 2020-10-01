@@ -16,9 +16,9 @@ var FilterDateEnd:   Calendar = GregorianCalendar.getInstance().also {
 */
 var BASE_IN_MEMORY = true
 var FilterDateStart: Calendar = GregorianCalendar.getInstance().also {
-    it.set(2019, 0, 0,0,0,0)}
+    it.set(1900, 0, 0,0,0,0)}
 var FilterDateEnd:   Calendar = GregorianCalendar.getInstance().also {
-    it.set(2022, 11, 31,23,59,59)}
+    it.set(2100, 11, 31,23,59,59)}
 
     enum class PAEMI(val paemiString:String = " "){
         N("Null"),

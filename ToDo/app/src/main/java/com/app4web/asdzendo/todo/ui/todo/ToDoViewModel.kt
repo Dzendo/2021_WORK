@@ -57,10 +57,10 @@ class ToDoViewModel internal constructor(
             // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
             // когда список меняется Cancel не работает
             fun factsPageChange() {
-             //   viewModelScope.launch {
-                toDoViewModelJob.cancel()
-                viewModelJob.cancel()
-                 toDoViewModelJob = uiScope.launch {
+                viewModelScope.launch {
+              //  toDoViewModelJob.cancel()
+              //  viewModelJob.cancel()
+             //    toDoViewModelJob = uiScope.launch {
                      @OptIn(ExperimentalCoroutinesApi::class)
                      factsPage.cancellable().collectLatest {
                          adapterPage.submitData(it)

@@ -30,14 +30,9 @@
   <component name="ChangeListManager">
     <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/database/FactRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoCONSTANTS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/launcher/ToDoCONSTANTS.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/Binding.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/Binding.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/layout/to_do_recycler_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/res/menu/bottom_nav_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/res/menu/bottom_nav_menu.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ToDo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

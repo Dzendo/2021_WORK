@@ -82,6 +82,8 @@ class ToDoActivity : AppCompatActivity() {
         return true
     }
 
+    //codelab изучить и применять систему автоматического резервного копирования Android от 6.0
+    //https://codelabs.developers.google.com/codelabs/android-backup-codelab/index.html#0
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.putInt("COUNTSFact", COUNTSFact)
         savedInstanceState.putBoolean("BASE_IN_MEMORY", BASE_IN_MEMORY);

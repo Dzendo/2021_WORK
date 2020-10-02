@@ -1,5 +1,6 @@
 package com.app4web.asdzendo.todo.ui.todo
 
+
 import android.view.MenuItem
 import androidx.lifecycle.*
 import androidx.paging.PagingData
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
+
 class ToDoViewModel internal constructor(
     private val factRepository: FactRepository
 ) : ViewModel() {
@@ -25,23 +27,19 @@ class ToDoViewModel internal constructor(
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
      * Любая сопрограмма, запущенная в этой области, автоматически отменяется, если ViewModel очищается
      */
-   // init {
-            var toDoViewModelJob: Job = Job()
-            val viewModelJob = Job()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-            // Coroutine that will be canceled when the ViewModel is cleared.
+    // init {
+    var viewModelJob = Job()
+    var toDoViewModelJob: Job = Job()
+    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    // Coroutine that will be canceled when the ViewModel is cleared.
 
     //Timber.i("ToDoViewModel created PAEMI= ${paemi.value?.name}")
     //}
 
-   // private val viewModelJob = Job()
-   // private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val factsPage: Flow<PagingData<Fact>>
+        get() = factRepository.getAllPageCollect(paemi.value ?: N).flow.cachedIn(viewModelScope)
 
-    private val factsPage :  Flow<PagingData<Fact>>
-
-        get()  = factRepository.getAllPageCollect(paemi.value ?: N).flow.cachedIn(viewModelScope)
-
-   /* var factsPage :  Flow<PagingData<Fact>>
+    /* var factsPage :  Flow<PagingData<Fact>>
         get()  {
             //var gett: Flow<PagingData<Fact>> = flowOf()
             viewModelScope.launch {
@@ -52,68 +50,72 @@ class ToDoViewModel internal constructor(
         set(value){ factRepository.getAllPageCollect(paemi.value ?: N) }
     */
 
-            val adapterPage = ToDoPageAdapter(FactListener { factID -> onFactClicked(factID)})
+    val adapterPage = ToDoPageAdapter(FactListener { factID -> onFactClicked(factID) })
 
-            // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
-            // когда список меняется Cancel не работает
-            fun factsPageChange() {
-                viewModelScope.launch {
-              //  toDoViewModelJob.cancel()
-              //  viewModelJob.cancel()
-             //    toDoViewModelJob = uiScope.launch {
-                     @OptIn(ExperimentalCoroutinesApi::class)
-                     factsPage.cancellable().collectLatest {
-                         adapterPage.submitData(it)
-                     }
-                 } //as CompletableJob
+    // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
+    // когда список меняется Cancel не работает
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun factsPageChange() {
+         // viewModelJob.cancel()
+         // viewModelScope.launch {  // viewModelJob = Не транслируется as CompletableJob но работает
+             toDoViewModelJob.cancel()   // Показывает  не отменяет
+             toDoViewModelJob = uiScope.launch {  // Показывает не отменяет
+
+            factsPage.cancellable().collectLatest {
+                adapterPage.submitData(it)
             }
+        } //as CompletableJob
+    }
 
-            //07.4.5 Задача: обрабатывать щелчки элементов
-            private val _navigateToFactDetail = MutableLiveData<Int?>()
-                val navigateToFactDetail
-                get() = _navigateToFactDetail
-            // Шаг 1: навигация по клику
-            // функцию обработчика щелчков.
-            private fun onFactClicked(factid: Int){
-                _navigateToFactDetail.value = factid
-            }
-            // Определите метод для вызова после завершения навигации приложения
-            fun navigateToFactDetailNavigated() {
-                _navigateToFactDetail.value = null
-            }
+    //07.4.5 Задача: обрабатывать щелчки элементов
+    private val _navigateToFactDetail = MutableLiveData<Int?>()
+    val navigateToFactDetail
+        get() = _navigateToFactDetail
 
-            // подключено  вызов из XML
-            fun fabClick() {
-                _navigateToFactDetail.value = 0
-                Timber.i("ToDotimber ToDoFragment Recycler ViewModel fabClick() SnackbarTrue() ${paemi.value?.name}")
-            }
+    // Шаг 1: навигация по клику
+    // функцию обработчика щелчков.
+    private fun onFactClicked(factid: Int) {
+        _navigateToFactDetail.value = factid
+    }
 
-            // подключено  вызов из XML
-            fun onClickBottomNavView(clickpaemi: MenuItem): Boolean {
-                val oldPaemi = paemi.value
-                paemi.value = PAEMI.valueOf(clickpaemi.title.first().toString())
+    // Определите метод для вызова после завершения навигации приложения
+    fun navigateToFactDetailNavigated() {
+        _navigateToFactDetail.value = null
+    }
 
-                if (oldPaemi == paemi.value) paemi.value = N
-                Timber.i("ToDoViewModel onClickBottomNavView ${paemi.value?.name}}")
-                return true
-            }
+    // подключено  вызов из XML
+    fun fabClick() {
+        _navigateToFactDetail.value = 0
+        Timber.i("ToDotimber ToDoFragment Recycler ViewModel fabClick() SnackbarTrue() ${paemi.value?.name}")
+    }
 
-            // Добавляет и обрабатывает меню три точки для этого фрагмента
-            fun clear() = viewModelScope.launch {factRepository.clear()}
+    // подключено  вызов из XML
+    fun onClickBottomNavView(clickpaemi: MenuItem): Boolean {
+        val oldPaemi = paemi.value
+        paemi.value = PAEMI.valueOf(clickpaemi.title.first().toString())
 
-            fun addFactDatabase(COUNTSFact: Int) =  viewModelScope.launch {factRepository.addFactDatabase(COUNTSFact)}
+        if (oldPaemi == paemi.value) paemi.value = N
+        Timber.i("ToDoViewModel onClickBottomNavView ${paemi.value?.name}}")
+        return true
+    }
 
-            /**
-             * Called when the ViewModel is dismantled.
-             * At this point, we want to cancel all coroutines;
-             * otherwise we end up with processes that have nowhere to return to
-             * using memory and resources.
-             * Выполняется при нажатии кнопки Очистить.Вызывается при демонтаже ViewModel.
-             * На этом этапе мы хотим отменить все сопрограммы;
-             * в противном случае мы имеем дело с процессами, которым некуда возвращаться
-             * использование памяти и ресурсов.
-             */
-            /* override fun onCleared() {
+    // Добавляет и обрабатывает меню три точки для этого фрагмента
+    fun clear() = viewModelScope.launch { factRepository.clear() }
+
+    fun addFactDatabase(COUNTSFact: Int) = viewModelScope.launch { factRepository.addFactDatabase(COUNTSFact) }
+
+    /**
+     * Called when the ViewModel is dismantled.
+     * At this point, we want to cancel all coroutines;
+     * otherwise we end up with processes that have nowhere to return to
+     * using memory and resources.
+     * Выполняется при нажатии кнопки Очистить.Вызывается при демонтаже ViewModel.
+     * На этом этапе мы хотим отменить все сопрограммы;
+     * в противном случае мы имеем дело с процессами, которым некуда возвращаться
+     * использование памяти и ресурсов.
+     */
+
+    /* override fun onCleared() {
                  super.onCleared()
                  viewModelJob.cancel()
              }*/

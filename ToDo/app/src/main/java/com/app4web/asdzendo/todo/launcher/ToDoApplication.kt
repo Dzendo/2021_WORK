@@ -47,10 +47,10 @@ import kotlinx.coroutines.*
  * Старт app на Android:
  * Введение
  * app лежат на "ssd" смартфона, иконка его торчит на рабочем столе,
- * манифест его лежит в правльном нужном надежном месте и все время виден Android
- * Когда тапаем на иконку (стартуем с AS) то Android:
+ * манифест его лежит в правильном нужном надежном месте и все время виден Android
+ * Когда тапаем на иконку (или стартуем с AS) то Android:
  * 1. берет манифест, читает его, хотя он и так его знает и делает то, что там написано
- * 2. а) там стартовать ToDoApplication.kt - что он и делает
+ * 2. а) там стартовать ToDoApplication.kt - что он и делает (значки, иконки и тема bar)
  *    б) стартовать ToDoActivity.kt - находит, загружает, стартует и отдает ей управление
  *    в) применяет стили и названия указанные в манифесте
  *    г) разрешает доступы запрошенные в манифесте
@@ -138,44 +138,57 @@ import kotlinx.coroutines.*
  *
  *
  */
-
-class ToDoApplication : Application() {
+// Стартует Androidом из манифеста, самый первый - на экране ничего не появляется
+// Умирает она последней поэтому в ней что-нибудь размещать на всю программу
+// # Если в ней стартовать потоки, то они будут жить параллельно с остальной программой
+// Например птичку, бота, службу какую-то, навязчивую рекламу, которая все время всплывает.
+// Архитектура рекомендует здесь размещать запланированные работы
+class ToDoApplication : Application() { // родительский класс public class Application extends ContextWrapper implements ComponentCallbacks2
     // Доломал Timber - чинить
+    // Андроид диктаторская система и он и только он маин программа по умолчанию и навсегда.
+    // Поэтому Андроид просматривает манифест: видит, что надо стартовать application
+    // Андроид загружает в память класс ToDoApplication и создает его экземпляр
+    // Андроид вызывает метод- функцию OnCreate
+    // Функция получает управление и начинает себя выполнять сверху вниз
     override fun onCreate() {
+        // Вызов родительского класса - спецстандартная запись
+        // Мы его вызываем что бы Андроид в родительском классе сделал нужные необходимые ему действия
+        // this. - это этот класс - можно не указывать это по умолчанию, super. - это родительский класс,
         super.onCreate()
-        // стартуем корутину с вызовом из нее функции приостановки (Suspend) - Timber заткнулся
-        //  CoroutineScope(Dispatchers.Default).launch {
+        // стартуем корутину с вызовом из нее функции приостановки (Suspend)
+        // Как только видишь Coroutine- launch-, Asynk-, Wait? join и еще 20 ключевых слов, то ДО звать
+        CoroutineScope(Dispatchers.Default).launch {
         timberInit()  // Инициализировать Timber не блокирует основной поток:+ две задачи
-        //  }
+          }
     }
+    // Когда выполнится эта функция до конца, то она вернет управление Андроиду (не считая корутин)
 
-    private fun timberInit() { // Инициализация Timber
+    private suspend fun timberInit() { // Инициализация Timber
         val timb = CoroutineScope(Dispatchers.Default).launch {
             Timber.plant(Timber.DebugTree())
             Timber.i("ToDoApplication timber READY ")
         }
-/*
-        CoroutineScope(Dispatchers.Default).launch {
-            timb.join()
+        timb.join()
+        val cor1 = CoroutineScope(Dispatchers.Default).launch {
             Timber.i("ToDoApplication timber Init START_1")
-            for (i in 0..1000) {
+            for (i in 0..10) {
                 delay(7000L)
                 Timber.i("ToDoApplication Работа 1 шаг $i")
             }
             Timber.i("ToDoApplication timber Init FINISH_1")
         }
-
+        timb.join()
         CoroutineScope(Dispatchers.Default).launch {
-            timb.join()
             Timber.i("ToDoApplication timber Init START_2")
-            for (i in 0..1000) {
+            for (i in 0..10) {
                 delay(3000L)
                 Timber.i("ToDoApplication Работа 2 шаг $i")
             }
+            cor1.cancel()
             Timber.i("ToDoApplication timber Init FINISH_2")
         }
 
- */
+
     }
 
 }
@@ -256,4 +269,15 @@ onCreate()метод работает в основном потоке.
 Чтобы избежать этой проблемы, запустите такие задачи, как инициализация Timber и планирование WorkManager
 из основного потока внутри сопрограммы.
  */
-
+/**
+ * Ликбез Kotlin - Android:
+ * this - это этот класс
+ * super - это родительский класс
+ * class - это класс
+ * fun F () - это функция
+ * val/var - это объявление переменной
+ * А=Б+С - это оператор, Б+С складывается и заносится в А
+ *
+ * F () - это вызов функции
+ *
+ */

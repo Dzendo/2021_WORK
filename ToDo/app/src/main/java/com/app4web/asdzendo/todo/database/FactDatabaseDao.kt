@@ -26,12 +26,15 @@ import java.util.*
  * Defines methods for using the Fact class with Room.
  * Определяет методы для использования класса Fact с Room.
  */
+// Внимание! Это интерфейс, а не класс и не операторы, он реализуется другими классами
 @Dao
 @TypeConverters(CalendarConverters::class, PaemiConverters::class)
 interface FactDatabaseDao {
 
+    // Вызывается из репо, а оно из ViewModel, а оно наблюдается из ToDoActivity
     // Справочно: количество строк в таблице
     //  SELECT count(*) FROM employee;
+    // это обращение к базе данных SQL Lite c просьбой дать количество записей всех в базе fact_todo
     @Query("SELECT COUNT(*) FROM fact_todo")
     fun getCount(): LiveData<Int>
 

@@ -67,7 +67,7 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             }
 
     suspend fun clear() =  factDao.clear() // Заполнить заново базу данных
-
+    // Вызывается из ToDoActivityViewModel и наблюдается в ToDoActivity (это LifeData)
     fun count() = factDao.getCount()
 
     fun getAllPageCollect(paemi:PAEMI) =

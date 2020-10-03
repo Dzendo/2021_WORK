@@ -54,7 +54,7 @@ class ToDoViewModel internal constructor(
 
     // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
     // когда список меняется Cancel не работает
-    @OptIn(ExperimentalCoroutinesApi::class)
+    //@OptIn(ExperimentalCoroutinesApi::class)
     fun factsPageChange() {
          // viewModelJob.cancel()
          // viewModelScope.launch {  // viewModelJob = Не транслируется as CompletableJob но работает

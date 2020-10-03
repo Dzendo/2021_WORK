@@ -1,0 +1,122 @@
+// Настройка сборки зависимостей модуля. Здесь все, чего нет в зависимостях проекта
+plugins {
+    // Два первых стандрт обязательны для Котлина
+    id 'com.android.application'
+    id 'kotlin-android'
+    // ???
+    id 'kotlin-kapt'
+    // Необходимо для класса передачи параметров в навигации проекта
+    id "androidx.navigation.safeargs.kotlin"
+    // Для использования идиом (краткая запись) Котлина и Андроида для Котлина
+    id 'kotlin-android-extensions'
+}
+
+android {
+    compileSdkVersion 30 // классы и модули будут браться из Android 11
+    buildToolsVersion "30.0.2" // Ревижн Android 11
+
+    // Включить Спецтехнологии:
+    buildFeatures {
+        // построит из xml спецклассы java см. java (generated)
+        dataBinding = true
+        // viewBinding true будем использовать для других
+    }
+
+    defaultConfig {
+        // !! Имя пакета !! оно в смарт уезжает и в Google play, Firebase, AdMob
+        applicationId "com.app4web.asdzendo.todo"
+        minSdkVersion 28
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        // ???
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    // ???
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        // Обязательно 1_8 для этой архитектуры
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        // Обязательно для использования Room и др.
+        jvmTarget = '1.8'
+        // ??? Переписал откуда-то зачем не помню
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
+        // Enable Coroutines and Flow APIs из sunflowers
+        // freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        // freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+    }
+}
+// Перечисление зависимостей от библиотек java/kotlin/androidx/google/...
+// Они все берутся из repositories проекта: сейчас - google() и jcenter()
+dependencies {
+    // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.5.0-alpha04' //1.3.1'  // 1.5.0-alpha01 // идиомы
+    // наследник активити для совместимости со старыми версиями Андроид
+    implementation 'androidx.appcompat:appcompat:1.2.0'  // 1.3.0-alpha02
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'  // 1.3.0-alpha07
+    // implementation "androidx.cardview:cardview:1.0.0" // Это для карточек, но не совместима
+    implementation 'com.google.android.material:material:1.2.1'  // 1.3.0-alpha02'  // 1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'  // 2.0.0-rc1
+    implementation "androidx.legacy:legacy-support-v4:1.0.0" //  обратное API от 14 android 4 -
+
+    
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'  // 1.2.0-alpha05
+
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0-alpha07"
+
+    // Navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+    // implementation "androidx.navigation:navigation-runtime-ktx:2.3.0"
+
+
+    // ViewModel and LiveData
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-beta01'  // liveData
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-beta01' // ViewModelScope,
+    //implementation "androidx.lifecycle:lifecycle-extensions:2.3.0-alpha07"  //2.2.0 Deprecate
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-beta01'
+
+    // Room dependencies
+    implementation "androidx.room:room-runtime:2.3.0-alpha02"  // 2.3.0-alpha02
+    //annotationProcessor "androidx.room:room-compiler:2.2.5" // For Kotlin use kapt instead of annotationProcessor
+    implementation "androidx.room:room-ktx:2.3.0-alpha02"   // 2.3.0-alpha02 // optional - Kotlin Extensions and Coroutines support for Room
+    //implementation "androidx.room:room-compile:2.2.5"
+    kapt "androidx.room:room-compiler:2.3.0-alpha02"  // 2.3.0-alpha02
+    kapt 'com.android.databinding:compiler:3.1.4' //3.2.0-alpha10'
+
+    // Coroutines for getting off the UI thread
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:4.7.1"
+
+    // Тестовые библиотеки стандарт шаблона + room
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation "androidx.room:room-testing:2.3.0-alpha02"
+}
+
+/*
+ Testing dependencies sunflower
+ androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+ androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+ androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+ androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.espressoVersion"
+ androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtJunit"
+ androidTestImplementation "androidx.test.uiautomator:uiautomator:$rootProject.uiAutomatorVersion"
+ androidTestImplementation "androidx.work:work-testing:$rootProject.workVersion"
+ androidTestImplementation "com.google.truth:truth:$rootProject.truthVersion"
+ testImplementation "junit:junit:$rootProject.junitVersion"
+
+ */

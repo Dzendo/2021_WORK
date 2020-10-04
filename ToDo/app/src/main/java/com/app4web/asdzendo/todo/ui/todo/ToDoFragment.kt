@@ -66,8 +66,25 @@ class ToDoFragment : Fragment() {
             }
         }
 
+        // Он наблюдает когда поступит команда перехода на форму detail (тап в строчку или fab)
+        //
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
             factID?.let {
+                // Получив команду перейти мы зовем NavController это то же самое, что NavHostFragment
+                // Мы ему говорим пошли, навигируй нас в actionTodoFragmentToFactDetailFragment
+                // Он ищет это в mobile_navigation, который он тогда еще счита и помнит
+                // Он находит: <action
+                //            android:id="@+id/action_todoFragment_to_factDetailFragment"
+                //            app:destination="@id/factDetailFragment" />
+                // (подчерки и малые и большие буквы, это правило обращения ToDoFragmentDirections -
+                // пакета безопасной навигации из архитектуры)
+                // Указано куда переходить к фрагменту с именем factDetailFragment в файле mobile_navigation
+                // А там <fragment
+                //        android:id="@+id/factDetailFragment"
+                //        android:name="com.app4web.asdzendo.todo.ui.detail.FactDetailFragment"
+                // соответственно зовет FactDetailFragment.kt из указанного каталога
+                // и говорит ему ты сюда давай размещайся и отдает ему управление
+                // но еще здесь он ему посылает два аргумента factID и paemi (как указано в mobile_navigation)
                 this.findNavController().navigate(
                         ToDoFragmentDirections.actionTodoFragmentToFactDetailFragment(factID,todoViewModel.paemi.value?: PAEMI.N))
                  todoViewModel.navigateToFactDetailNavigated()
@@ -81,6 +98,7 @@ class ToDoFragment : Fragment() {
         inflater.inflate(R.menu.to_do, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+    // Добавляет и обрабатывает меню три точки для этого фрагмента
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.fact_base_creating -> {

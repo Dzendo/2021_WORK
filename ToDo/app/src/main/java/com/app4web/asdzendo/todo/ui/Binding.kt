@@ -92,6 +92,7 @@ fun captureCalendarValue(view: EditText): Calendar? {
     return value
 }
 */
+
 object BindingConverters {
 
     @InverseMethod(value = "convertStringToLong")

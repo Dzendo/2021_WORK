@@ -37,7 +37,7 @@ class ToDoActivity : AppCompatActivity() {
         // Надувает главный экран из своего activity_to_do.xml и запоминает адрес в переменной
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_to_do)
         // Добавляет меню три точки для этого фрагмента на месте toolbar указанному ЛВ в xml
-        setSupportActionBar(mainBinding.toolbar)
+        setSupportActionBar(mainBinding.toolbar)  // Задать toolbar, что у него есть три точки через xml
         // надувание этого меню см ниже в onCreateOptionsMenu потом
         // обработка этого см. еще ниже onOptionsItemSelected
 
@@ -69,6 +69,27 @@ class ToDoActivity : AppCompatActivity() {
         Timber.i("ToDoMainActivity onCreate ")
     // onCreate закончен, все сделали отдаем управление Андроиду и он отдает юзеру
     }
+
+    /**
+     * onCreate надувает setContentView (вот этот макет: R.layout.activity_to_do.xml)
+     * По дороге он встречает View <fragment и он должен его надуть, а там есть менеджер фрагментов
+     * android:name="androidx.navigation.fragment.NavHostFragment"
+     * т.е. он должен надуть сюда что-то этим NavHostFragment, что он и делает вызывая его для надувания
+     * и отдает ему mobile_navigation.xml специальным образом подготовленный файл навигации из которого
+     * понятно, что надувать.
+     *
+     * NavHostFragment считывает mobile_navigation и запоминает навсегда.
+     * (Мы потом много раз к нему будем обращаться, перейти куда-нибудь)
+     * А сейчас он находит строчку app:startDestination="@id/todoFragment", т.е. ему сказано, что стартовым надувать
+     * фрагмент с этим имемнем в этом файле.
+     * Находит фрагмент с этим именем todoFragment и дает ему команду надуваться сюда:
+     * - находит файл kt этого фрагмента com.app4web.asdzendo.todo.ui.todo.ToDoFragment
+     * - стартует этот файл ToDoFragment.kt
+     * - передает управление этому файлу, а я пошел и больше не нужен, но буду за спиной
+     * А мы переходим к ToDoFragment.kt и начинаем с ним рисовать картину в уже подготовленной раме
+     */
+
+
     // Т.к. в onCreate мы сказали setSupportActionBar(mainBinding.toolbar), то
     // Андроид вызовет onCreateOptionsMenu, а мы его здесь переопределим.
     // Добавляет меню три точки для этого фрагмента

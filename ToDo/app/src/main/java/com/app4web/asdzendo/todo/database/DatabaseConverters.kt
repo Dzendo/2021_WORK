@@ -4,6 +4,14 @@ import androidx.room.TypeConverter
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import java.util.*
 
+/**
+ * В SQL таблице можно хранить только string, long, int, и немного что, только базовое
+ * В SQL таблице нельзя хранить enum, data: Calendar, ничего сложного
+ * Поэтому при записи в таблицу преобразовать сложное в простое Exp: data -> long
+ * Поэтому при чтении из таблицы надо преобразовать простое в сложное Exp: long -> data
+ * @TypeConverters именно это и делает конвертеры база <--> переменная
+ * (!не путать с BindingConverters! - это конверторы переменная <--> экран)
+ */
 // @TypeConverters(DatabaseConverters::class)
 /**
  * @TypeConverters аннотация должна использоваться, когда мы объявляем свойство,
@@ -28,6 +36,9 @@ import java.util.*
 // companion object {
 // @TypeConverter @JvmStatic
 
+/**
+ *
+ */
 class PaemiConverters {
     @TypeConverter fun PaemiToInt(paemi: PAEMI?): Int = paemi?.ordinal?:0
     @TypeConverter fun IntToPaemi(int: Int?): PAEMI? = PAEMI.values()[int?:0]

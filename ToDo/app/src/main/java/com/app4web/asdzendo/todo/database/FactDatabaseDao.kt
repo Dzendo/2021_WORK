@@ -25,6 +25,7 @@ import java.util.*
 /**
  * Defines methods for using the Fact class with Room.
  * Определяет методы для использования класса Fact с Room.
+ * Здесь стоят SQL запросы к базе, все которые к ней выдаются
  */
 // Внимание! Это интерфейс, а не класс и не операторы, он реализуется другими классами
 @Dao
@@ -40,8 +41,9 @@ interface FactDatabaseDao {
 
     /**
      * Добавляет в базу сразу список готовых фактов
-     * применяется сечас для заполнения отладочными строками
+     * применяется сейчас для заполнения отладочными строками
      * подготовка строк в репозитории
+     * она suspend, т.е. функция приостановки должна вызываться из отдельного потока
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(facts: List<Fact>): List<Long>
@@ -61,7 +63,7 @@ interface FactDatabaseDao {
     @Update // если не находит заппись то ничего не будет int - количество обновленных записей
     suspend fun update(fact: Fact): Int
 
-    @Delete  // если нет записи - ошибка int - кол-во удаленных записей
+    @Delete  // если нет записи - ошибка, int - кол-во удаленных записей
     suspend fun delete(fact: Fact): Int
 
     /**
@@ -69,6 +71,8 @@ interface FactDatabaseDao {
      * Выбирает и возвращает строку, которая соответствует предоставленному id  что является ключом.
      *
      * @param id startTimeMilli to match
+     * Ей передают номер ID она возвращает data class Fact
+     * Сейчас вызываем из FactDetailFragment
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
     suspend fun get(id: Int): Fact?
@@ -79,6 +83,7 @@ interface FactDatabaseDao {
      *
      * This does not delete the table, only its contents.
      * При этом таблица не удаляется, а только ее содержимое.
+     * Сейчас висит на трех точках
      */
     @Query("DELETE FROM fact_todo")
     suspend fun clear()
@@ -89,15 +94,29 @@ interface FactDatabaseDao {
      * sorted by factid in descending order.
      * сортировка по factid в порядке убывания.
      */
+    // не используется
     @Query("SELECT * FROM fact_todo LIMIT 700")
     fun getAll(): LiveData<List<Fact>>
 
+    /**
+     * Это запрос дай все строки сортированные по факт ID в обратном порядке с уменьшением
+     * Ответ отдается Paging 3.0 частями, как ему надо сам будет запрашивать
+     * т.к. новый ROOM знает Paging 3.0 и они дружат
+     */
+    //  *****************   R запрос при старте и из шторки ********
     @Query("SELECT * FROM fact_todo ORDER BY factId DESC")
     fun getAllPage(): PagingSource<Int, Fact>
 
+    // не используется
     @Query("SELECT * FROM fact_todo  ORDER BY data DESC LIMIT 700")
     suspend fun getAllFacts(): List<Fact>
 
+    /**
+     * Это запрос дай все строки сортированные по дате по возрастанию
+     * Ответ отдается Paging 3.0 частями, как ему надо сам будет запрашивать
+     * т.к. новый ROOM знает Paging 3.0 и они дружат
+     */
+    //  *****************   N запрос при старте и при повторном нажатии на нижнюю букву ********
     @Query("SELECT * FROM fact_todo ORDER BY data ASC")
     fun getAllFactsPage():PagingSource<Int, Fact>
 
@@ -106,6 +125,8 @@ interface FactDatabaseDao {
      * Выбирает и возвращает последнюю запись.
      * не используется - надо для восстановления Recycler
      */
+
+    // не используется
     @Query("SELECT * FROM fact_todo ORDER BY factId DESC LIMIT 1")
     suspend fun getTofact(): Fact?
 
@@ -113,12 +134,14 @@ interface FactDatabaseDao {
      * Selects and returns the night with given nightId.
      * Выбирает и возвращает fact c id.
      */
+    // не используется
     @Query("SELECT * from fact_todo WHERE factId = :id Limit 1")
     fun getFactWithId(id: Int): LiveData<Fact>
 
     /**
      * выборка фильтром PAEMI в обратной сортировке
      */
+    // не используется
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY factId DESC LIMIT 700")
     fun getAllPAEMIFactsID(paemi: Int): LiveData<List<Fact>>
 
@@ -126,19 +149,31 @@ interface FactDatabaseDao {
      * выборка фильтром PAEMI в обратной сортировке
      */
 
+    // не используется
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
     fun getAllPAEMIFacts(paemi: Int): LiveData<List<Fact>>
 
+    /**
+     * Это запрос дай все строки буковки PAEMI  с даты по дату сортированные по дате в обратном порядке с уменьшением и по ID
+     * Ответ отдается Paging 3.0 частями, как ему надо сам будет запрашивать
+     * т.к. новый ROOM знает Paging 3.0 и они дружат
+     */
+    //  ************************   PAEMI - основной запрос по нижней переключатель *****************
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi AND data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC, factId DESC")
     fun getAllPAEMIFactsPage(paemi: PAEMI, FilterDateStart: Calendar, FilterDateEnd: Calendar): PagingSource<Int, Fact>
 
     /**
      * выборка фильтром PAEMI по индексу в обратной сортировке
      */
+    // не используется
     @Query("SELECT * FROM fact_todo WHERE paemi = :paemi ORDER BY data DESC, factId DESC LIMIT 700")
     fun getAllPAEMIFactsIndex(paemi: PAEMI): LiveData<List<Fact>>
 }
 
+/**
+ * заготовка для использования сокращенного класса для таблицы см Fact.kt
+ */
+// не используется
 @Dao
 interface FactTableDao {
     @Query("SELECT factId, data, parent, paemi, nameShort FROM fact_todo")

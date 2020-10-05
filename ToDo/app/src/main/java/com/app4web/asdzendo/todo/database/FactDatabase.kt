@@ -25,8 +25,9 @@ import com.app4web.asdzendo.todo.launcher.BASE_IN_MEMORY
 import com.app4web.asdzendo.todo.launcher.FACT_TODO_DATABASE_NAME
 
 /**
+ * @Database - говорит, что это база данных на каком классе она стоит
  * A database that stores Fact information.
- * База данных, которая хранит информацию о ночном сне.
+ * База данных, которая хранит информацию о фактах жизни.
  * And a global method to get access to the database.
  * И глобальный метод получения доступа к базе данных.
  *
@@ -58,6 +59,7 @@ abstract class FactDatabase : RoomDatabase() {
      * создать экземпляр новой базы данных фактов.
      *
      */
+    // Это статика, если говорить по java
     companion object {
         /**
          * INSTANCE will keep a reference to any database returned via getInstance.
@@ -79,7 +81,7 @@ abstract class FactDatabase : RoomDatabase() {
         // instance хранит и отдает ссылку на FactDatabase по требованию getInstance
         @Volatile private var instance: FactDatabase? = null
 
-        // INSTANCE Переменная будет хранить ссылку на базу данных, когда один был создан.
+        // INSTANCE Переменная будет хранить ссылку на базу данных, когда один экземпляр был создан.
         // Это поможет вам избежать повторного открытия соединений с базой данных, что дорого.
 
         /**
@@ -116,13 +118,31 @@ abstract class FactDatabase : RoomDatabase() {
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): FactDatabase =
-            if (BASE_IN_MEMORY)
+            if (BASE_IN_MEMORY) // Это из ToDoCONSTANTS.kt
+                // Создать новую базу в памяти
             Room.inMemoryDatabaseBuilder(context, FactDatabase::class.java)
                     .fallbackToDestructiveMigration()
                     .build()
             else
+                // Открыть на диске или создать, если ее нет
                 Room.databaseBuilder(context, FactDatabase::class.java, FACT_TODO_DATABASE_NAME)
                     .fallbackToDestructiveMigration()
                     .build()
     }
 }
+/**
+ * Мы просим getInstance базу данных и открыть
+ * Если ее не существует, то она создается в памяти или на диске
+ * Если она есть - она открывается этой базы данных
+ * Если мы уже просили getInstance в этом сеансе и база данных открыта, то возвращается ссылка на
+ * открытую базу данных, а не открывается еще раз
+ * при окончании программы, ROOM сам закроет базу данных.
+ * В нашем случае первое открытие / создание базы данных идет в ToDoActivity при создании ViewModel
+ * Фрагменты создавая свои ViewModels то же вызывают getInstance, но т.к. ToDoActivity ее уже открыла,
+ * то они получают ссылку на нее.
+ * При повороте смартфона ToDoActivity будет убит, вместе со ссылкой на базу данных, но ссылка убита не будет она хранится тут
+ * Создастся новый ToDoActivity, он получит ссылку на не убитую ViewModel, а она получит ссылку на открытую базу.
+ * ViewModels и Репозитории действуют по той же схеме
+ * Это обязательная технология патерна MVVM
+ * Наверное создадут идиому и этот модуль исчезнет.
+ */

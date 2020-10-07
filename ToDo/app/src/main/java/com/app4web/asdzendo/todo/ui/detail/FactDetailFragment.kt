@@ -41,7 +41,7 @@ class FactDetailFragment : Fragment() {
             inflater: LayoutInflater, // раздуваетль фрагмента
             container: ViewGroup?,    // поле фрагмент в котором надо раздуваться
             savedInstanceState: Bundle?, // сохраненные параметры устаревшие из Kitty
-    ): View? {
+    ): View {                            // возвращает раздутый и настроенный View
         Timber.i("ToDoFactDetailFragment onCreateView ")
 
         // Get a reference to the binding object and inflate the fragment views.
@@ -54,7 +54,7 @@ class FactDetailFragment : Fragment() {
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         // Чтобы использовать модель представления с привязкой данных, вы должны явно
-        // дайте объекту привязки ссылку на него.
+        // дать объекту привязки ссылку на него.
         // ссылка на factDetailViewModel засовывается в viewmodel fact_detail_fragment.xml
         // теперь act_detail_fragment.xml по этой ссылке может брать из factDetailViewModel напрямую
         binding.viewmodel = factDetailViewModel
@@ -73,8 +73,7 @@ class FactDetailFragment : Fragment() {
                 factDetailViewModel.backupNull()
             }
         }
-        // в отличии от активити фрагмент требует вернуть ему ссылку на корень раздутого макета,
-        // что бы он его высветил
+        // в отличии от активити фрагмент требует вернуть ему ссылку на корень раздутого макета, что бы он его высветил
         return binding.root
     }
     // Добавляет в меню еще пункты

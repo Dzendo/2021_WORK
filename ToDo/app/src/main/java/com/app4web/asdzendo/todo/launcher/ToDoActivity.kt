@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
 // Создается новый класс ToDoActivity с родителем AppCompatActivity
@@ -57,7 +58,7 @@ class ToDoActivity : AppCompatActivity() {
         // Наблюдаю функцию count () во mainViewModel, репо, дао, FactDatabase,
         // и когда она изменяется, то
         // title activity присваиваю имя и количество записей в базе
-        mainViewModel.count().observe(this) { count -> title = "ToDo$bas=$count" }
+            mainViewModel.count().observe(this) { count -> title = "ToDo$bas=$count" }
 
         // В надутый xml загоняю ссылку на mainViewModel в переменную viewmodel
         // после этого xml сама из своих дизайнерских полей может обращаться к классу mainViewModel

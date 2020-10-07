@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app4web.asdzendo.todo.database.FactDatabase
+import com.app4web.asdzendo.todo.database.FactDatabaseDao
 import com.app4web.asdzendo.todo.database.FactRepository
 import com.app4web.asdzendo.todo.ui.todo.ToDoViewModel
 import com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel
@@ -38,8 +39,19 @@ object ToDoInjectorUtils {
 // Fragment <- ViewModel <- ViewModelFactory <- provideToDoActitityViewModelFactory
 // <- getFactRepository <- FactRepository <- FactDatabase <- FactDatabaseDao <- @Entity Fact
 
+    // стандартный текст рассмотреть перенос в com\app4web\asdzendo\todo\launcher\ToDoInjectorUtils.kt
+    // Вызывает создание/восстановление ссылки на этот репозиторий с привязкой FactDatabaseDao
+     object FactRepo{    // For Singleton instantiation
+        @Volatile private var instance: FactRepository? = null
+        fun getInstance(factDao: FactDatabaseDao) =
+                instance ?: synchronized(this) {
+                    instance ?: FactRepository(factDao).also { instance = it }
+                }
+    }
+
     private fun getFactRepository(context: Context): FactRepository =
-        FactRepository.getInstance(
+            //FactRepository.getInstance(
+        FactRepo.getInstance(
                 FactDatabase.getInstance(context.applicationContext).factDatabaseDao)
 
     fun provideToDoActitityViewModelFactory(context: Context): ToDoActivityViewModelFactory =
@@ -87,6 +99,7 @@ class FactDetailViewModelFactory(
         private val paemi: PAEMI
 ) : ViewModelProvider.Factory {
     init { Timber.i("ToDo Detail ViewModel Factory ask viewmodel ")}
+
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         Timber.i("ToDo Detail ViewModel Factory ViewModel created")

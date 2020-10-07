@@ -2,6 +2,8 @@ package com.app4web.asdzendo.todo.launcher
 
 import java.util.*
 // Файл для описания констант и временных переменных вместо setting
+
+// главный класс константа типов фактов
 enum class PAEMI(val paemiString:String = " "){
     N("Null"),
     I("Idea"),

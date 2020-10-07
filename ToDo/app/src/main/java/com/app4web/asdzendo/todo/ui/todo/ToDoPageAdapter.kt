@@ -7,14 +7,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerItemBinding
-
+// Но вместо обычного адаптера наследуется от спец адаптер из Paging 3.0  PagingDataAdapter<Fact, FactViewHolder>(diffCallback)
+// Где Fact - класс строчки данных из ROOM, FactViewHolder - стандарт , diffCallback - стандартный из RecyclerView но здесь обязателен
+// кроме этого в Репо ему передается FactListener { factID -> onFactClicked(factID) }  для CallBack от клика на строчке
 class ToDoPageAdapter (private val clickListener: FactListener) : PagingDataAdapter<Fact, FactViewHolder>(diffCallback) {
+
+    // Стандартный метод RecyclerView  - Создает View строчки-карточки место куда Bind занесет данные
+    // Он отвечает за внешний вид строчки RecyclerView: конструирует ее и отдает на высветку
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FactViewHolder =
+        FactViewHolder.from(parent)
+
+    // Стандартный метод RecyclerView  - заполняет реальные данные факта в поля строчки (ID букву, значения полей)
     override fun onBindViewHolder(holder: FactViewHolder, position: Int) {
         holder.bind(clickListener, getItem(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FactViewHolder =
-        FactViewHolder.from(parent)
 
     companion object {
         /**
@@ -31,6 +38,13 @@ class ToDoPageAdapter (private val clickListener: FactListener) : PagingDataAdap
          * Когда вы добавляете сыр с помощью кнопки "Добавить", PagedListAdapter использует diffCallback для
          * обнаружьте, что есть только одно отличие элемента от предыдущего, поэтому ему нужно только анимировать и
          * повторная привязка одного вида.
+         *
+         * При указании diffCallback адаптер не перерисовывает не изменившиеся элементы
+         * diffCallback говорит ему в каком случае строки одинаковые и их не надо перерисовывать
+         * Стандартная конструкция из Recycler View, а для Paging 3.0 обязательная имеет две овериды:
+         * areItemsTheSame - когда два итема одни и те же, (здесь совпадает их номер)
+         * areContentsTheSame - и когда строки полностью совпадают (все поля факта совпадают)
+         *
          *
          * @see DiffUtil
          */
@@ -54,13 +68,20 @@ class ToDoPageAdapter (private val clickListener: FactListener) : PagingDataAdap
  * not have been fetched before it is bound.
  * Простой ViewHolder, который может связать элемент сыра. Он также принимает нулевые элементы, так как данные могут
  * не были принесены до того, как он будет связан.
+ * Это стандартный класс RecyclerView он просто технически удобен и укоряет RecyclerView
  */
 class FactViewHolder private constructor(private val binding: ToDoRecyclerItemBinding)
     : RecyclerView.ViewHolder(binding.root){
 
-    companion object {
+    // Построитель внешнего вида помещен в статичный объект, т.к. он один и тот же для всех строчек
+    // надувать каждую строчку будет долго и дорого поэтому мы надуваем статичный объект сразу при
+    // старте, апотом просто суем его в каждую строчку уже надутый.
+    companion object { // аналог STATIC JAVA
+        // Вызывается из onCreateViewHolder и строит внешний вид этих строчек (надувает)
         fun from(parent: ViewGroup): FactViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
+            // Надувает layout\to_do_recycler_item.xml - портрет или layout-land\to_do_recycler_item.xml - ландшафт
+            // В них layout есть окружающий поэтому можно надувать databinding
             val binding = ToDoRecyclerItemBinding.inflate(layoutInflater, parent, false)
             return FactViewHolder(binding)
         }
@@ -71,14 +92,17 @@ class FactViewHolder private constructor(private val binding: ToDoRecyclerItemBi
      * ViewHolder when Item is loaded.
      * Элементы могут быть пустыми, если они еще не выгружены. Адаптер PagedList повторно свяжет
      * ViewHolder при загрузке элемента.
+     * Он в надутый выше фрагмент загоняет данные с конкретного факта
+     * binding. берет из класса созданного FactViewHolder(binding)
      */
     fun bind(clickListener: FactListener, fact : Fact?) {
-        binding.fact = fact
-        binding.clickListener = clickListener
-        binding.executePendingBindings()
+        binding.fact = fact                                 // в *_item.xml в переменную факт дает ссылку на факт, который высвечивать
+        binding.clickListener = clickListener               // в *_item.xml в переменную clickListener дает ссылку на функцию, которую вызывать
+        binding.executePendingBindings()                    // говорит биндингу обновить данные сейчасже, не дожидаясь
     }
 }
-// Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
+// Объявляется класс для передачи его адаптеру
+// onClick Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
 class FactListener(val clickListener: (factId: Int) -> Unit) {
     fun onClick(fact: Fact) = clickListener(fact.factId)
 }

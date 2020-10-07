@@ -35,16 +35,17 @@ import java.util.*
  * Модуль репозитория для обработки операций с данными.
  * вызывается из всех ViewModels сам вызывает FactDatabaseDao функции
  */
-class FactRepository private constructor(private val factDao: FactDatabaseDao) {
+class FactRepository (private val factDao: FactDatabaseDao) {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
+    // параметры вызова и работы Paging 3.0 т.е всего держать 210 строк, считывать по 70 строк
     val pagingConfig = PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )
 
     // Возвращает обычное Fact?
+    // используется ниже в update и delete
     suspend fun get(factID:Int): Fact? = factDao.get(factID)
 
     suspend fun insert(fact: Fact?) =
-            //applicationScope.launch {
             withContext(Dispatchers.IO) {
                 var newFact = Fact()
                 if (fact != null) newFact = fact
@@ -66,35 +67,27 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
                         factDao.delete(fact)
             }
 
-    suspend fun clear() =  factDao.clear() // Заполнить заново базу данных
+    suspend fun clear() =
+        withContext(Dispatchers.IO) {
+            factDao.clear() // Очистить базу данных
+        }
+
     // Вызывается из ToDoActivityViewModel и наблюдается в ToDoActivity (это LifeData)
+    // !!!! Не могу поставить в поток - не знаю как и надо ли?
     fun count() = factDao.getCount()
 
+    // !!!! Вот это построение не отменяется при изменении буквы ...
+    // вызывается из ToDoViewModel для построения factsPage: Flow<PagingData<Fact>> через поток пейдинг 3.0
+    // .flow каким-то образом сам ставит поток, который я не знаю как отменить
     fun getAllPageCollect(paemi:PAEMI) =
-           // withContext(Dispatchers.IO) {
                 when (paemi) {
-                    PAEMI.R -> Pager(pagingConfig) {  getAllPage()  }
-                    PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }
-                    else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) }
+                    PAEMI.R -> Pager(pagingConfig) {  getAllPage()  }           //.flow
+                    PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }        //.flow
+                    else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) } //.flow
                 }
-            //}
-
-    /*when (paemi) {
-        PAEMI.Z -> Pager(pagingConfig) { getAllPage() }.flow
-        PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }.flow
-        else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) }.flow
-    }*/
-   /* suspend fun setAllPageCollect(paemi:PAEMI) =
-
-            when (paemi) {
-                PAEMI.R -> Pager(pagingConfig) { getAllPage() }.flow
-                PAEMI.N -> Pager(pagingConfig) { getAllFactsPage() }.flow
-                else -> Pager(pagingConfig) { getAllPAEMIFactsPage(paemi) }.flow
-            }
-    */
-
 
     // отдает LiveData<List<Fact>>
+    // не используется
     suspend fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
@@ -102,13 +95,16 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
            // withContext(Dispatchers.IO) {
                 factDao.getAllPage()
            // }
+
     // отдает LiveData<List<Fact>>
+    // не используется
     suspend fun getAllFacts() = factDao.getAllFacts()
 
     // отдает PagingSource<Int, Fact>
     fun getAllFactsPage() = factDao.getAllFactsPage()
 
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
+    // не используется
     suspend fun getAllPAEMIFacts(paemi: Int) = factDao.getAllPAEMIFacts(paemi)
 
     // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
@@ -116,54 +112,47 @@ class FactRepository private constructor(private val factDao: FactDatabaseDao) {
             factDao.getAllPAEMIFactsPage(paemi,FilterDateStart,FilterDateEnd)
 
     // отдает LiveData<Fact>
+    // используется: Сейчас вызываем из FactDetailFragment
     suspend fun getFactWithId(factID: Int) = factDao.getFactWithId(factID)
 
-    // Дозаполнение начальных данных
-    suspend fun addFactDatabaseAll(countFacts: Int = 100) =
-        applicationScope.launch {
-            val addCount = factDao.insertAll(factContent(countFacts))
-            Timber.i("ToDoFactRepository Add Database Строк записи = $countFacts * 7 = ${addCount.size}")
-        }
-    suspend fun addFactDatabase(countFacts: Int = 1000) {
-         applicationScope.launch {
-            for (count in 1..(countFacts / 10_000)) {
-                val job100 = applicationScope.launch {
-                    val addCount = factDao.insertAll(factContent(10000))
-                }
-                 job100.join() // wait until child coroutine completes
-                Timber.i("ToDoFactRepository Add Database Пачка записи = ${count}--> ${countFacts/10_000}")
-            }
-            addFactDatabaseAll(countFacts % 10000)
-            Timber.i("ToDoFactRepository Add Database Последняя записи = ${countFacts % 1000 * 7}")
-        }
-    }
-    // Заполнение дополнительной пачки строк для базы в количестве countFacts * 7
-    suspend fun factContent(count: Int = 100): List<Fact>  {
+ //==================================заполнение базы ===============================================
+ // вызывается из меню ... дозаполнить пачку через ToDoViewModel в viewModelScope.launch
+     suspend fun addFactDatabase(countFacts: Int = 1000) {
+         // заполнение иде пачками пл 10 000 * 8 в корутинах но по очереди, т.к. не хватает памяти под список
+         withContext(Dispatchers.IO) {
+             val factList1000 = factContent(10_000)
+             for (count in 1..(countFacts / 10_000)) {
+                 val addCount = factDao.insertAll(factList1000)
+                 Timber.i("ToDoFactRepository Add Database Строк записи =  ${addCount.size} ${count} --> ${countFacts / 10_000}")
+             }
+             // дозаполнение остатка от деления на 10 000 (это в suspende) а еще и в корутине потоке)
+             val addCount = factDao.insertAll(factContent(countFacts % 10000))
+             Timber.i("ToDoFactRepository Add Database Последняя запись = $countFacts * 8 = ${addCount.size}")
+         }
+     }
 
+    // создание списка дополнительной пачки строк для базы в количестве countFacts * 8
+    private fun factContent(count: Int = 100): List<Fact>  {
+        // создается пустой добавляемый список для фактов
         val FACTS: MutableList<Fact> = ArrayList()
-
         // Add some sample items.
+        // для каждого факта из количества затребованных
         for (id in 1..count)
+            // для каждой буковки 0..8 PAEMI
             for (paemi in PAEMI.values()) {
+                // создать новый факт из класса факта ( и он заполнится полями по умолчанию)
                 val fact = Fact(paemi = paemi, nameShort = "$id Факт", name = "Факт полностью: $id")
+                // заполнить дату факта случайным числом в заданных пределах
                 with (fact) {
-                    //calendar.add(Calendar.DAY_OF_YEAR, daysToAdd)
                     data = GregorianCalendar.getInstance()
                     data.set(GregorianCalendar.YEAR,(2000..2040).random())
                     data.set(GregorianCalendar.DAY_OF_YEAR,(1..365).random())
                 }
+                // добавить в список очередной заполненный факт
                 FACTS.add(fact)
             }
-        Timber.i("ToDoFactRepository Add List Строк записи = $count * 7 = ${count * 7}")
+        Timber.i("ToDoFactRepository Add List Строк записи = $count * 8 = ${count * 8}")
+        // вернуть вызывающему заполненный список фактов
         return FACTS
-    }
-
-    // Вызывает создание/восстановление ссылки на этот репозиторий с привязкой FactDatabaseDao
-    companion object {    // For Singleton instantiation
-        @Volatile private var instance: FactRepository? = null
-        fun getInstance(factDao: FactDatabaseDao) =
-                instance ?: synchronized(this) {
-                    instance ?: FactRepository(factDao).also { instance = it }
-                }
     }
 }

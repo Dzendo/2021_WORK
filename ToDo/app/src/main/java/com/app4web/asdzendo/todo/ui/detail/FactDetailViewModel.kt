@@ -66,7 +66,6 @@ class FactDetailViewModel(
 
     // Добавляет и обрабатывает меню три точки для этого фрагмента
     // все три функции обработка выбора пунктов из меню трех точек (вызывается из фрагмента)
-    //
      fun update() {
         viewModelScope.launch {
          fact.value?.rezult = " Изм ${fact.value?.factId} " + fact.value?.rezult

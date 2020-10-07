@@ -24,25 +24,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlinx.coroutines.*
 
-
-/**
- * onCreate is called before the first screen is shown to the user.
- * onCreate вызывается до того, как пользователю будет показан первый экран.
- *
- * Use it to setup any background tasks, running expensive setup operations in a background
- * thread to avoid delaying app start.
- * Используйте его для настройки любых фоновых задач, выполняя дорогостоящие операции настройки
- * в фоновом режиме поток, чтобы избежать задержки запуска приложения.
- *
- * Этот Application вызывается сразу из манифеста, т.к. android:name=".launcher.ToDoApplication",
- * а после него вызывается android:name=".launcher.ToDoActivity"
- * А если в Application стартовать фоновый поток, то он начнет выполняться, но в фоне, т.е.
- * не дожадаясь его окончания стартует активити;
- * А можно много потоков стартовать, а можно службы и сервисы здесь стартовать, но в фоне
- * А тогда они будут работать параллельно с клиентской активити.
- *
- */
-
 /**
  * Старт app на Android:
  * Введение
@@ -50,7 +31,7 @@ import kotlinx.coroutines.*
  * манифест его лежит в правильном нужном надежном месте и все время виден Android
  * Когда тапаем на иконку (или стартуем с AS) то Android:
  * 1. берет манифест, читает его, хотя он и так его знает и делает то, что там написано
- * 2. а) там стартовать ToDoApplication.kt - что он и делает (значки, иконки и тема bar)
+ * 2. а) там стартовать ToDoApplication.kt - что он и делает (значки, иконки и тема bar) (см.ниже)
  *    б) стартовать ToDoActivity.kt - находит, загружает, стартует и отдает ей управление
  *    в) применяет стили и названия указанные в манифесте
  *    г) разрешает доступы запрошенные в манифесте
@@ -110,7 +91,7 @@ import kotlinx.coroutines.*
  *   буковку на которой стоим сейчас. На самом деле передается каждый раз и ID и буковка.
  *   5з. На самом деле, получив команду перейти на детали, фрагмент зовет NavHostFragment ему говорит
  *   action перехода на второй фрагмент (см. MobileNavigation) и передай ему два аргумента ID и буковку
- *   что NavHostFragment
+ *   что NavHostFragment и делает
  *   6а. FactDeiailFragment будучи позванным и получив управление начинает выполнять себя сверху вниз,
  *   как обычно:
  *      - Получает свои два аргумента (ID и буковку)
@@ -138,6 +119,25 @@ import kotlinx.coroutines.*
  *
  *
  */
+
+/**
+ * onCreate is called before the first screen is shown to the user.
+ * onCreate Application вызывается до того, как пользователю будет показан первый экран.
+ *
+ * Use it to setup any background tasks, running expensive setup operations in a background
+ * thread to avoid delaying app start.
+ * Используйте его для настройки любых фоновых задач, выполняя дорогостоящие операции настройки
+ * в фоновом режиме поток, чтобы избежать задержки запуска приложения.
+ *
+ * Этот Application вызывается сразу из манифеста, т.к. android:name=".launcher.ToDoApplication",
+ * а после него вызывается android:name=".launcher.ToDoActivity"
+ * А если в Application стартовать фоновый поток, то он начнет выполняться, но в фоне, т.е.
+ * не дожадаясь его окончания стартует активити;
+ * А можно много потоков стартовать, а можно службы и сервисы здесь стартовать, но в фоне
+ * А тогда они будут работать параллельно с клиентской активити.
+ *
+ */
+
 // Стартует Androidом из манифеста, самый первый - на экране ничего не появляется
 // Умирает она последней поэтому в ней что-нибудь размещать на всю программу
 // # Если в ней стартовать потоки, то они будут жить параллельно с остальной программой
@@ -148,8 +148,11 @@ class ToDoApplication : Application() { // родительский класс p
     // Андроид диктаторская система и он и только он маин программа по умолчанию и навсегда.
     // Поэтому Андроид просматривает манифест: видит, что надо стартовать application
     // Андроид загружает в память класс ToDoApplication и создает его экземпляр
+    // Потом он распределяет там все переменные
     // Андроид вызывает метод- функцию OnCreate
-    // Функция получает управление и начинает себя выполнять сверху вниз
+    // (для application, activity, fragment)
+    // А для других родительских класс могут вызываться другие override как задумано в родительском классе
+    // Функция получает управление и начинает себя выполнять сверху вниз в порядке своего жизненного цикла
     override fun onCreate() {
         // Вызов родительского класса - спецстандартная запись
         // Мы его вызываем что бы Андроид в родительском классе сделал нужные необходимые ему действия
@@ -158,18 +161,18 @@ class ToDoApplication : Application() { // родительский класс p
         // стартуем корутину с вызовом из нее функции приостановки (Suspend)
         // Как только видишь Coroutine- launch-, Asynk-, Wait? join и еще 20 ключевых слов, то ДО звать
         CoroutineScope(Dispatchers.Default).launch {
-        timberInit()  // Инициализировать Timber не блокирует основной поток:+ две задачи
-          }
+            timberInit()  // Инициализировать Timber не блокирует основной поток:+ две задачи
+        }
     }
+}
     // Когда выполнится эта функция до конца, то она вернет управление Андроиду (не считая корутин)
 
-    private suspend fun timberInit() { // Инициализация Timber
-        val timb = CoroutineScope(Dispatchers.Default).launch {
+    private fun timberInit() { // Инициализация Timber
             Timber.plant(Timber.DebugTree())
             Timber.i("ToDoApplication timber READY ")
-        }
-        timb.join()
-        val cor1 = CoroutineScope(Dispatchers.Default).launch {
+
+        // Пример параллельных отменяемых корутин
+        /*val cor1 = CoroutineScope(Dispatchers.Default).launch {
             Timber.i("ToDoApplication timber Init START_1")
             for (i in 0..10) {
                 delay(7000L)
@@ -177,7 +180,7 @@ class ToDoApplication : Application() { // родительский класс p
             }
             Timber.i("ToDoApplication timber Init FINISH_1")
         }
-        timb.join()
+
         CoroutineScope(Dispatchers.Default).launch {
             Timber.i("ToDoApplication timber Init START_2")
             for (i in 0..10) {
@@ -186,12 +189,9 @@ class ToDoApplication : Application() { // родительский класс p
             }
             cor1.cancel()
             Timber.i("ToDoApplication timber Init FINISH_2")
-        }
-
-
+        }*/
     }
 
-}
     /**
      * Override application to setup background work via WorkManager
      * Переопределение приложения для настройки фоновой работы через Диспетчер работ
@@ -279,5 +279,6 @@ onCreate()метод работает в основном потоке.
  * А=Б+С - это оператор, Б+С складывается и заносится в А
  *
  * F () - это вызов функции
+ * fun F (): View - это объявление функции, которая должна вернуть View
  *
  */

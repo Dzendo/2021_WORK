@@ -20,13 +20,16 @@ import timber.log.Timber
 
 /**
  * A fragment representing a recycler list of Items.
+ * Фрагмент, представляющий список элементов recycler.
+ * Использует Paging 3.0
  */
 class ToDoFragment : Fragment() {
 
-
+    // Создаем todoViewModel без параметров + репо + dao+database и связывается с ними
     private val todoViewModel: ToDoViewModel by viewModels {
         ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
     }
+    // Эксперимент не используется - взят образец из устаревшей ViewModel для попыток отмены запроса
    // init {
         var paemiJob: Job? = null
         val toDoFragmentJob = Job()
@@ -36,39 +39,58 @@ class ToDoFragment : Fragment() {
        // Timber.i("ToDoViewModel created PAEMI= ${paemi.value?.name}")
    // }
 
-    var iscancelFlow = false
-
+    // Стандартный вызов Fragment из Android
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Добавляет и обрабатывает меню три точки для этого фрагмента
+        // Сообщает меню ... из ToDoActivity что надо будет Добавлять и обрабатывать доп меню три точки для этого фрагмента
         setHasOptionsMenu(true)
         Timber.i("ToDo Recycler Fragment onCreate")
-
     }
-
+    // Стандартный вызов Fragment из Android для надувания макета и др.
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+            inflater: LayoutInflater,               // раздуваетль фрагмента
+            container: ViewGroup?,                  // поле фрагмент в котором надо раздуваться
+            savedInstanceState: Bundle?             // сохраненные параметры устаревшие из Kitty
+    ): View {    // возвращает раздутый и настроенный View для высветки его родительским фрагментом в указанном поле
         Timber.i("ToDo Recycler Fragment onCreateView")
+        /**
+         *
         // Get a reference to the binding object and inflate the fragment views.
         // Получить ссылку на объект привязки и раздуть представления фрагментов.
+        // Раздувается databinding из layout\to_do_recycler_list.xml по методу для фрагмента
+        // Не указан xml который раздувать ToDoRecyclerListBinding из этого названия он знает,
+
+         */
         val binding = ToDoRecyclerListBinding.inflate(inflater, container, false)
 
+        // To use the View Model with data binding, you have to explicitly
+        // give the binding object a reference to it.
+        // Чтобы использовать модель представления с привязкой данных, вы должны явно
+        // дать объекту привязки ссылку на него.
+        // ссылка на todoViewModel засовывается в viewmodel to_do_recycler_list.xml
+        // теперь to_do_recycler_list.xml по этой ссылке может брать из todoViewModel напрямую
         binding.viewmodel = todoViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.lifecycleOwner = viewLifecycleOwner              // владелец цикла жизни этого фрагмента Я
+        // Полю recyclerList из to_do_recycler_list.xml определяется адаптер как положено для RecyclerView
+        // Но вместо обычного адаптера наследуется от спец адаптер из Paging 3.0  PagingDataAdapter<Fact, FactViewHolder>(diffCallback)
+        // Где Fact - класс строчки данных из ROOM, FactViewHolder - стандарт , diffCallback - стандартный из RecyclerView но здесь обязателен
+        // кроме этого в Репо ему передаетсяFactListener { factID -> onFactClicked(factID) }  для CallBack от клика на строчке
         binding.recyclerList.adapter = todoViewModel.adapterPage
 
+        // Наблюдатель меняющий буковку фильтра от выбора нижнего меню фрагмента
         todoViewModel.paemi.observe(viewLifecycleOwner) { paemi: PAEMI? ->
+            // Попытки отмены ненужного уже запроса при выборе новой буковки внизу
               paemiJob?.cancel()            // стартует показывает не отменяет
               paemiJob = uiScope.launch {   // стартует показывает не отменяет
            // paemiJob = viewLifecycleOwner.lifecycleScope.launch {   // стартует показывает не отменяет
+           // ***** Это основной здесь выбор типа и фильта запроса и Заполнение адаптером строк RecyclerView ***
                 todoViewModel.factsPageChange()
             }
         }
 
         // Он наблюдает когда поступит команда перехода на форму detail (тап в строчку или fab)
-        //
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
+            // поле LiveData очень часто(почти всегда) null - и это нам не интересно - пропускаем
             factID?.let {
                 // Получив команду перейти мы зовем NavController это то же самое, что NavHostFragment
                 // Мы ему говорим пошли, навигируй нас в actionTodoFragmentToFactDetailFragment
@@ -90,28 +112,33 @@ class ToDoFragment : Fragment() {
                  todoViewModel.navigateToFactDetailNavigated()
             }
         }
-
+        // в отличии от активити фрагмент требует вернуть ему ссылку на корень раздутого макета, что бы он его высветил
         return binding.root
     }
-    // Добавляет и обрабатывает меню три точки для этого фрагмента
+    // override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    //        super.onViewCreated(view, savedInstanceState)
+
+
+    // Добавляет в меню три точки пункты для этого фрагмента из menu\to_do.xml
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.to_do, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-    // Добавляет и обрабатывает меню три точки для этого фрагмента
+    //  обрабатывает в меню три точки свои добавленные для этого фрагмента пункты меню
+    // хорошо бы научиться вызывать из XML прямо ViewModel, но пока не сделали - обещают
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.fact_base_creating -> {
+            R.id.fact_base_creating -> {  // "Добавить пачку"
                 todoViewModel.addFactDatabase(COUNTSFact) // Дозаполнить заново базу данных
                 Toast.makeText(activity,"База добавлено  $COUNTSFact * 7 = ${COUNTSFact * 7} записей ", Toast.LENGTH_SHORT).show()
             }
-            R.id.fact_base_clearing -> {
+            R.id.fact_base_clearing -> {  // "Очисить базу"
                 todoViewModel.clear()
                 Toast.makeText(activity,"База очищена ", Toast.LENGTH_SHORT).show()
                 Timber.i("ToDoFactRepository fact_base_clearing База очищена  ")
             }
-            R.id.isCancel -> {
-                iscancelFlow = true
+            R.id.isCancel -> {              // "Отменить поиск"
+                todoViewModel.iscancelFlow = true
                 Toast.makeText(activity,"Отмена ", Toast.LENGTH_SHORT).show()
             }
             else -> return false

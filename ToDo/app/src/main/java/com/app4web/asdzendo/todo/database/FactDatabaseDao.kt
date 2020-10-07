@@ -72,7 +72,7 @@ interface FactDatabaseDao {
      *
      * @param id startTimeMilli to match
      * Ей передают номер ID она возвращает data class Fact
-     * Сейчас вызываем из FactDetailFragment
+     *  не используется
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
     suspend fun get(id: Int): Fact?
@@ -134,7 +134,8 @@ interface FactDatabaseDao {
      * Selects and returns the night with given nightId.
      * Выбирает и возвращает fact c id.
      */
-    // не используется
+    // используется: Сейчас вызываем из FactDetailFragment
+  //  @org.jetbrains.annotations.NotNull()
     @Query("SELECT * from fact_todo WHERE factId = :id Limit 1")
     fun getFactWithId(id: Int): LiveData<Fact>
 

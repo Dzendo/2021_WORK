@@ -12,7 +12,6 @@ class ToDoActitityViewModel internal constructor(
 
     init {
         Timber.i("TODOActitityViewModel created")
-        //addFactDatabase(COUNTSFact)
     }
     // Наблюдается (т.к. это LifeData) из ToDoActivity
     fun count() = factRepository.count()

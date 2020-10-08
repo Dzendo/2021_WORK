@@ -33,12 +33,7 @@ import java.util.*
 Класс может иметь столько методов @TypeConverter, сколько ему нужно.
 Каждый метод конвертера должен получать 1 параметр и иметь тип возврата non-void.
  */
-// companion object {
-// @TypeConverter @JvmStatic
 
-/**
- *
- */
 class PaemiConverters {
     @TypeConverter fun PaemiToInt(paemi: PAEMI?): Int = paemi?.ordinal?:0
     @TypeConverter fun IntToPaemi(int: Int?): PAEMI? = PAEMI.values()[int?:0]

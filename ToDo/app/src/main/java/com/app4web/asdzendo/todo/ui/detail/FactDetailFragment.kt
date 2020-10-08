@@ -11,7 +11,6 @@ import com.app4web.asdzendo.todo.databinding.FactDetailFragmentBinding
 import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
 import timber.log.Timber
 import com.app4web.asdzendo.todo.R
-import com.app4web.asdzendo.todo.launcher.PAEMI
 
 // Вызывается NavHostFragment из ToDoFragment.kt при нажатии на строку или на fab
 // сюда передано управление, что бы разместить этот FactDetailFragment в отведенном ToDoActivity месте под фрагмент
@@ -22,7 +21,7 @@ class FactDetailFragment : Fragment() {
     // Если ID ноль, т.е. по fab пришли, то создать новый факт с переданной буквой
     private val args: FactDetailFragmentArgs by navArgs()
 
-    // Создаем factDetailViewModel + репо + dao+database и связывается с ними
+    // Создаем factDetailViewModel + репо + dao + database и связывается с ними
     private val factDetailViewModel: FactDetailViewModel by viewModels {
         ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(), args.factID, args.paemi)
     }
@@ -36,8 +35,7 @@ class FactDetailFragment : Fragment() {
     }
 
     // Для : Fragment() Андроид вызовет onCreateView и он будет надувать макет
-    // Андроид передает сюда стандартные параметры
-    override fun onCreateView(
+    override fun onCreateView(          // Андроид передает сюда стандартные параметры
             inflater: LayoutInflater, // раздуваетль фрагмента
             container: ViewGroup?,    // поле фрагмент в котором надо раздуваться
             savedInstanceState: Bundle?, // сохраненные параметры устаревшие из Kitty
@@ -60,6 +58,22 @@ class FactDetailFragment : Fragment() {
         binding.viewmodel = factDetailViewModel
         binding.lifecycleOwner = viewLifecycleOwner //this // владелец цикла этого фрагмента Я
 
+        // в отличии от активити фрагмент требует вернуть ему ссылку на корень раздутого макета, что бы он его высветил
+        return binding.root
+    }
+    /**
+     * Вызывается сразу после {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * вернулся, но до того, как любое сохраненное состояние было восстановлено в представлении.
+     * Это дает подклассам возможность инициализировать себя один раз
+     * они знают, что их иерархия взглядов была полностью создана. Фрагмент
+     * однако иерархия представлений на данном этапе не привязана к своему родителю.
+     * @param view представление, возвращаемое {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState если значение не равно null, то этот фрагмент создается заново
+     * из предыдущего сохраненного состояния, как указано здесь.
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Timber.i("ToDo FactDetailFragment onViewCreated")
+        super.onViewCreated(view, savedInstanceState)
         // Для возврата в таблицу по нажатию любой кнопки
         // Наблюдатель /ожидатель надо ли возвращаться назад (добавить / обновить / удалить, а стрелочки шли мимо)
         factDetailViewModel.backup.observe(viewLifecycleOwner) {
@@ -67,15 +81,14 @@ class FactDetailFragment : Fragment() {
                 // Получив команду перейти мы зовем NavController это то же самое, что NavHostFragment
                 // Мы ему говорим пошли, навигируй нас в назад Up
                 // Он знает откуда пришел и грузит фрагмент который был до этого, откуда пришли
-                    // соответственно зовет ToDoFragment.kt из указанного каталога
+                // соответственно зовет ToDoFragment.kt из указанного каталога
                 // и говорит ему ты сюда давай размещайся и отдает ему управление
                 this.findNavController().navigateUp()
                 factDetailViewModel.backupNull()
             }
         }
-        // в отличии от активити фрагмент требует вернуть ему ссылку на корень раздутого макета, что бы он его высветил
-        return binding.root
     }
+
     // Добавляет в меню еще пункты
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.detail, menu)
@@ -94,7 +107,7 @@ class FactDetailFragment : Fragment() {
             else -> return false
         }
         return true
-        // По уму, когда нибудь будет команда в xml прямо вызвать эти функции обработки
+        // По уму, когда нибудь будет команда в xml прямо вызвать эти функции обработки меню
     }
 }
 /**

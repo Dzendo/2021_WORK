@@ -90,7 +90,6 @@ class ToDoActivity : AppCompatActivity() {
      * А мы переходим к ToDoFragment.kt и начинаем с ним рисовать картину в уже подготовленной раме
      */
 
-
     // Т.к. в onCreate мы сказали setSupportActionBar(mainBinding.toolbar), то
     // Андроид вызовет onCreateOptionsMenu, а мы его здесь переопределим.
     // Добавляет меню три точки для этого фрагмента
@@ -130,17 +129,6 @@ class ToDoActivity : AppCompatActivity() {
 
     //codelab изучить и применять систему автоматического резервного копирования Android от 6.0
     //https://codelabs.developers.google.com/codelabs/android-backup-codelab/index.html#0
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        savedInstanceState.putInt("COUNTSFact", COUNTSFact)
-        savedInstanceState.putBoolean("BASE_IN_MEMORY", BASE_IN_MEMORY);
-        super.onSaveInstanceState(savedInstanceState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        COUNTSFact = savedInstanceState.getInt("COUNTSFact")
-        BASE_IN_MEMORY = savedInstanceState.getBoolean("BASE_IN_MEMORY");
-    }
 }
 
 /* вроде нужен для возврата по стрелке но работает и без него т.к. есть app:defaultNavHost="true"

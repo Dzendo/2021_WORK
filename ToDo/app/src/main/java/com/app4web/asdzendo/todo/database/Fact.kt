@@ -20,6 +20,11 @@ import androidx.room.*
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import java.util.*
 
+/**
+ * Сущность: вместо того, чтобы создавать таблицу SQLite, мы создадим сущность.
+ * Entity - это не что иное, как класс модели с аннотацией @Entity.
+ * Переменные этого класса - это наши столбцы, а класс-наша таблица.
+ */
 
 /**
  * Represents one record of the fact of life of an idea (I), plan(P), action(A), event(Y), money(M).

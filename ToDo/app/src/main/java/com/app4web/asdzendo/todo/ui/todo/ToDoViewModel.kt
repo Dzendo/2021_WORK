@@ -36,7 +36,7 @@ class ToDoViewModel internal constructor(
     // init {
     var viewModelJob = Job()
     var toDoViewModelJob: Job = Job()
-    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    val ioScope = CoroutineScope(Dispatchers.IO + viewModelJob)
     // Coroutine that will be canceled when the ViewModel is cleared.
 
     //Timber.i("ToDoViewModel created PAEMI= ${paemi.value?.name}")
@@ -48,18 +48,6 @@ class ToDoViewModel internal constructor(
     // из Репо берется "нужная" функция чтения Paging 3.0; из нее организуется поток (а это корутина Котлин)
     // еще она кешируется но зачем и что дает пока не видно - нужны тесты-исследования
 
-    // Безуспешные попытки изменить список потока чтобы отменить его
-    /* var factsPage :  Flow<PagingData<Fact>>
-        get()  {
-            //var gett: Flow<PagingData<Fact>> = flowOf()
-            viewModelScope.launch {
-                factsPage = factRepository.getAllPageCollect(paemi.value ?: N)
-            }
-            return factsPage
-        }
-        set(value){ factRepository.getAllPageCollect(paemi.value ?: N) }
-    */
-
     // объявляется аадптер: он назначен Recycler в фрагменте и  передает ему строчки ниже: adapterPage.submitData(it)
     // Но вместо обычного адаптера наследуется от спец адаптер из Paging 3.0  PagingDataAdapter<Fact, FactViewHolder>(diffCallback)
     // Где Fact - класс строчки данных из ROOM, FactViewHolder - стандарт , diffCallback - стандартный из RecyclerView но здесь обязателен
@@ -68,20 +56,21 @@ class ToDoViewModel internal constructor(
     val adapterPage = ToDoPageAdapter(FactListener { factID -> onFactClicked(factID) })
 
     // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
-    // когда список меняется Cancel не работает
+    // когда список меняется; Cancel не работает
     //@OptIn(ExperimentalCoroutinesApi::class)
     fun factsPageChange() {
          // viewModelJob.cancel()
          // viewModelScope.launch {  // viewModelJob = Не транслируется as CompletableJob но работает
-             toDoViewModelJob.cancel()   // Показывает  не отменяет
-             toDoViewModelJob = uiScope.launch {  // Показывает не отменяет
+        //viewModelJob.cancel()       // НЕ показывает
+        toDoViewModelJob.cancel()   // Показывает  не отменяет
+        toDoViewModelJob = ioScope.launch {  // Показывает не отменяет
 
                  // Для каждого элемента ОСНОВНОго СПИСКа от Paging 3.0 откуда берет строчки RecyclerView
                  // применяется collectLatest из Paging 3.0, которая состоит почти из строчек фактов
                  // adapterPage - адаптер RecyclerView передает RecyclerView каждый факт
                  // эта декларация и передает он их по требованию RecyclerView
-            factsPage.cancellable().collectLatest {
-                adapterPage.submitData(it)
+        factsPage.cancellable().collectLatest {
+            adapterPage.submitData(it)
             }
         } //as CompletableJob
     }
@@ -139,9 +128,8 @@ class ToDoViewModel internal constructor(
      * использование памяти и ресурсов.
      */
 // Вроде не нужен при использовании последних версий библиотек ViewModel - сама почистит - проверить
-    /* override fun onCleared() {
+     override fun onCleared() {
                  super.onCleared()
                  viewModelJob.cancel()
-             }*/
-
+     }
 }

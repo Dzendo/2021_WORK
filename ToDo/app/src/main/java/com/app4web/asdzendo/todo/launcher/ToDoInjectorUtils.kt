@@ -29,30 +29,27 @@ import timber.log.Timber
 /**
  * Static methods used to inject classes needed for various Activities and Fragments.
  * Статические методы используются для введения классов, необходимых для различных действий и фрагментов.
- * Context
+ * Context - надо исправлять
  *   Не стоит передавать Activity в модель в качестве Context. Это может привести к утечкам памяти.
  *   Если вам в модели понадобился объект Context, то вы можете наследовать не ViewModel, а AndroidViewModel.
-
  */
 object ToDoInjectorUtils {
 
 // Fragment <- ViewModel <- ViewModelFactory <- provideToDoActitityViewModelFactory
 // <- getFactRepository <- FactRepository <- FactDatabase <- FactDatabaseDao <- @Entity Fact
 
-    // стандартный текст рассмотреть перенос в com\app4web\asdzendo\todo\launcher\ToDoInjectorUtils.kt
     // Вызывает создание/восстановление ссылки на этот репозиторий с привязкой FactDatabaseDao
-     object FactRepo{    // For Singleton instantiation
+    private fun getFactRepository(context: Context): FactRepository =
+            FactRepo.getInstance(
+                    FactDatabase.getInstance(context.applicationContext).factDatabaseDao)
+
+    object FactRepo{    // For Singleton instantiation
         @Volatile private var instance: FactRepository? = null
         fun getInstance(factDao: FactDatabaseDao) =
                 instance ?: synchronized(this) {
                     instance ?: FactRepository(factDao).also { instance = it }
                 }
     }
-
-    private fun getFactRepository(context: Context): FactRepository =
-            //FactRepository.getInstance(
-        FactRepo.getInstance(
-                FactDatabase.getInstance(context.applicationContext).factDatabaseDao)
 
     fun provideToDoActitityViewModelFactory(context: Context): ToDoActivityViewModelFactory =
         ToDoActivityViewModelFactory(getFactRepository(context))

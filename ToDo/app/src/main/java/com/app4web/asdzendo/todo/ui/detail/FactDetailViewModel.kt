@@ -20,7 +20,7 @@ class FactDetailViewModel(
     init { Timber.i("TODO FactDetailViewModel created $factID")}
 
     /**
-     * Эта FactDetailViewModel считывает из базыданных через репозиторий factRepository запись с номером factID
+     * Эта FactDetailViewModel считывает из базы данных через репозиторий factRepository запись с номером factID
      * Считывает fact в LiveData через MediatorLiveData
      * (это изврат, по другому не нашел) надо бы напрямую прямо в LiveData, когда стану шибко умным
      * После этого она ничего не делает, а просто висит рядом со своим раздутым xml и в ней этот факт
@@ -44,8 +44,6 @@ class FactDetailViewModel(
     private val fact = MediatorLiveData<Fact>()
     fun getFact() = fact
 
-    //val fact1 = getFact().value
-    //var paemistring = getFact().value.paemi //PAEMI.values()[(getFact().value!!).paemi].name  // Временно для TextView поменять на адаптер
     // Выполняется при создании class FactDetailViewModel
     init {
         viewModelScope.launch {
@@ -96,10 +94,6 @@ class FactDetailViewModel(
          backupTrue()
      }
 
-   /* override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }*/
     // Объявляю живой флажок, пора ли возвращаться в таблицу, (по умолчанию нет - null)
     private val _backup: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>(null)
     val backup: LiveData<Boolean?>

@@ -21,14 +21,10 @@ import androidx.paging.PagingConfig
 import com.app4web.asdzendo.todo.launcher.FilterDateEnd
 import com.app4web.asdzendo.todo.launcher.FilterDateStart
 import com.app4web.asdzendo.todo.launcher.PAEMI
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
-
-
 
 /**
  * Repository module for handling data operations.
@@ -36,7 +32,7 @@ import java.util.*
  * вызывается из всех ViewModels сам вызывает FactDatabaseDao функции
  */
 class FactRepository (private val factDao: FactDatabaseDao) {
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
+   // private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     // параметры вызова и работы Paging 3.0 т.е всего держать 210 строк, считывать по 70 строк
     val pagingConfig = PagingConfig(  pageSize = 70, enablePlaceholders = true, maxSize = 210 )
@@ -91,24 +87,22 @@ class FactRepository (private val factDao: FactDatabaseDao) {
     suspend fun getAll() = factDao.getAll()
 
     // отдает PagingSource<Int, Fact>
-     fun getAllPage() =
-           // withContext(Dispatchers.IO) {
-                factDao.getAllPage()
-           // }
+    private fun getAllPage() = factDao.getAllPage()
+
 
     // отдает LiveData<List<Fact>>
     // не используется
     suspend fun getAllFacts() = factDao.getAllFacts()
 
     // отдает PagingSource<Int, Fact>
-    fun getAllFactsPage() = factDao.getAllFactsPage()
+    private fun getAllFactsPage() = factDao.getAllFactsPage()
 
     // Основной фильтр по PAEMI отдает LiveData<List<Fact>>
     // не используется
     suspend fun getAllPAEMIFacts(paemi: Int) = factDao.getAllPAEMIFacts(paemi)
 
     // Основной фильтр по PAEMI отдает PagingSource<Int, Fact>
-    fun getAllPAEMIFactsPage(paemi: PAEMI) =
+    private fun getAllPAEMIFactsPage(paemi: PAEMI) =
             factDao.getAllPAEMIFactsPage(paemi,FilterDateStart,FilterDateEnd)
 
     // отдает LiveData<Fact>
@@ -120,7 +114,7 @@ class FactRepository (private val factDao: FactDatabaseDao) {
      suspend fun addFactDatabase(countFacts: Int = 1000) {
          // заполнение иде пачками пл 10 000 * 8 в корутинах но по очереди, т.к. не хватает памяти под список
          withContext(Dispatchers.IO) {
-             val factList1000 = factContent(10_000)
+             val factList1000 = factContent(if(countFacts >= 10_000) 10_000 else countFacts)
              for (count in 1..(countFacts / 10_000)) {
                  val addCount = factDao.insertAll(factList1000)
                  Timber.i("ToDoFactRepository Add Database Строк записи =  ${addCount.size} ${count} --> ${countFacts / 10_000}")

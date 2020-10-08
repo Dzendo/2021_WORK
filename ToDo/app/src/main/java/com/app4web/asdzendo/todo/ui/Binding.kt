@@ -1,97 +1,9 @@
 package com.app4web.asdzendo.todo.ui
 
-import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseMethod
 import com.app4web.asdzendo.todo.launcher.PAEMI
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.*
-
-// Пока не потребовался , т.к. впрямую указал листенер в XML:
-// app:OnNavigationItemSelectedListener = "@{viewmodel::onClickBottomNavView}"
-
-// из XML BottomNavigationView меняет(подставляет) listener на указанный (ему будет передаваться выбранный пункт меню)
-// app:onNavigationItemSelected = "@{viewmodel::onClickBottomNavView}" РАБОТАЕТ
-//   <!-- https://issue.life/questions/45132691 -->
-/*
-    @BindingAdapter("onNavigationItemSelected")
-    fun setOnNavigationItemSelectedListener(view: BottomNavigationView,
-                                            listener: BottomNavigationView.OnNavigationItemSelectedListener?)
-            { view.setOnNavigationItemSelectedListener(listener) }
- */
-
-
-
-
-// android:text="@={Converter.dateToString(viewmodel.birthDate)}"
-// @InverseBindingMethod
-// android:text="@{FactDetailViewModel.fact.factId}"
-//@InverseMethod("captureLongValue")
-//@InverseMethod("convertLongToString")
-/*@BindingConversion
-fun convertLongToString(long: Long?): String = long?.toString() ?: ""
-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-fun captureLongValue(view: EditText): Long {
-    var value: Long = 0L
-    try {
-        value = view.text.toString().toLong()
-    } catch (e: NumberFormatException) {
-        e.printStackTrace()
-    }
-    return value
-}
-
-@BindingConversion
-fun convertIntToString(value: Int): String = value.toString()
-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-fun convertStringToInt(text: String): Int =
-        try { text.toInt() }
-        catch (e: NumberFormatException) { 0 }
-
-@BindingConversion
-fun convertBooleanToString(boolean: Boolean?): String = boolean?.toString() ?: ""
-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-fun convertStringToBoolean(view: EditText): Boolean?  = view.text.toString().trim().toBoolean()
-
-@BindingConversion
-fun convertDateToString(date: Date?): String =
-        if (date!=null)
-        //    SimpleDateFormat("MM/dd/yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
-        SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH).format(date)?:""
-        else ""
-
-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-fun captureDateValue(view: EditText): Date? {
-    val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss:SSS", Locale.ENGLISH)
-    var value: Date? = Date()
-    try {
-        value = sdf.parse(view.text.toString())
-    } catch (e: NumberFormatException) {
-        e.printStackTrace()
-    }
-    return value
-}
-@BindingConversion
-fun convertCalendarToString(calendar: Calendar?): String //= calendar.toString()
-{
-    if (calendar == null) return "nul"
-    val sdf = SimpleDateFormat("dd.MM.yyyy")
-    val ccc = sdf.format(calendar.time)
-   Timber.i("ToDo convertCalendarToString $ccc ")
-    return ccc
-}
-@InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-fun captureCalendarValue(view: EditText): Calendar? {
-    val sdf = SimpleDateFormat("dd.MM.yyyy")
-    val value: Calendar? = Calendar.getInstance()
-    try {
-            value?.time = sdf.parse(view.text.toString())?: Calendar.getInstance().time
-    } catch (e: ParseException) {
-        e.printStackTrace()
-    }
-    return value
-}
-*/
 
 object BindingConverters {
 
@@ -151,3 +63,16 @@ object BindingConverters {
                 PAEMI.N
             }
 }
+
+// Пока не потребовался , т.к. впрямую указал листенер в XML:
+// app:OnNavigationItemSelectedListener = "@{viewmodel::onClickBottomNavView}"
+
+// из XML BottomNavigationView меняет(подставляет) listener на указанный (ему будет передаваться выбранный пункт меню)
+// app:onNavigationItemSelected = "@{viewmodel::onClickBottomNavView}" РАБОТАЕТ
+//   <!-- https://issue.life/questions/45132691 -->
+/*
+    @BindingAdapter("onNavigationItemSelected")
+    fun setOnNavigationItemSelectedListener(view: BottomNavigationView,
+                                            listener: BottomNavigationView.OnNavigationItemSelectedListener?)
+            { view.setOnNavigationItemSelectedListener(listener) }
+ */

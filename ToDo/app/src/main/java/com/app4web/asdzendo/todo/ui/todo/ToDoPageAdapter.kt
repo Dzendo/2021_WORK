@@ -18,10 +18,9 @@ class ToDoPageAdapter (private val clickListener: FactListener) : PagingDataAdap
         FactViewHolder.from(parent)
 
     // Стандартный метод RecyclerView  - заполняет реальные данные факта в поля строчки (ID букву, значения полей)
-    override fun onBindViewHolder(holder: FactViewHolder, position: Int) {
-        holder.bind(clickListener, getItem(position))
+    override fun onBindViewHolder(factViewHolder: FactViewHolder, position: Int) {
+        factViewHolder.bind(clickListener, getItem(position))
     }
-
 
     companion object {
         /**
@@ -76,22 +75,26 @@ class FactViewHolder private constructor(private val binding: ToDoRecyclerItemBi
     // Построитель внешнего вида помещен в статичный объект, т.к. он один и тот же для всех строчек
     // надувать каждую строчку будет долго и дорого поэтому мы надуваем статичный объект сразу при
     // старте, апотом просто суем его в каждую строчку уже надутый.
-    companion object { // аналог STATIC JAVA
+    companion object { // аналог STATIC JAVA при вызове создает экземляр класса FactViewHolder(binding)
         // Вызывается из onCreateViewHolder и строит внешний вид этих строчек (надувает)
         fun from(parent: ViewGroup): FactViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             // Надувает layout\to_do_recycler_item.xml - портрет или layout-land\to_do_recycler_item.xml - ландшафт
             // В них layout есть окружающий поэтому можно надувать databinding
             val binding = ToDoRecyclerItemBinding.inflate(layoutInflater, parent, false)
+            // этот binding прередается в созданном здесь FactViewHolder через адаптер и
+            // запоминается в конструкторе в возвращаемой ссылке на этот экземпляр класса FactViewHolder
             return FactViewHolder(binding)
+            // В дальнейшем RecyclerView по этой ссылке будет вызывать fun bind этого экземпляра
+            // соответственно ЭТОТ binding будет доступен в fun bind для занесения туда данных fact
         }
     }
 
     /**
-     * Items might be null if they are not paged in yet. PagedListAdapter will re-bind the
-     * ViewHolder when Item is loaded.
-     * Элементы могут быть пустыми, если они еще не выгружены. Адаптер PagedList повторно свяжет
-     * ViewHolder при загрузке элемента.
+     * Items might be null if they are not paged in yet.
+     * PagedListAdapter will re-bind the ViewHolder when Item is loaded.
+     * Элементы могут быть пустыми, если они еще не выгружены.
+     * Адаптер PagedList повторно свяжет ViewHolder при загрузке элемента.
      * Он в надутый выше фрагмент загоняет данные с конкретного факта
      * binding. берет из класса созданного FactViewHolder(binding)
      */
@@ -104,6 +107,7 @@ class FactViewHolder private constructor(private val binding: ToDoRecyclerItemBi
 // Объявляется класс для передачи его адаптеру
 // onClick Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
 class FactListener(val clickListener: (factId: Int) -> Unit) {
+    // вызывается из layout\to_do_recycler_item.xml через onClick лямбду
     fun onClick(fact: Fact) = clickListener(fact.factId)
 }
 

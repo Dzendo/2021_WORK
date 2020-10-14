@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
@@ -48,6 +49,7 @@ class ToDoActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph, mainBinding.drawerLayout)
         // Полю @+id/toolbar пришивается setupWithNavController с конфигурацией построенной выше
         mainBinding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        // setupActionBarWithNavController(navController, appBarConfiguration) // Альтернатива todoapp
         // Полю @+id/nav_view ему звать navController, когда на него нажмут, что бы перейти куда нажали
         mainBinding.navView.setupWithNavController(navController)
         //mainBinding.bottomNavView.setupWithNavController(navController) перенесен в фрагмент

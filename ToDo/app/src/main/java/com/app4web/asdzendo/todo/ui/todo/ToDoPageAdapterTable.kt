@@ -10,7 +10,7 @@ import com.app4web.asdzendo.todo.databinding.ToDoRecyclerItemBinding
 // Но вместо обычного адаптера наследуется от спец адаптер из Paging 3.0  PagingDataAdapter<Fact, FactViewHolder>(diffCallback)
 // Где Fact - класс строчки данных из ROOM, FactViewHolder - стандарт , diffCallback - стандартный из RecyclerView но здесь обязателен
 // кроме этого в Репо ему передается FactListener { factID -> onFactClicked(factID) }  для CallBack от клика на строчке
-class ToDoPageAdapterTable (private val clickListenerTable: FactListenerTable) : PagingDataAdapter<FactTable, FactViewHolderTable>(diffCallbackTable) {
+class ToDoPageAdapterTable (private val todoViewModel: ToDoViewModel) : PagingDataAdapter<FactTable, FactViewHolderTable>(diffCallbackTable) {
 
     // Стандартный метод RecyclerView  - Создает View строчки-карточки место куда Bind занесет данные
     // Он отвечает за внешний вид строчки RecyclerView: конструирует ее и отдает на высветку
@@ -19,7 +19,7 @@ class ToDoPageAdapterTable (private val clickListenerTable: FactListenerTable) :
 
     // Стандартный метод RecyclerView  - заполняет реальные данные факта в поля строчки (ID букву, значения полей)
     override fun onBindViewHolder(factViewHolderTable: FactViewHolderTable, position: Int) {
-        factViewHolderTable.bind(clickListenerTable, getItem(position))
+        factViewHolderTable.bind(todoViewModel, getItem(position))
     }
 
     companion object {
@@ -43,7 +43,6 @@ class ToDoPageAdapterTable (private val clickListenerTable: FactListenerTable) :
          * Стандартная конструкция из Recycler View, а для Paging 3.0 обязательная имеет две овериды:
          * areItemsTheSame - когда два итема одни и те же, (здесь совпадает их номер)
          * areContentsTheSame - и когда строки полностью совпадают (все поля факта совпадают)
-         *
          *
          * @see DiffUtil
          */
@@ -98,18 +97,22 @@ class FactViewHolderTable private constructor(private val binding: ToDoRecyclerI
      * Он в надутый выше фрагмент загоняет данные с конкретного факта
      * binding. берет из класса созданного FactViewHolder(binding)
      */
-    fun bind(clickListenerTable: FactListenerTable, factTable : FactTable?) {
-        binding.fact = factTable                                 // в *_item.xml в переменную факт дает ссылку на факт, который высвечивать
-        binding.clickListener = clickListenerTable               // в *_item.xml в переменную clickListener дает ссылку на функцию, которую вызывать
+    fun bind(todoViewModel: ToDoViewModel, item: FactTable?) {
+        binding.fact = item                                 // в *_item.xml в переменную факт дает ссылку на факт, который высвечивать
+        binding.viewmodel = todoViewModel               // в *_item.xml в переменную viewmodel дает ссылку на todoViewMode, которую вызывать
         binding.executePendingBindings()                    // говорит биндингу обновить данные сейчасже, не дожидаясь
     }
 }
+
+// ИСКЛЮЧИЛ 14,10,2020
+// В codelabsTest передается адаптеру сразу private val viewModel: TasksViewModel
+// обходятся без класса кликера!!! и еще удобно вызывать несколько кликеров и др.
 // Объявляется класс для передачи его адаптеру
 // onClick Вызывается из XML при нажатии на элемент списка RecyclerView через лямбду
-class FactListenerTable(val clickListenerTable: (factId: Int) -> Unit) {
+/*class FactListenerTable(val clickListenerTable: (factId: Int) -> Unit) {
     // вызывается из layout\to_do_recycler_item.xml через onClick лямбду
     fun onClick(factTable: FactTable) = clickListenerTable(factTable.factId)
-}
+}*/
 
 
 

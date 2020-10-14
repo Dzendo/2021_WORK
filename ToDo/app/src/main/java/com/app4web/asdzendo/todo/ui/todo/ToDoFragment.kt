@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
 import com.app4web.asdzendo.todo.launcher.COUNTSFact
@@ -28,6 +29,8 @@ class ToDoFragment : Fragment() {
     private val todoViewModel: ToDoViewModel by viewModels {
         ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
     }
+    // Предлагается передавать сюда состояние списка ????
+    // private val args: ToDoFragmentArgs by navArgs()
     // Эксперимент используется - взят образец из устаревшей ViewModel для попыток отмены запроса
    // init {
         private var paemiJob: Job? = null

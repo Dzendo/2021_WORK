@@ -39,7 +39,7 @@ class FactRepository (private val factDao: FactDatabaseDao) {
 
     // Возвращает обычное Fact?
     // используется ниже в update и delete
-    private fun get(factID:Int): Fact? = factDao.get(factID)
+    private suspend fun get(factID:Int): Fact? = factDao.get(factID)
 
     // отдает LiveData<Fact>
     // используется: Сейчас вызываем из FactDetailFragment

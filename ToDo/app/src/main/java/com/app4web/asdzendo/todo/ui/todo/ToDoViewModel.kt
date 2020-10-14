@@ -51,17 +51,17 @@ class ToDoViewModel internal constructor(
     // Где Fact - класс строчки данных из ROOM, FactViewHolder - стандарт , diffCallback - стандартный из RecyclerView но здесь обязателен
     // кроме этого в Репо ему передается FactListener для CallBack от клика на строчке -
     // вызыватся прямо из XML android:onClick="@{() -> clickListener.onClick(fact)}"
-    val adapterPageTable = ToDoPageAdapterTable(FactListenerTable { factID -> onFactClicked(factID) })
+    val adapterPageTable = ToDoPageAdapterTable(this)
 
     // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
     // когда список меняется; Cancel не работает
     //@OptIn(ExperimentalCoroutinesApi::class)
 
     fun factsPageChangeTable(paemi: PAEMI) {
-        // viewModelJob.cancel()
+        // viewModelJob.cancel()    // НЕ показывает
         // viewModelScope.launch {  // viewModelJob = Не транслируется as CompletableJob но работает
-        //viewModelJob.cancel()       // НЕ показывает
-        toDoViewModelJob.cancel()   // Показывает  не отменяет
+        viewModelJob.cancelChildren()    // Показывает  не отменяет
+        toDoViewModelJob.cancelChildren()   // Показывает  не отменяет
         toDoViewModelJob = ioScope.launch {  // Показывает не отменяет
 
             // Для каждого элемента ОСНОВНОго СПИСКа от Paging 3.0 откуда берет строчки RecyclerView
@@ -84,7 +84,7 @@ class ToDoViewModel internal constructor(
     // Шаг 1: навигация по клику
     // функцию обработчика щелчков вызывается из xml через FactListener переданный адаптеру
     // Когда юзер нажал по строчке, то идет вызов сюда, и флагу перехода присваивается номер строчки
-    private fun onFactClicked(factid: Int) {
+   fun onFactClicked(factid: Int) {
         _navigateToFactDetail.value = factid
     }
 

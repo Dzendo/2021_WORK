@@ -78,7 +78,7 @@ interface FactDatabaseDao {
      * используется
      */
     @Query("SELECT * from fact_todo WHERE factId = :id")
-     fun get(id: Int): Fact?
+     suspend fun get(id: Int): Fact?
 
     /**
      * Deletes all values from the table.
@@ -97,7 +97,7 @@ interface FactDatabaseDao {
      * используется: Сейчас вызываем из FactDetailFragment
      */
     //  @org.jetbrains.annotations.NotNull()
-    @Query("SELECT * from fact_todo WHERE factId = :id Limit 1")
+    @Query("SELECT * from fact_todo WHERE factId = :id ")  // Limit 1
     fun getFactWithId(id: Int): LiveData<Fact>
 
     // --------------------------- TABLE ---------------------------------------
@@ -126,7 +126,8 @@ interface FactDatabaseDao {
      * т.к. новый ROOM знает Paging 3.0 и они дружат
      */
     //  ************************   PAEMI - основной запрос по нижней переключатель *****************
-    @Query("SELECT factId,data,parent,paemi,nameShort,rezult FROM fact_todo WHERE paemi = :paemi AND data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC, factId DESC")
+    @Query("SELECT factId,data,parent,paemi,nameShort,rezult FROM fact_todo WHERE paemi = :paemi" +
+            " AND data BETWEEN :FilterDateStart AND :FilterDateEnd ORDER BY data DESC, factId DESC")
     fun getAllPAEMIFactsPageTable(paemi: PAEMI, FilterDateStart: Calendar, FilterDateEnd: Calendar): PagingSource<Int, FactTable>
 
 }

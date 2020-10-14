@@ -35,6 +35,8 @@
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.todo.ToDoFragment"
         tools:listitem="@layout/to_do_recycler_item" />
+    <!-- app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:items="@{viewmodel.items}" /-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

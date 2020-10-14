@@ -8,18 +8,18 @@
             name="fact"
             type="com.app4web.asdzendo.todo.database.FactTable"/>
         <variable
-            name="clickListener"
-            type="com.app4web.asdzendo.todo.ui.todo.FactListenerTable"/>
+            name="viewmodel"
+            type="com.app4web.asdzendo.todo.ui.todo.ToDoViewModel" />
     </data>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:onClick="@{() -> clickListener.onClick(fact)}">
+        android:onClick="@{() -> viewmodel.onFactClicked(fact.factId)}">
 
         <TextView
             android:id="@+id/item_number"
-            android:layout_width="64sp"
+            android:layout_width="80sp"
             android:layout_height="wrap_content"
             android:text="@{BC.convertIntToString(fact.factId)}"
             android:layout_margin="@dimen/text_margin"

@@ -51,18 +51,17 @@ class ToDoViewModel internal constructor(
     // Где Fact - класс строчки данных из ROOM, FactViewHolder - стандарт , diffCallback - стандартный из RecyclerView но здесь обязателен
     // кроме этого в Репо ему передается FactListener для CallBack от клика на строчке -
     // вызыватся прямо из XML android:onClick="@{() -> clickListener.onClick(fact)}"
-    val adapterPageTable = ToDoPageAdapterTable(this)
+    val adapterPageTable = ToDoPageAdapterTable(FactListenerTable { factID -> onFactClicked(factID) })
 
     // Подпишите адаптер на ViewModel, чтобы элементы в адаптере обновлялись
     // когда список меняется; Cancel не работает
     //@OptIn(ExperimentalCoroutinesApi::class)
 
-   // @Suppress
     fun factsPageChangeTable(paemi: PAEMI) {
-        // viewModelJob.cancel()    // НЕ показывает
+        // viewModelJob.cancel()
         // viewModelScope.launch {  // viewModelJob = Не транслируется as CompletableJob но работает
-        viewModelJob.cancelChildren()    // Показывает  не отменяет
-        toDoViewModelJob.cancelChildren()   // Показывает  не отменяет
+        //viewModelJob.cancel()       // НЕ показывает
+        toDoViewModelJob.cancel()   // Показывает  не отменяет
         toDoViewModelJob = ioScope.launch {  // Показывает не отменяет
 
             // Для каждого элемента ОСНОВНОго СПИСКа от Paging 3.0 откуда берет строчки RecyclerView
@@ -78,7 +77,6 @@ class ToDoViewModel internal constructor(
     //07.4.5 Задача: обрабатывать щелчки элементов
     // Переменная которая говорит, что надо переходить к фрагменту деталей
     // Если она null не надо переходить, если =0 или номер записи то переходим к деталям
-    // SingleLiveEvent<Any>()
     private val _navigateToFactDetail = MutableLiveData<Int?>()
     val navigateToFactDetail
         get() = _navigateToFactDetail
@@ -86,7 +84,7 @@ class ToDoViewModel internal constructor(
     // Шаг 1: навигация по клику
     // функцию обработчика щелчков вызывается из xml через FactListener переданный адаптеру
     // Когда юзер нажал по строчке, то идет вызов сюда, и флагу перехода присваивается номер строчки
-   fun onFactClicked(factid: Int) {
+    private fun onFactClicked(factid: Int) {
         _navigateToFactDetail.value = factid
     }
 

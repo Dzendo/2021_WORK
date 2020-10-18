@@ -24,8 +24,8 @@ var COUNTSFact = 100   // пачка для дозаполнения базы п
 //val APPlicationScope = CoroutineScope(Dispatchers.Default)
 
 // отладочные settings:
-
-/*var BASE_IN_MEMORY = false  // база на HDD
+/*
+var BASE_IN_MEMORY = false  // база на HDD
 var FilterDateStart: Calendar = GregorianCalendar.getInstance().also {
     it.set(2020, 8, 1,0,0,0)}
 var FilterDateEnd:   Calendar = GregorianCalendar.getInstance().also {

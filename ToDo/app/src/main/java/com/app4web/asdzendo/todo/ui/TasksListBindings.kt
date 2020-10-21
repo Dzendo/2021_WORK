@@ -25,7 +25,7 @@ import com.app4web.asdzendo.todo.ui.todo.ToDoPageAdapterTable
 //  ^[WARN] Incremental annotation processing requested,
 //  but support is disabled because the following processors are not incremental:
 //  androidx.room.RoomProcessor (DYNAMIC).
-@BindingAdapter("app:completedTask")
+@BindingAdapter("completedTask")
 fun setStyle(textView: TextView, enabled: Boolean) {
     textView.paintFlags =
         if (enabled)  textView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -48,7 +48,8 @@ fun setStyle(textView: TextView, enabled: Boolean) {
  */
 // warning: Application namespace for attribute app:completedTask will be ignored.
 // предупреждение: пространство имен приложения для атрибута app:завершенная задача будет проигнорирована.
-@BindingAdapter("app:items")
+@BindingAdapter("items")
+@SuppressWarnings("unused")
 fun setItems(listView: RecyclerView, items: List<FactTable>?) {
     items?.let {
        // (listView.adapter as ToDoPageAdapterTable).submitList(items)

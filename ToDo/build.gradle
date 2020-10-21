@@ -2,7 +2,7 @@
 // Файл сборки верхнего уровня, в который можно добавить параметры конфигурации,
 // общие для всех подпроектов/модулей.
 buildscript {
-    ext.kotlin_version = "1.4.20-M1"
+    ext.kotlin_version = "1.4.20-M2"
     repositories {
         // Основные мировые репозитории откуда все берется - maven
         google()
@@ -14,8 +14,8 @@ buildscript {
     }
     dependencies {
         // Объявляются классы Gradle, которые нужны для сборки зависимостей
-        classpath 'com.android.tools.build:gradle:4.1.0'
-        //classpath 'com.android.tools.build:gradle:4.2.0-alpha13'
+        //classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:4.2.0-alpha14'
         //classpath 'com.android.tools.build:gradle:4.2.0-alpha12'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Нужно для передачи параметров в навигации проекта

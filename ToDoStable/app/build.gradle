@@ -8,7 +8,7 @@ plugins {
     // Необходимо для класса передачи параметров в навигации проекта
     id "androidx.navigation.safeargs.kotlin"
     // Для использования идиом (краткая запись) Котлина и Андроида для Котлина
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize' // 'kotlin-android-extensions' Deprecate
 }
 
 android {

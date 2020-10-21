@@ -57,7 +57,7 @@ class ToDoViewModel internal constructor(
     // когда список меняется; Cancel не работает
     //@OptIn(ExperimentalCoroutinesApi::class)
 
-   // @Suppress
+    @SuppressWarnings("unused")
     fun factsPageChangeTable(paemi: PAEMI) {
         // viewModelJob.cancel()    // НЕ показывает
         // viewModelScope.launch {  // viewModelJob = Не транслируется as CompletableJob но работает

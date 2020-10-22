@@ -120,6 +120,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha01' //3.3.0'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0-alpha01' // '3.3.0'
     testImplementation "androidx.room:room-testing:2.3.0-alpha03"
 
     // AndroidX Test - JVM testing

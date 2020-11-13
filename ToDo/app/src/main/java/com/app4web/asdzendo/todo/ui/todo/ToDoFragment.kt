@@ -154,7 +154,7 @@ class ToDoFragment : Fragment() {
                 Timber.i("ToDoFactRepository fact_base_clearing База очищена  ")
             }
             R.id.isCancel -> {              // "Отменить поиск"
-                todoViewModel.iscancelFlow = true
+                todoViewModel.isCancelFlow = true
                 Toast.makeText(activity,"Отмена ", Toast.LENGTH_SHORT).show()
             }
             else -> return false

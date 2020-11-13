@@ -26,7 +26,7 @@ class ToDoViewModel internal constructor(
     val paemi: MutableLiveData<PAEMI> = MutableLiveData<PAEMI>(R)
 
     // из меню ... попытка выдать команду на отмену запроса
-    var iscancelFlow = false
+    var isCancelFlow = false
 
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.

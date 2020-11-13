@@ -28,7 +28,16 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="" />
+    <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ToDo/app/src/test/java/com/app4web/asdzendo/todo/MainCoroutineRule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/build.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

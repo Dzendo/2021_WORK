@@ -2,20 +2,20 @@
 // Файл сборки верхнего уровня, в который можно добавить параметры конфигурации,
 // общие для всех подпроектов/модулей.
 buildscript {
-    ext.kotlin_version = "1.4.20-M2"
+    ext.kotlin_version = "1.4.20-RC"
     repositories {
         // Основные мировые репозитории откуда все берется - maven
         google()
         jcenter()
         // Взято из какого-то примера не знаю зачем, потом отключил, без него работает.
-        //maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         // Необходимо указывать 2 раза (см. ниже), если Котлин eap версии
-        maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
+        // maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
         // Объявляются классы Gradle, которые нужны для сборки зависимостей
-        //classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath 'com.android.tools.build:gradle:4.2.0-alpha14'
+        classpath 'com.android.tools.build:gradle:4.1.1'
+        //classpath 'com.android.tools.build:gradle:4.2.0-alpha16'
         //classpath 'com.android.tools.build:gradle:4.2.0-alpha12'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Нужно для передачи параметров в навигации проекта
@@ -32,8 +32,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        //maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
+        // maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
 }
 // Задача очистки проекта !Вызывается отдельно см. слева

@@ -29,14 +29,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ToDo/app/src/test/java/com/app4web/asdzendo/todo/MainCoroutineRule.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ToDo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/src/main/java/com/app4web/asdzendo/todo/ui/todo/ToDoViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ToDo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ToDo/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,29 +133,19 @@
     <state x="2506" y="93" key="CommitChangelistDialog2" timestamp="1599624861100">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="586" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035650702" />
     <state x="2506" y="93" key="CommitChangelistDialog2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1599624861100" />
     <state x="2659" y="260" key="FileChooserDialogImpl" timestamp="1598560426320">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="739" y="260" key="FileChooserDialogImpl/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596427763753" />
     <state x="2659" y="260" key="FileChooserDialogImpl/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1598560426320" />
-    <state x="833" y="417" key="Github.ShareDialog" timestamp="1596428032646">
+    <state x="461" y="164" key="SettingsEditor" timestamp="1606601120030">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="833" y="417" key="Github.ShareDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1596428032646" />
-    <state x="2381" y="164" key="SettingsEditor" timestamp="1602365515180">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
+    <state x="461" y="164" key="SettingsEditor/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1606601120030" />
     <state x="2381" y="164" key="SettingsEditor/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1602365515180" />
     <state x="2471" y="239" key="Vcs.Push.Dialog.v2" timestamp="1599624880041">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="551" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597035657858" />
     <state x="2471" y="239" key="Vcs.Push.Dialog.v2/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1599624880041" />
-    <state x="719" y="426" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1597351902263">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="719" y="426" key="git4idea.remote.GitConfigureRemotesDialog/733.-1080.1920.1040/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597351902263" />
   </component>
 </project>

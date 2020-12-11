@@ -52,7 +52,8 @@ abstract class FactDatabase : RoomDatabase() {
      * Connects the database to the DAO.
      * Подключает базу данных к DAO. - база данных должна знать о DAO
      */
-    abstract val factDatabaseDao: FactDatabaseDao
+    abstract fun factDatabaseDao(): FactDatabaseDao
+    //abstract val factDatabaseDao: FactDatabaseDao
     /**
      * Define a companion object, this allows us to add functions on the FactDatabase class.
      * Определите сопутствующий объект, это позволит нам добавить функции в класс базы данных Fact.

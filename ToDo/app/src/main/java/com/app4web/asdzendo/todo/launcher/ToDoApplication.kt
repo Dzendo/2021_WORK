@@ -18,6 +18,7 @@
 package com.app4web.asdzendo.todo.launcher
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -144,6 +145,13 @@ import timber.log.Timber
 * Например птичку, бота, службу какую-то, навязчивую рекламу, которая все время всплывает.
 * Архитектура рекомендует здесь размещать запланированные работы
 */
+/**
+ * @HiltAndroidAppзапускает генерацию кода Hilt, включая базовый класс для вашего приложения, которое может использовать внедрение зависимостей.
+ * Контейнер приложения является родительским контейнером приложения,
+ * что означает, что другие контейнеры могут получить доступ к зависимостям, которые он предоставляет.
+ */
+
+@HiltAndroidApp
 class ToDoApplication : Application() { // родительский класс public class Application extends ContextWrapper implements ComponentCallbacks2
 
     /**

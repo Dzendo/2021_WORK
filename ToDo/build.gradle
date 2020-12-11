@@ -2,7 +2,9 @@
 // Файл сборки верхнего уровня, в который можно добавить параметры конфигурации,
 // общие для всех подпроектов/модулей.
 buildscript {
-    ext.kotlin_version = "1.4.20"
+    ext.kotlin_version = "1.4.21"
+    //ext.hilt_version = '1.0.0-alpha02'
+    ext.hilt_version = '2.30.1-alpha'
     repositories {
         // Основные мировые репозитории откуда все берется - maven
         google()
@@ -20,6 +22,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Нужно для передачи параметров в навигации проекта
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.2"
+        // Нужно для внедрения зависимостей
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

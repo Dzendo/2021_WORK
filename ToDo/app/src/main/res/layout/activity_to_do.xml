@@ -11,9 +11,9 @@
         <!--Будем использовать эти классы, поэтому их импортируем -->
         <!-- ToDoActitityViewModel пока не используется -->
         <!--Переменная так объявляется теперь в xml -->
-        <variable
+        <!--variable
             name="viewmodel"
-            type="com.app4web.asdzendo.todo.launcher.ToDoActitityViewModel" />
+            type="com.app4web.asdzendo.todo.launcher.ToDoActitityViewModel" /-->
         <!--Сюда ToDoActivity.kt запихивает ссылку на ToDoActitityViewModell-->
         <!--см binding.viewmodel = toDoActitityViewModelll -->
     </data>

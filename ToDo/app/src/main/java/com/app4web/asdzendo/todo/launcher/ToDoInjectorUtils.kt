@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 package com.app4web.asdzendo.todo.launcher
 
 import android.content.Context
@@ -41,7 +41,8 @@ object ToDoInjectorUtils {
     // Вызывает создание/восстановление ссылки на этот репозиторий с привязкой FactDatabaseDao
     private fun getFactRepository(context: Context): FactRepository =
             FactRepo.getInstance(
-                    FactDatabase.getInstance(context.applicationContext).factDatabaseDao)
+                    //FactDatabase.getInstance(context.applicationContext).factDatabaseDao)
+                    FactDatabase.getInstance(context.applicationContext).factDatabaseDao())
 
     object FactRepo{    // For Singleton instantiation
         @Volatile private var instance: FactRepository? = null
@@ -50,9 +51,9 @@ object ToDoInjectorUtils {
                     instance ?: FactRepository(factDao).also { instance = it }
                 }
     }
-
-    fun provideToDoActitityViewModelFactory(context: Context): ToDoActivityViewModelFactory =
-        ToDoActivityViewModelFactory(getFactRepository(context))
+// HILT
+//    fun provideToDoActitityViewModelFactory(context: Context): ToDoActivityViewModelFactory =
+//        ToDoActivityViewModelFactory(getFactRepository(context))
 
     fun provideToDoViewModelFactory(context: Context): ToDoViewModelFactory =
         ToDoViewModelFactory(getFactRepository(context))
@@ -65,7 +66,8 @@ object ToDoInjectorUtils {
  * This is pretty much boiler plate code for a ViewModel Factory.
  * Это в значительной степени шаблонный код для фабрики ViewModel.
  */
-
+// HILT
+/*
 class ToDoActivityViewModelFactory(
         private val repository: FactRepository,
 ) : ViewModelProvider.Factory {
@@ -77,7 +79,7 @@ class ToDoActivityViewModelFactory(
         return ToDoActitityViewModel(repository) as T
     }
 }
-
+*/
 class ToDoViewModelFactory(
         private val repository: FactRepository,
 ) : ViewModelProvider.Factory {
@@ -103,3 +105,4 @@ class FactDetailViewModelFactory(
         return FactDetailViewModel(factRepository, factID, paemi) as T
     }
 }
+*/

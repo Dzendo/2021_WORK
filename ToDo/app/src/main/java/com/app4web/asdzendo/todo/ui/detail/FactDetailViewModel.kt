@@ -1,5 +1,6 @@
 package com.app4web.asdzendo.todo.ui.detail
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
@@ -12,11 +13,13 @@ import timber.log.Timber
 // Заметьте, что это не активити, не фрагмент, а родительский класс ViewModel
 // Здесь не надо ждать onCreate и всякие от активити, это другой специальный класс для архитектуры,
 // что бы жить вместе с активити/фрагментом, отвечает за все за это библиотека Lifecycle
-class FactDetailViewModel(
+class FactDetailViewModel @ViewModelInject constructor(
         private val factRepository: FactRepository,
-        factID: Int = 0,
-        paemi: PAEMI = PAEMI.N,
+     //   @Assisted factID: Int = 0,
+     //   @Assisted paemi: PAEMI = PAEMI.N,
 ): ViewModel() {
+    var factID: Int = 0
+    var paemi: PAEMI = PAEMI.N
     init { Timber.i("TODO FactDetailViewModel created $factID")}
 
     /**
@@ -43,7 +46,12 @@ class FactDetailViewModel(
     //private val fact = LiveData<Fact>()
     private val fact = MediatorLiveData<Fact>()
     fun getFact() = fact
-
+    fun start(factID: Int = 0,
+               paemi: PAEMI = PAEMI.N,) {
+        //_id.value = id
+        this.factID = factID
+        this.paemi = paemi
+    }
     // Выполняется при создании class FactDetailViewModel
     init {
         viewModelScope.launch {

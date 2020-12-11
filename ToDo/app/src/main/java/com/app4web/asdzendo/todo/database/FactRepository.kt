@@ -25,13 +25,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Repository module for handling data operations.
  * Модуль репозитория для обработки операций с данными.
  * вызывается из всех ViewModels сам вызывает FactDatabaseDao функции
  */
-class FactRepository (private val factDao: FactDatabaseDao) {
+//@Singleton
+class FactRepository @Inject constructor (private val factDao: FactDatabaseDao) {
    // private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     // параметры вызова и работы Paging 3.0 т.е всего держать 210 строк, считывать по 70 строк

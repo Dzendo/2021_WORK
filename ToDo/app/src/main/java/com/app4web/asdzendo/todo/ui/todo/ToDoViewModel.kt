@@ -2,6 +2,7 @@ package com.app4web.asdzendo.todo.ui.todo
 
 
 import android.view.MenuItem
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
 // Стандартный класс ViewModel для фрагмента ToDoFragment
-class ToDoViewModel internal constructor(
+class ToDoViewModel @ViewModelInject internal constructor(
     private val factRepository: FactRepository
 ) : ViewModel() {
 

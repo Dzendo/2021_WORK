@@ -15,22 +15,27 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
-// Создается новый класс ToDoActivity с родителем AppCompatActivity
+// Создается новый класс ToDoActivity с родителем AppCompatActivity и внедрением зависимостей
+@AndroidEntryPoint
 class ToDoActivity : AppCompatActivity() {
     // Выделяется место под эти переменные в созданном классе
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mainBinding: ActivityToDoBinding
     // Создается переменная mainViewModel и она инициализируется тем, что ей указано, указано в {}
     // По простому создает ViewModel
-    private val mainViewModel: ToDoActitityViewModel by viewModels {
-        ToDoInjectorUtils.provideToDoActitityViewModelFactory(applicationContext)
+    //private val mainViewModel: ToDoActitityViewModel by viewModels {
+    //    ToDoInjectorUtils.provideToDoActitityViewModelFactory(applicationContext) }
     // При создании ViewModel зовется создание репозитория, а присоздании репозитория зовется
     // создание ДАО, а при создании ДАО зовется создание Базы данных
     // Если все это было создано раньше, то просто возвращаются ссылки на созданное, а не создается заново.
     // например при повороте смартфона
-    }
+
+    // Теперь с Hilt для этого надо аннотировать ToDoApplication и ToDoActitityViewModel :
+    private val mainViewModel: ToDoActitityViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,12 +64,13 @@ class ToDoActivity : AppCompatActivity() {
         // Наблюдаю функцию count () во mainViewModel, репо, дао, FactDatabase,
         // и когда она изменяется, то
         // title activity присваиваю имя и количество записей в базе
-            mainViewModel.count().observe(this) { count -> title = "ToDo$bas=$count" }
+        title = "ToDo$bas=123"
+        mainViewModel.count.observe(this) { count -> title = "ToDo$bas=$count" }
 
         // В надутый xml загоняю ссылку на mainViewModel в переменную viewmodel
         // после этого xml сама из своих дизайнерских полей может обращаться к классу mainViewModel
         // может брать оттуда значения, передавать туда значения и вызывать оттуда функции обработки
-        mainBinding.viewmodel = mainViewModel
+        // mainBinding.viewmodel = mainViewModel
         // Владельцем циклов жизни этого xml надутого буду Я - ToDoActivity.kt
         mainBinding.lifecycleOwner = this
         // отправляет в логкат ToDoMainActivity onCreate

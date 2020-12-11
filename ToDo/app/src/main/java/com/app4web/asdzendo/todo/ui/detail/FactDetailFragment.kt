@@ -8,12 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.app4web.asdzendo.todo.databinding.FactDetailFragmentBinding
-import com.app4web.asdzendo.todo.launcher.ToDoInjectorUtils
 import timber.log.Timber
 import com.app4web.asdzendo.todo.R
+import dagger.hilt.android.AndroidEntryPoint
 
 // Вызывается NavHostFragment-ом  из ToDoFragment.kt при нажатии на строку или на fab
 // сюда передано управление, что бы разместить этот FactDetailFragment в отведенном ToDoActivity месте под фрагмент
+@AndroidEntryPoint
 class FactDetailFragment : Fragment() {
 
     // Kotlin Android идиома, что бы поймать два аргумента: ID и букву.
@@ -21,10 +22,11 @@ class FactDetailFragment : Fragment() {
     // Если ID ноль, т.е. по fab пришли, то создать новый факт с переданной буквой
     private val args: FactDetailFragmentArgs by navArgs()
 
+    private val factDetailViewModel: FactDetailViewModel by viewModels()
     // Создаем factDetailViewModel + репо + dao + database и связывается с ними
-    private val factDetailViewModel: FactDetailViewModel by viewModels {
+/*    private val factDetailViewModel: FactDetailViewModel by viewModels {
         ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(), args.factID, args.paemi)
-    }
+    }*/
 
     // Андроид вызовет как обычно onCreate, но во фрагменте он ничего не раздувает.
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +34,7 @@ class FactDetailFragment : Fragment() {
         // Сообщает, что надо добавить в меню три точки для этого фрагмента
         setHasOptionsMenu(true)
         Timber.i("ToDo FactDetailFragment onCreate ")
+        factDetailViewModel.start(args.factID, args.paemi)
     }
 
     // Для :Fragment() Андроид вызовет onCreateView и он будет надувать макет

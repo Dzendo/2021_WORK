@@ -10,11 +10,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
+import com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -35,6 +37,8 @@ class ToDoActivity : AppCompatActivity() {
 
     // Теперь с Hilt для этого надо аннотировать ToDoApplication и ToDoActitityViewModel :
     private val mainViewModel: ToDoActitityViewModel by viewModels()
+   // private val viewModel by navGraphViewModels<ToDoActitityViewModel>(R.id.nav_host_fragment) { // к Activity нет только Fragment
+   //     defaultViewModelProviderFactory  // необязательно но сбоит пока }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

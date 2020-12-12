@@ -28,13 +28,20 @@ class FactDetailFragment : Fragment() {
         ToDoInjectorUtils.provideFactDetailViewModelFactory(requireContext(), args.factID, args.paemi)
     }*/
 
+   // private val factDetailViewModel by navGraphViewModels<FactDetailViewModel>(R.id.nav_host_fragment) {
+   //     defaultViewModelProviderFactory  // необязательно но сбоит пока Вообще вылет
+   // }
+
     // Андроид вызовет как обычно onCreate, но во фрагменте он ничего не раздувает.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Сообщает, что надо добавить в меню три точки для этого фрагмента
         setHasOptionsMenu(true)
         Timber.i("ToDo FactDetailFragment onCreate ")
-        factDetailViewModel.start(args.factID, args.paemi)
+
+        // Пристроил временно пока не знаю как передавать параметры в ViewModel c Hilt
+        //factDetailViewModel.start(args.factID, args.paemi)
+        FactDetailViewModel.start(args.factID, args.paemi)
     }
 
     // Для :Fragment() Андроид вызовет onCreateView и он будет надувать макет

@@ -1,5 +1,6 @@
 package com.app4web.asdzendo.todo.ui.detail
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.database.Fact
@@ -15,11 +16,29 @@ import timber.log.Timber
 // что бы жить вместе с активити/фрагментом, отвечает за все за это библиотека Lifecycle
 class FactDetailViewModel @ViewModelInject constructor(
         private val factRepository: FactRepository,
+        @Assisted private val savedStateHandle: SavedStateHandle
      //   @Assisted factID: Int = 0,
      //   @Assisted paemi: PAEMI = PAEMI.N,
-): ViewModel() {
-    var factID: Int = 0
-    var paemi: PAEMI = PAEMI.N
+): ViewModel(), LifecycleObserver  {
+    // Assume we're making the intent data a lifedata.
+    //private val intentDataStoreAsLiveData
+    //        = savedStateHandle.getLiveData<String>(KEY)
+    // Or we can just extract the original form of the data
+    //private val inteData = savedStateHandle.get<String>(KEY)
+
+    // Пристроил временно пока не знаю как передавать параметры в ViewModel c Hilt
+    companion object { // Это статика, если говорить по java
+        var factID: Int = 0
+        var paemi: PAEMI = PAEMI.N
+        fun start(
+                factID: Int = 0,
+                paemi: PAEMI = PAEMI.N,
+        ) {
+            this.factID = factID
+            this.paemi = paemi
+        }
+    }
+
     init { Timber.i("TODO FactDetailViewModel created $factID")}
 
     /**
@@ -46,12 +65,7 @@ class FactDetailViewModel @ViewModelInject constructor(
     //private val fact = LiveData<Fact>()
     private val fact = MediatorLiveData<Fact>()
     fun getFact() = fact
-    fun start(factID: Int = 0,
-               paemi: PAEMI = PAEMI.N,) {
-        //_id.value = id
-        this.factID = factID
-        this.paemi = paemi
-    }
+
     // Выполняется при создании class FactDetailViewModel
     init {
         viewModelScope.launch {

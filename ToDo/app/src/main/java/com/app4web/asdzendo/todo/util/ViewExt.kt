@@ -18,6 +18,7 @@ package com.app4web.asdzendo.todo.ui
 /**
  * Extension functions and Binding Adapters.
  * Функции расширения и связующие адаптеры.
+ * Пока не встроена
  */
 
 import android.view.View

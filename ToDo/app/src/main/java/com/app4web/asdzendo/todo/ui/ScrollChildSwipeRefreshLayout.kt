@@ -34,7 +34,7 @@ import com.app4web.asdzendo.todo.R
  * [SwipeRefreshLayout] работает так, как и ожидалось, когда вид прокрутки является прямым дочерним элементом: он запускает
  * обновление происходит только тогда, когда вид находится сверху. Этот класс добавляет способ (@link #setScrollUpChild}, чтобы
  * определить, какое представление управляет этим поведением.
- *
+ * Пока не встроена
  */
 class ScrollChildSwipeRefreshLayout @JvmOverloads constructor(
     context: Context,

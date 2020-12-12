@@ -17,18 +17,11 @@ buildscript {
     dependencies {
         // Объявляются классы Gradle, которые нужны для сборки зависимостей
         classpath 'com.android.tools.build:gradle:4.1.1'
-        //classpath 'com.android.tools.build:gradle:4.2.0-alpha16'
-        //classpath 'com.android.tools.build:gradle:4.2.0-alpha12'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Нужно для передачи параметров в навигации проекта
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.2"
-        // Нужно для внедрения зависимостей
+        // Нужно для внедрения зависимостей hilt
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-        // Примечание: не размещайте здесь зависимости вашего приложения;
-        // они принадлежат в сборке отдельного модуля.файлы gradle
     }
 }
 

@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Разметка Main Activity -->
 <!--Это обертка, которая говорит, что это DataBinding -->
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <!--Блок данных для DataBinding -->
-    <data>
-        <!--Будем использовать эти классы, поэтому их импортируем -->
-        <!-- ToDoActitityViewModel пока не используется -->
-        <!--Переменная так объявляется теперь в xml -->
-        <!--variable
-            name="viewmodel"
-            type="com.app4web.asdzendo.todo.launcher.ToDoActitityViewModel" /-->
-        <!--Сюда ToDoActivity.kt запихивает ссылку на ToDoActitityViewModell-->
-        <!--см binding.viewmodel = toDoActitityViewModelll -->
-    </data>
 
     <!--DrawerLayout обертка от бургера, со стрелкой назад -->
     <androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -84,7 +71,7 @@
      * - передает управление этому файлу, а я пошел и больше не нужен, но буду за спиной
      * А мы переходим к ToDoFragment.kt и начинаем с ним рисовать картину в уже подготовленной раме
      */ -->
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/nav_host_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
@@ -106,4 +93,3 @@
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
-</layout>

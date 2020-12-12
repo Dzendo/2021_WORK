@@ -8,51 +8,48 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.navGraphViewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ActivityToDoBinding
-import com.app4web.asdzendo.todo.ui.detail.FactDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 // Создается новый класс ToDoActivity с родителем AppCompatActivity и внедрением зависимостей
+// Теперь с Hilt для этого надо аннотировать ToDoApplication и ToDoActitityViewModel :
 @AndroidEntryPoint
 class ToDoActivity : AppCompatActivity() {
     // Выделяется место под эти переменные в созданном классе
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mainBinding: ActivityToDoBinding
     // Создается переменная mainViewModel и она инициализируется тем, что ей указано, указано в {}
-    // По простому создает ViewModel
-    //private val mainViewModel: ToDoActitityViewModel by viewModels {
-    //    ToDoInjectorUtils.provideToDoActitityViewModelFactory(applicationContext) }
-    // При создании ViewModel зовется создание репозитория, а присоздании репозитория зовется
+    // По простому создает ViewModel используя HILT:
+    private val mainViewModel: ToDoActitityViewModel by viewModels()
+    // При создании ViewModel зовется создание репозитория, а при создании репозитория зовется
     // создание ДАО, а при создании ДАО зовется создание Базы данных
     // Если все это было создано раньше, то просто возвращаются ссылки на созданное, а не создается заново.
     // например при повороте смартфона
 
-    // Теперь с Hilt для этого надо аннотировать ToDoApplication и ToDoActitityViewModel :
-    private val mainViewModel: ToDoActitityViewModel by viewModels()
-   // private val viewModel by navGraphViewModels<ToDoActitityViewModel>(R.id.nav_host_fragment) { // к Activity нет только Fragment
-   //     defaultViewModelProviderFactory  // необязательно но сбоит пока }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        mainBinding = ActivityToDoBinding.inflate(layoutInflater)
         // Надувает главный экран из своего activity_to_do.xml и запоминает адрес в переменной
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_to_do)
+        setContentView(mainBinding.root)
+
         // Добавляет меню три точки для этого фрагмента на месте toolbar указанному ЛВ в xml
         setSupportActionBar(mainBinding.toolbar)  // Задать toolbar, что у него есть три точки через xml
         // надувание этого меню см ниже в onCreateOptionsMenu потом
         // обработка этого см. еще ниже onOptionsItemSelected
 
+        val navHostFragment: NavHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController: NavController = navHostFragment.navController
+
         // Просим ссылку на загрузчик фрагментов и говорим ему, что грузить он будет в поле @+id/nav_host_fragment
-        val navController = findNavController(R.id.nav_host_fragment)
+        //val navController = findNavController(R.id.nav_host_fragment)
         // верхнему бару говорит,что у него будет вызывная шторка и она указана drawerLayout
         // а переходить надо будет контроллер навигации, а он знает куда
         appBarConfiguration = AppBarConfiguration(navController.graph, mainBinding.drawerLayout)
@@ -65,21 +62,20 @@ class ToDoActivity : AppCompatActivity() {
 
         // Вывести в заголовок количество записей в базе, в зависимости от того, что указано в ToDoCONSTANTS
         val bas = if (BASE_IN_MEMORY) "M" else "D"
-        // Наблюдаю функцию count () во mainViewModel, репо, дао, FactDatabase,
-        // и когда она изменяется, то
+        // Наблюдаю функцию count () во mainViewModel, репо, дао, FactDatabase и когда она изменяется, то
         // title activity присваиваю имя и количество записей в базе
-        title = "ToDo$bas=123"
         mainViewModel.count.observe(this) { count -> title = "ToDo$bas=$count" }
 
         // В надутый xml загоняю ссылку на mainViewModel в переменную viewmodel
         // после этого xml сама из своих дизайнерских полей может обращаться к классу mainViewModel
         // может брать оттуда значения, передавать туда значения и вызывать оттуда функции обработки
-        // mainBinding.viewmodel = mainViewModel
+       // mainBinding.viewmodel = mainViewModel
         // Владельцем циклов жизни этого xml надутого буду Я - ToDoActivity.kt
-        mainBinding.lifecycleOwner = this
+        //mainBinding.lifecycleOwner = this
         // отправляет в логкат ToDoMainActivity onCreate
         Timber.i("ToDoMainActivity onCreate ")
     // onCreate закончен, все сделали отдаем управление Андроиду и он отдает юзеру
+
     }
 
     /**

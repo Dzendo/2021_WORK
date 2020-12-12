@@ -26,6 +26,7 @@ import kotlinx.coroutines.runBlocking
 /**
  * A Service Locator for the [TasksRepository]. This is the prod version, with a the "real" [TasksRemoteDataSource].
  * Локатор служб для [репозитория задач]. Это версия prod, с "реальным" [удаленным источником данных задач].
+ * Пока не встроена
  */
 object ServiceLocator {
 

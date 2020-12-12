@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
-// Стандартный класс ViewModel для фрагмента ToDoFragment
+// Стандартный класс ViewModel для фрагмента ToDoFragment через Hilt
 class ToDoViewModel @ViewModelInject internal constructor(
     private val factRepository: FactRepository
 ) : ViewModel() {
@@ -29,6 +29,8 @@ class ToDoViewModel @ViewModelInject internal constructor(
     // из меню ... попытка выдать команду на отмену запроса
     var isCancelFlow = false
 
+    // Наблюдается (т.к. это LifeData) из ToDoActivity
+    val count:LiveData<Int> = factRepository.count()
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      * задание viewModel позволяет нам отменить все сопрограммы, запущенные этой ViewModel.
@@ -91,13 +93,13 @@ class ToDoViewModel @ViewModelInject internal constructor(
         _navigateToFactDetail.value = factid
     }
 
-    // Определите метод для вызова после завершения навигации приложения
+    // Шаг 2: Определите метод для вызова после завершения навигации приложения
     // Сброс флажка перехода после осуществления перехода (техническая необходимость)
     fun navigateToFactDetailNavigated() {
         _navigateToFactDetail.value = null
     }
 
-    // подключено  вызов из XML нажание на FAB - зовет фрагмент detail c ID 0
+    // подключено  вызов из XML нажание на FAB - зовет фрагмент detail c ID 0 и текущим paemi
     fun fabClick() {
         _navigateToFactDetail.value = 0
         Timber.i("ToDotimber ToDoFragment Recycler ViewModel fabClick() SnackbarTrue() ${paemi.value?.name}")

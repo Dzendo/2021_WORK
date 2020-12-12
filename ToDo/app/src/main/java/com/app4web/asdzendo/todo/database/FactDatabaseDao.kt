@@ -29,9 +29,8 @@ import java.util.*
  * DAO: расшифровывается как объект доступа к данным.
  * Это интерфейс, который определяет все операции, которые мы должны выполнить в нашей базе данных.
  * Внимание! Это интерфейс, а не класс и не операторы, он реализуется другими классами
+ * для целей Hilt не аннотируется но указывается в di/FactModule
  */
-
-
 @Dao
 @TypeConverters(CalendarConverters::class, PaemiConverters::class)
 interface FactDatabaseDao {

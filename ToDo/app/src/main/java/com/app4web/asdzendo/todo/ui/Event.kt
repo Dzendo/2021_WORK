@@ -30,7 +30,7 @@ import androidx.lifecycle.Observer
  *  https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
  *   private val _navigateToDetails = SingleLiveEvent<Any>()
  *  https://codelabs.developers.google.com/codelabs/kotlin-android-training-live-data/index.html?index=..%2F..android-kotlin-fundamentals
- *
+ * Пока не встроена
  */
 open class Event<out T>(private val content: T) {
 

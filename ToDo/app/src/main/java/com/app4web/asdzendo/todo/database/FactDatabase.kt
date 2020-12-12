@@ -15,7 +15,7 @@
  */
 
 package com.app4web.asdzendo.todo.database
-// Может быть перенести / запихать в \launcher\ToDoInjectorUtils.kt ?????
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -134,7 +134,7 @@ abstract class FactDatabase : RoomDatabase() {
                     .build()
     }
 }
-/**
+/** Теперь из HILT di FactModule
  * Мы вызываем getInstance чтобы получить базу данных и открыть ее
  * Если ее не существует, то она создается в памяти или на диске
  * Если она есть - она открывается этой базы данных

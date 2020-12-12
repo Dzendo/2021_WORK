@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.app4web.asdzendo.todo.R
 import com.app4web.asdzendo.todo.databinding.ToDoRecyclerListBinding
+import com.app4web.asdzendo.todo.launcher.BASE_IN_MEMORY
 import com.app4web.asdzendo.todo.launcher.COUNTSFact
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,16 +22,13 @@ import timber.log.Timber
 /**
  * A fragment representing a recycler list of Items.
  * Фрагмент, представляющий список элементов recycler.
- * Использует Paging 3.0
+ * Использует Paging 3.0 и HILT
  */
 @AndroidEntryPoint
 class ToDoFragment : Fragment() {
 
     private val todoViewModel: ToDoViewModel by viewModels()
     // Создаем todoViewModel без параметров + репо + dao + database и связывается с ними
-/*    private val todoViewModel: ToDoViewModel by viewModels {
-        ToDoInjectorUtils.provideToDoViewModelFactory(requireContext())
-    }*/
     // Предлагается передавать сюда состояние списка ????
     // private val args: ToDoFragmentArgs by navArgs()
     // Эксперимент используется - взят образец из устаревшей ViewModel для попыток отмены запроса

@@ -25,6 +25,7 @@ import androidx.test.espresso.idling.CountingIdlingResource
  * два ресурса холостого хода.
  * Один предназначен для синхронизации привязки данных для ваших представлений,
  * а другой - для длительной операции в вашем репозитории.
+ * Пока не встроена
  */
 object EspressoIdlingResource {
     //  ресурса, связанного с длительными операциями репозитория.
@@ -72,7 +73,7 @@ inline fun <T> wrapEspressoIdlingResource(function: () -> T): T {
     }
 }
 /**
- * wrapEspressoIdlingResourceначинается с увеличения счетчика, запускает любой код, который он обернут, а затем уменьшает счетчик.
+ * wrapEspressoIdlingResource начинается с увеличения счетчика, запускает любой код, который он обернут, а затем уменьшает счетчик.
  * Вот пример того, как вы бы использовали wrapEspressoIdlingResource:
  * wrapEspressoIdlingResource {
  * doWorkThatTakesALongTime()

@@ -33,7 +33,7 @@ import javax.inject.Singleton
  * Модуль репозитория для обработки операций с данными.
  * вызывается из всех ViewModels сам вызывает FactDatabaseDao функции
  */
-//@Singleton
+//@Singleton - в образце не указывается, кто-то указывает похоже достаточно в Module
 class FactRepository @Inject constructor (private val factDao: FactDatabaseDao) {
    // private val applicationScope = CoroutineScope(Dispatchers.Default)
 

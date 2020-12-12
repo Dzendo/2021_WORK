@@ -22,6 +22,7 @@ package com.app4web.asdzendo.todo.database
  * A generic class that holds a value with its loading status.
  * Универсальный класс, который содержит значение со своим статусом загрузки.
  * @param <T>
+ * Пока не встроена
  */
 sealed class Result<out R> {
 

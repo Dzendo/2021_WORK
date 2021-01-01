@@ -82,21 +82,22 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:1.0.0" //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout
     implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01' // 1.1.0
 
-    implementation "androidx.paging:paging-runtime-ktx:3.0.0-alpha10"
+    implementation 'androidx.paging:paging-runtime-ktx:3.0.0-alpha11'
 
     // Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
     // ViewModel and LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-beta01'  // liveData
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-beta01' // ViewModelScope,
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-beta01"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-rc01'  // liveData
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-rc01' // ViewModelScope,
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-rc01'
 
     // Room dependencies
-    implementation "androidx.room:room-runtime:2.3.0-alpha03"  // 2.3.0-alpha02
-    implementation "androidx.room:room-ktx:2.3.0-alpha03"   // 2.3.0-alpha02 // optional - Kotlin Extensions and Coroutines support for Room
-    kapt "androidx.room:room-compiler:2.3.0-alpha03"  // 2.3.0-alpha02
+    implementation 'androidx.room:room-runtime:2.3.0-alpha04'  // 2.3.0-alpha02
+    implementation 'androidx.room:room-ktx:2.3.0-alpha04'
+    // 2.3.0-alpha02 // optional - Kotlin Extensions and Coroutines support for Room
+    kapt 'androidx.room:room-compiler:2.3.0-alpha04'  // 2.3.0-alpha02
 
     // Coroutines for getting off the UI thread
     // implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
@@ -116,7 +117,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha02' //3.3.0'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0-alpha02' // '3.3.0'
-    testImplementation "androidx.room:room-testing:2.3.0-alpha03"
+    testImplementation 'androidx.room:room-testing:2.3.0-alpha04'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
 
     // AndroidX Test - JVM testing

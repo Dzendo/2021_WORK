@@ -4,7 +4,7 @@
 buildscript {
     ext.kotlin_version = "1.4.21"
     //ext.hilt_version = '1.0.0-alpha02'
-    ext.hilt_version = '2.30.1-alpha'
+    ext.hilt_version = '2.31.2-alpha'
     repositories {
         // Основные мировые репозитории откуда все берется - maven
         google()
@@ -16,7 +16,7 @@ buildscript {
     }
     dependencies {
         // Объявляются классы Gradle, которые нужны для сборки зависимостей
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Нужно для передачи параметров в навигации проекта
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.2"

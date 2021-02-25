@@ -1,0 +1,78 @@
+Meaning{
+id	string
+title: Meaning id.
+wordId	integer
+title: Word is a group of meanings. We combine meanings by word entity.
+difficultyLevel	integer
+title: There are 6 difficultyLevels: 1, 2, 3, 4, 5, 6.
+partOfSpeechCode	string
+title: String representation of a part of speech.
+Available codes:
+n - noun,
+v - verb,
+j - adjective,
+r - adverb,
+prp - preposition,
+prn - pronoun,
+crd - cardinal number,
+cjc - conjunction,
+exc - interjection,
+det - article,
+abb - abbreviation,
+x - particle,
+ord - ordinal number,
+md - modal verb,
+ph - phrase,
+phi - idiom.
+
+prefix	string
+title: Infinitive particle (to) or articles (a, the).
+text	string
+title: Meaning text.
+soundUrl	string
+title: URL to meaning sound.
+transcription	string
+title: IPA phonetic transcription.
+properties	Properties{
+}
+updatedAt	string
+mnemonics	string
+translation	Translation{
+text	string
+title: A text of a translation.
+note	string
+title: A note about translation.
+}
+images	A collection of an images.[
+title: A collection of an images.
+Image{
+url	string
+}]
+definition	Definition{
+text	string
+soundUrl	string
+}
+examples	Usage examples.[
+title: Usage examples.
+Example{
+text	string
+soundUrl	string
+}]
+meaningsWithSimilarTranslation	Collection of meanings with similar translations.[
+title: Collection of meanings with similar translations.
+MeaningWithSimilarTranslation{
+meaningId	integer
+frequencyPercent	string
+title: Percentage of frequency among all other usages.
+partOfSpeechAbbreviation	string
+translation	Translation{
+text	string
+title: A text of a translation.
+note	string
+title: A note about translation.
+}
+}]
+alternativeTranslations	Collection of alternative translations.[
+title: Collection of alternative translations.
+AlternativeTranslation{...}]
+}

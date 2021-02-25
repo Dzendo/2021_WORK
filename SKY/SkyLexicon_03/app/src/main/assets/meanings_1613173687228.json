@@ -1,0 +1,253 @@
+[
+  {
+    "id": "1938",
+    "wordId": 838,
+    "difficultyLevel": 1,
+    "partOfSpeechCode": "n",
+    "prefix": "a",
+    "text": "chair",
+    "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair",
+    "transcription": "ʧeə",
+    "properties": {
+      "collocation": false,
+      "countability": "c",
+      "irregularPlural": false,
+      "falseFriends": []
+    },
+    "updatedAt": "2021-02-10 04:49:35",
+    "mnemonics": null,
+    "translation": {
+      "text": "стул",
+      "note": null
+    },
+    "images": [
+      {
+        "url": "//d2zkmv5t5kao9.cloudfront.net/images/b905a618b56c721ce683164259ac02c4.jpeg?w=200&h=150&q=50"
+      }
+    ],
+    "definition": {
+      "text": "A separate seat for one person, with four legs and a support for the back.",
+      "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=a+separate+seat+for+one+person+with+four+legs+and+a+support+for+the+back"
+    },
+    "examples": [
+      {
+        "text": "Put an additional [chair], please.",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=Put+an+additional+chair+please."
+      },
+      {
+        "text": "He put his coat over the back of the [chair] and sat down.",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=He+put+his+coat+over+the+back+of+the+chair+and+sat+down."
+      },
+      {
+        "text": "Don't tip your [chair] back like that, you'll fall.",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=Don%27t+tip+your+chair+back+like+that+you%27ll+fall."
+      },
+      {
+        "text": "Put [chairs] round the table, please.",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=Put+chairs+round+the+table+please."
+      },
+      {
+        "text": "I had to sit on a hard wooden [chair] all day.",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=I+had+to+sit+on+a+hard+wooden+chair+all+day."
+      }
+    ],
+    "meaningsWithSimilarTranslation": [
+      {
+        "meaningId": 1938,
+        "frequencyPercent": "50.0",
+        "partOfSpeechAbbreviation": "сущ.",
+        "translation": {
+          "text": "стул",
+          "note": null
+        }
+      },
+      {
+        "meaningId": 1940,
+        "frequencyPercent": "20.0",
+        "partOfSpeechAbbreviation": "сущ.",
+        "translation": {
+          "text": "председатель",
+          "note": null
+        }
+      },
+      {
+        "meaningId": 1939,
+        "frequencyPercent": "15.0",
+        "partOfSpeechAbbreviation": "сущ.",
+        "translation": {
+          "text": "должность профессора",
+          "note": ""
+        }
+      },
+      {
+        "meaningId": 1941,
+        "frequencyPercent": "10.0",
+        "partOfSpeechAbbreviation": "сущ.",
+        "translation": {
+          "text": "электрический стул",
+          "note": ""
+        }
+      },
+      {
+        "meaningId": 1942,
+        "frequencyPercent": "5.0",
+        "partOfSpeechAbbreviation": "сущ.",
+        "translation": {
+          "text": "место",
+          "note": "в оркестре"
+        }
+      },
+      {
+        "meaningId": 1943,
+        "frequencyPercent": "0.0",
+        "partOfSpeechAbbreviation": "гл.",
+        "translation": {
+          "text": "руководить",
+          "note": "чем-либо"
+        }
+      }
+    ],
+    "alternativeTranslations": [
+      {
+        "text": "company",
+        "translation": {
+          "text": "труппа",
+          "note": ""
+        }
+      },
+      {
+        "text": "frog",
+        "translation": {
+          "text": "лягушка",
+          "note": null
+        }
+      },
+      {
+        "text": "canyon",
+        "translation": {
+          "text": "каньон",
+          "note": null
+        }
+      },
+      {
+        "text": "daddy",
+        "translation": {
+          "text": "папочка",
+          "note": null
+        }
+      },
+      {
+        "text": "lamb",
+        "translation": {
+          "text": "ягнёнок",
+          "note": null
+        }
+      },
+      {
+        "text": "trunk",
+        "translation": {
+          "text": "кофр",
+          "note": ""
+        }
+      },
+      {
+        "text": "memoir",
+        "translation": {
+          "text": "мемуар",
+          "note": null
+        }
+      },
+      {
+        "text": "supper",
+        "translation": {
+          "text": "ужин",
+          "note": "устаревшее"
+        }
+      },
+      {
+        "text": "meadow",
+        "translation": {
+          "text": "луг",
+          "note": null
+        }
+      },
+      {
+        "text": "nail",
+        "translation": {
+          "text": "гвоздь",
+          "note": null
+        }
+      },
+      {
+        "text": "prince",
+        "translation": {
+          "text": "принц",
+          "note": null
+        }
+      },
+      {
+        "text": "subway",
+        "translation": {
+          "text": "метро",
+          "note": null
+        }
+      },
+      {
+        "text": "veteran",
+        "translation": {
+          "text": "ветеран",
+          "note": null
+        }
+      },
+      {
+        "text": "wallet",
+        "translation": {
+          "text": "бумажник",
+          "note": null
+        }
+      },
+      {
+        "text": "town",
+        "translation": {
+          "text": "администрация города",
+          "note": null
+        }
+      },
+      {
+        "text": "gravel",
+        "translation": {
+          "text": "гравий",
+          "note": null
+        }
+      },
+      {
+        "text": "calcium",
+        "translation": {
+          "text": "кальций",
+          "note": null
+        }
+      },
+      {
+        "text": "outlet",
+        "translation": {
+          "text": "дисконт центр",
+          "note": ""
+        }
+      },
+      {
+        "text": "law",
+        "translation": {
+          "text": "юриспруденция",
+          "note": null
+        }
+      },
+      {
+        "text": "heel",
+        "translation": {
+          "text": "пятка",
+          "note": null
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+Word{
+id	integer
+text	string
+meanings	[Meaning2{
+id	integer
+partOfSpeechCode	string
+title: String representation of a part of speech.
+Available codes:
+n - noun,
+v - verb,
+j - adjective,
+r - adverb,
+prp - preposition,
+prn - pronoun,
+crd - cardinal number,
+cjc - conjunction,
+exc - interjection,
+det - article,
+abb - abbreviation,
+x - particle,
+ord - ordinal number,
+md - modal verb,
+ph - phrase,
+phi - idiom.
+
+translation	Translation{...}
+previewUrl	string
+imageUrl	string
+transcription	string
+soundUrl	string
+}]
+}

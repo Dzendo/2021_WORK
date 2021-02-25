@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+* NavHostFragment считывает mobile_navigation и запоминает навсегда.
+* (Мы потом много раз к нему будем обращаться, перейти куда-нибудь)
+* Первый раз он находит строчку app:startDestination="@id/skyFragment", т.е. ему сказано, что стартовым надувать
+* фрагмент с этим имемнем в этом файле.
+* Находит фрагмент с этим именем skyFragment и дает ему команду надуваться сюда:
+* - находит файл kt этого фрагмента dinadurykinakina.sky.ui.sky.SkyFragment
+* - стартует этот файл SkyFragment.kt
+* - передает управление этому файлу, а я пошел и больше не нужен, но буду за спиной
+* А мы переходим к SkyFragment.kt и начинаем с ним рисовать картину в уже подготовленной раме
+*/ -->
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/skyFragment">
+    <!--Здесь указан какой фрагмент называть стартовым, т.е. skyFragment см ниже-->
+
+    <!--Это описание фрагмента для таблички RecyclerView раздувается dinadurykinakina.sky.ui.sky.SkyFragment.kt-->
+    <fragment
+        android:id="@+id/skyFragment"
+        android:name="com.app4web.dinadurykina.skylexicon.ui.sky.SkyFragment"
+        android:label="Sky"
+        tools:layout="@layout/sky_recycler_list" >
+        <!--Это возможный путь перехода осуществляется NavHostFragment по команде SkyFragmentDirections.actionTodoFragmentToFactDetailFragment-->
+        <action
+            android:id="@+id/action_skyFragment_to_factDetailFragment"
+            app:destination="@id/factDetailFragment" />
+        <!--Здесь указан на какой фрагмент надо перейти, т.е. factDetailFragment см ниже-->
+    </fragment>
+
+    <!--Это описание фрагмента для формы detail раздувается dinadurykinakina.sky.ui.detail.FactDetailFragment.kt-->
+    <fragment
+        android:id="@+id/factDetailFragment"
+        android:name="com.app4web.dinadurykina.skylexicon.ui.detail.FactDetailFragment"
+        android:label="FactDetailFragment"
+        tools:layout="@layout/fact_detail_fragment">
+
+        <!--Здесь указано, что при вызове этого фрагмента ему надо передавать argument factID Type="integer"-->
+        <argument
+            android:name="factID"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <!--Здесь указано, что при вызове этого фрагмента ему надо передавать argument paemi Type=PAEMI (enum)-->
+        <argument
+            android:name="paemi"
+            app:argType="com.app4web.dinadurykina.skylexicon.launcher.PAEMI" />
+
+        <!--Выяснено, что этот action не используется сейчас и его можно удалить, используется backup-->
+        <!--Это возможный путь перехода осуществляется NavHostFragment по команде SkyFragmentDirections.ActionFactDetailFragmentToSkyFragment-->
+        <!--action
+            android:id="@+id/action_factDetailFragment_to_skyFragment"
+            app:destination="@id/skyFragment" /-->
+        <!--Здесь указан на какой фрагмент надо перейти, т.е. skyFragment см выше-->
+
+    </fragment>
+
+</navigation>

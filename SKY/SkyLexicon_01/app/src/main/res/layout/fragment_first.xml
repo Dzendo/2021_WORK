@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.dinadurykina.skylexicon.FirstViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstFragment">
+
+    <EditText
+        android:id="@+id/slovo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:onClick="@{(view) -> viewModel.onSlovoClicked(view)}"
+        android:text="Chair"
+        tools:layout_editor_absoluteX="96dp"
+        tools:layout_editor_absoluteY="13dp"
+        tools:ignore="MissingConstraints" />
+
+    <!-- android:onClick="@{() -> viewModel.onSlovoClicked()}" -->
+    <!-- 11.1.5 В fragment_overview.xml изменении TextView привязки к viewModel.property.imgSrcUrl. -->
+    <!--  отображается URL-адрес первого изображения Марса в 11.2,.. отобразим это изображение с помощью Glide.-->
+    <TextView
+        android:id="@+id/textview_json"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@{viewModel.response}"
+        android:scrollbars = "vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/slovo" />
+    <!--до 11.1.5  android:text="@{viewModel.response}" выводила количество-->
+    <!-- android:text="@{viewModel.property.imgSrcUrl}" -->
+    <Button
+        android:id="@+id/button_first"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="go to Meaning"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

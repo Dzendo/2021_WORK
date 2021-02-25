@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.dinadurykina.skylexicon.network.Meaning" />
+
+        <variable
+            name="viewModel"
+            type="com.dinadurykina.skylexicon.ui.meanings.SkyMeaningsViewModelDebug" />
+
+        <variable
+            name="meaning"
+            type="Meaning" />
+    </data>
+
+    <!--androidx.core.widget.NestedScrollView
+        android:id="@+id/detail_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        tools:context=".ui.meanings.SkyMeaningsFragment"-->
+
+        <!--LinearLayout-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--каждое поле название и значение в строку примитив, поменять на материал Edit -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ids"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:onClick="@{viewModel::onIdsClicked}"
+                android:inputType="number"
+                android:text="132398"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="96dp"
+                tools:layout_editor_absoluteY="13dp" />
+            <!-- android:onClick="@{(view) -> viewModel.onIdsClicked(view)}" -->
+            <!-- android:onClick="@{viewModel::onIdsClicked}" -->
+
+            <TextView
+                android:id="@+id/slovo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:text="@{viewModel.meaning.text}" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textview_json"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="@{viewModel.response}"
+                android:scrollbars = "vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/prefix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" prefix= " + viewModel.meaning.prefix}' />
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" text= " + viewModel.meaning.text}' />
+
+                <TextView
+                    android:id="@+id/id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" id= " + viewModel.meaning.id}' />
+
+                <TextView
+                    android:id="@+id/wordId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" wordId = " + String.valueOf(viewModel.meaning.wordId)}' />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/partOfSpeechCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{" partOfSpeechCode = " + viewModel.meaning.partOfSpeechCode}' />
+
+                <TextView
+                    android:id="@+id/transcription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" transcription= " + viewModel.meaning.transcription}' />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/difficultyLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" difficultyLevel = " + String.valueOf(viewModel.meaning.difficultyLevel)}' />
+
+                <TextView
+                    android:id="@+id/mnemonics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" mnemonics= " + viewModel.meaning.mnemonics}' />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/translation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" translation= " + viewModel.meaning.translation.text}' />
+
+                <TextView
+                    android:id="@+id/note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{ viewModel.meaning.translation.note == null ? "" : viewModel.meaning.translation.note}' />
+
+                <TextView
+                    android:id="@+id/updatedAt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{" updatedAt= " + viewModel.meaning.updatedAt}' />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/soundUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{" soundUrl= " + viewModel.meaning.soundUrl}' />
+
+            <TextView
+                android:id="@+id/Definition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text='@{" Definition text= " + viewModel.meaning.definition.text + "\n Definition soundUrl= " +viewModel.meaning.definition.soundUrl}' />
+
+            <TextView
+                android:id="@+id/examplessize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{" examples= список примеров " + viewModel.meaning.examples.size + " шт" + " и  soundUrl на каждый"}' />
+
+            <ListView
+                android:id="@+id/examples"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/meaningsWithSimilarTranslationsize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{" meaningsWithSimilarTranslation= список: " + viewModel.meaning.meaningsWithSimilarTranslation.size() + " шт"}' />
+
+            <ListView
+                android:id="@+id/meaningsWithSimilarTranslation"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/alternativeTranslationssize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{" alternativeTranslations= Список: " + viewModel.meaning.alternativeTranslations.size + " шт"}' />
+
+            <ListView
+                android:id="@+id/alternativeTranslations"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/imagessize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{" images= Список: " + viewModel.meaning.images.size + " шт"}' />
+
+            <ImageView
+                android:id="@+id/sky_image"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:adjustViewBounds="true"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.meaning.images[0].url}"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <ListView
+                android:id="@+id/images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <!--/LinearLayout-->
+    <!--/androidx.core.widget.NestedScrollView-->
+</layout>

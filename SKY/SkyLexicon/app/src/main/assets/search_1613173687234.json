@@ -1,0 +1,332 @@
+[
+  {
+    "id": 838,
+    "text": "chair",
+    "meanings": [
+      {
+        "id": 1938,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "стул",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/b905a618b56c721ce683164259ac02c4.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/b905a618b56c721ce683164259ac02c4.jpeg?w=640&h=480",
+        "transcription": "ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair"
+      },
+      {
+        "id": 1940,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "председатель",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/55dbfb9c96ddf4f21affd3c4dd05706a.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/55dbfb9c96ddf4f21affd3c4dd05706a.jpeg?w=640&h=480",
+        "transcription": "ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair"
+      },
+      {
+        "id": 1939,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "должность профессора",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/577c8a22cd8140ec9d3d2bf97c72a542.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/577c8a22cd8140ec9d3d2bf97c72a542.jpeg?w=640&h=480",
+        "transcription": "ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair"
+      },
+      {
+        "id": 1941,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "электрический стул",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/5ce160bf580717f540be3e725753d802.png?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/5ce160bf580717f540be3e725753d802.png?w=640&h=480",
+        "transcription": "ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair"
+      },
+      {
+        "id": 1942,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "место",
+          "note": "в оркестре"
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/cab7367d8fa87b5c42739bc74e3d1a4d.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/cab7367d8fa87b5c42739bc74e3d1a4d.jpeg?w=640&h=480",
+        "transcription": "ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair"
+      },
+      {
+        "id": 1943,
+        "partOfSpeechCode": "v",
+        "translation": {
+          "text": "руководить",
+          "note": "чем-либо"
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/28f5140b6e865ca003db8c98d96b45f6.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/28f5140b6e865ca003db8c98d96b45f6.jpeg?w=640&h=480",
+        "transcription": "ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair"
+      }
+    ]
+  },
+  {
+    "id": 71792,
+    "text": "bath chair",
+    "meanings": [
+      {
+        "id": 38646,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "кресло на колёсах для больных",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/dc5f01f495ea5afdfe788a1dda797580.png?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/dc5f01f495ea5afdfe788a1dda797580.png?w=640&h=480",
+        "transcription": "bɑːθ ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=bath+chair"
+      }
+    ]
+  },
+  {
+    "id": 98100,
+    "text": "barber chair",
+    "meanings": [
+      {
+        "id": 72065,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "парикмахерское кресло",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/e7d4cd26af86774c367798598bd8bd3e.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/e7d4cd26af86774c367798598bd8bd3e.jpeg?w=640&h=480",
+        "transcription": "ˈbɑːbə ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=barber+chair"
+      }
+    ]
+  },
+  {
+    "id": 98616,
+    "text": "lounge chair",
+    "meanings": [
+      {
+        "id": 217290,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "мягкое кресло",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/4c7906373a22557e2e7403a9b07dff2a.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/4c7906373a22557e2e7403a9b07dff2a.jpeg?w=640&h=480",
+        "transcription": "laʊnʤ ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=lounge+chair"
+      }
+    ]
+  },
+  {
+    "id": 158880,
+    "text": "high chair",
+    "meanings": [
+      {
+        "id": 234337,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "высокий детский стульчик",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/c4cad32685cbb9b56aab45a399f52542.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/c4cad32685cbb9b56aab45a399f52542.jpeg?w=640&h=480",
+        "transcription": "haɪ ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=high+chair"
+      }
+    ]
+  },
+  {
+    "id": 165746,
+    "text": "chair days",
+    "meanings": [
+      {
+        "id": 234598,
+        "partOfSpeechCode": "ph",
+        "translation": {
+          "text": "старость",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/5ad30fb117477b3bc3968d7bfeab998d.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/5ad30fb117477b3bc3968d7bfeab998d.jpeg?w=640&h=480",
+        "transcription": "ʧeə deɪz",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=chair+days"
+      }
+    ]
+  },
+  {
+    "id": 78955,
+    "text": "camp chair",
+    "meanings": [
+      {
+        "id": 133169,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "складной стул",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/5c85d1c83fab0266d19f099dcc4658f9.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/5c85d1c83fab0266d19f099dcc4658f9.jpeg?w=640&h=480",
+        "transcription": "kæmp ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=camp+chair"
+      }
+    ]
+  },
+  {
+    "id": 112673,
+    "text": "musical chair",
+    "meanings": [
+      {
+        "id": 36305,
+        "partOfSpeechCode": "ph",
+        "translation": {
+          "text": "музыкальные стулья",
+          "note": null
+        },
+        "previewUrl": "",
+        "imageUrl": "",
+        "transcription": "ˈmjuːzɪkəl ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=musical+chair"
+      }
+    ]
+  },
+  {
+    "id": 81703,
+    "text": "sedan chair",
+    "meanings": [
+      {
+        "id": 38126,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "портшез",
+          "note": "истор."
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/b1a0c60c3590d46d3e39cc1897cd9e30.png?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/b1a0c60c3590d46d3e39cc1897cd9e30.png?w=640&h=480",
+        "transcription": "sɪˈdæn ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=sedan+chair"
+      }
+    ]
+  },
+  {
+    "id": 116595,
+    "text": "reclining chair",
+    "meanings": [
+      {
+        "id": 85075,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "откидывающееся кресло",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/cf1442639c37f79f5a2cad9947c134b3.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/cf1442639c37f79f5a2cad9947c134b3.jpeg?w=640&h=480",
+        "transcription": "rɪˈklaɪnɪŋ ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=reclining+chair"
+      }
+    ]
+  },
+  {
+    "id": 85527,
+    "text": "death chair",
+    "meanings": [
+      {
+        "id": 126364,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "электрический стул",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/41d62ee8d269c7cae5abe279d7c5c563.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/41d62ee8d269c7cae5abe279d7c5c563.jpeg?w=640&h=480",
+        "transcription": "dɛθ ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=death+chair"
+      }
+    ]
+  },
+  {
+    "id": 92374,
+    "text": "morris chair",
+    "meanings": [
+      {
+        "id": 63363,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "моррис кресла",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/11c9027ca2fb4976ee339e9434885eef.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/11c9027ca2fb4976ee339e9434885eef.jpeg?w=640&h=480",
+        "transcription": "ˈmɒrɪs ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=morris+chair"
+      }
+    ]
+  },
+  {
+    "id": 97506,
+    "text": "swivel chair",
+    "meanings": [
+      {
+        "id": 202284,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "вращающийся стул",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/16123555dbd4317fe339b1881f01dbc0.png?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/16123555dbd4317fe339b1881f01dbc0.png?w=640&h=480",
+        "transcription": "ˈswɪvl ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=swivel+chair"
+      }
+    ]
+  },
+  {
+    "id": 78937,
+    "text": "easy chair",
+    "meanings": [
+      {
+        "id": 201397,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "кресло",
+          "note": ""
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/4c7906373a22557e2e7403a9b07dff2a.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/4c7906373a22557e2e7403a9b07dff2a.jpeg?w=640&h=480",
+        "transcription": "ˈiːzi ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=easy+chair"
+      }
+    ]
+  },
+  {
+    "id": 99414,
+    "text": "rocking chair",
+    "meanings": [
+      {
+        "id": 198900,
+        "partOfSpeechCode": "n",
+        "translation": {
+          "text": "кресло-качалка",
+          "note": null
+        },
+        "previewUrl": "//d2zkmv5t5kao9.cloudfront.net/images/54460c3b707977a0b599438c97a23bd4.jpeg?w=96&h=72",
+        "imageUrl": "//d2zkmv5t5kao9.cloudfront.net/images/54460c3b707977a0b599438c97a23bd4.jpeg?w=640&h=480",
+        "transcription": "ˈrɒkɪŋ ʧeə",
+        "soundUrl": "//d2fmfepycn0xw0.cloudfront.net?gender=male&accent=british&text=rocking+chair"
+      }
+    ]
+  }
+]

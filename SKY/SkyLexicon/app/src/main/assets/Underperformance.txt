@@ -1,0 +1,6 @@
+13.02.2021 Не смог поставить в network\SkyAnswer.kt тип-class URL вместо String для Parcer
+14.02.2021 Надо в SkyMeaningsAnswer.kt встроить enum class PartOfSpeechCode из launcher\SkyConstants.kt
+13.02.2021 Хорошо бы Meaning2 объединить / наследовать от Meaning
+15.02.2021 Объявить правильно: difficultyLevel: Int, //1, There are 6 difficultyLevels: 1, 2, 3, 4, 5, 6.
+15.02.2021 Как в объекте Kotlin объявлять поля которых не будет в Json - необязательные для Moshi Properties
+18.02.2021 Как из Moshi получить Kotlin LiveData<>

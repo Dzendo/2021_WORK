@@ -1,0 +1,41 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Файл сборки верхнего уровня, в который можно добавить параметры конфигурации,
+// общие для всех подпроектов/модулей.
+buildscript {
+    ext.kotlin_version = "1.4.30"
+    //ext.kotlin_version = "1.4.21"
+    //ext.hilt_version = '1.0.0-alpha02'
+    ext.hilt_version = '2.32-alpha' //''2.31-alpha'
+    repositories {
+        // Основные мировые репозитории откуда все берется - maven
+        google()
+        jcenter()
+        // Взято из какого-то примера не знаю зачем, потом отключил, без него работает.
+        // maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // Необходимо указывать 2 раза (см. ниже), если Котлин eap версии
+        // maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
+    }
+    dependencies {
+        // Объявляются классы Gradle, которые нужны для сборки зависимостей
+        //classpath 'com.android.tools.build:gradle:7.0.0-alpha05'
+        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // Нужно для передачи параметров в навигации проекта
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.3"
+        // Нужно для внедрения зависимостей hilt
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        // maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
+    }
+}
+// Задача очистки проекта !Вызывается отдельно см. слева
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

@@ -16,6 +16,13 @@ import timber.log.Timber
 // что бы жить вместе с активити/фрагментом, отвечает за все за это библиотека Lifecycle
 class FactDetailViewModel @ViewModelInject constructor(
         private val factRepository: FactRepository,
+
+        /**
+         * Marks a parameter in a androidx.hilt.lifecycle.ViewModelInject-annotated constructor.
+         * Отмечает параметр в жизненном цикле androidx.hilt.ViewModel Inject-аннотированный конструктор.
+         * Deprecated
+         * Use Assisted
+         */
         @Assisted private val savedStateHandle: SavedStateHandle
      //   @Assisted factID: Int = 0,
      //   @Assisted paemi: PAEMI = PAEMI.N,

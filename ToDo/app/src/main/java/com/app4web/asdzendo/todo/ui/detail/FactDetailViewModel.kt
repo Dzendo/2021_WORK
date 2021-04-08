@@ -1,20 +1,21 @@
 package com.app4web.asdzendo.todo.ui.detail
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.app4web.asdzendo.todo.database.Fact
 import com.app4web.asdzendo.todo.database.FactRepository
 import com.app4web.asdzendo.todo.launcher.PAEMI
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 // Создается фабрикой из FactDetailFragment.kt + репо+дао+database
 // ссылка на него поступает layout\fact_detail_fragment.xml
 // Заметьте, что это не активити, не фрагмент, а родительский класс ViewModel
 // Здесь не надо ждать onCreate и всякие от активити, это другой специальный класс для архитектуры,
 // что бы жить вместе с активити/фрагментом, отвечает за все за это библиотека Lifecycle
-class FactDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class FactDetailViewModel @Inject constructor(
         private val factRepository: FactRepository,
 
         /**
@@ -23,7 +24,7 @@ class FactDetailViewModel @ViewModelInject constructor(
          * Deprecated
          * Use Assisted
          */
-        @Assisted private val savedStateHandle: SavedStateHandle
+        private val savedStateHandle: SavedStateHandle
      //   @Assisted factID: Int = 0,
      //   @Assisted paemi: PAEMI = PAEMI.N,
 ): ViewModel(), LifecycleObserver  {

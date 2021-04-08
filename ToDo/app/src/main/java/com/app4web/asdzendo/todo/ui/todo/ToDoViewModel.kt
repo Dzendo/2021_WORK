@@ -2,7 +2,6 @@ package com.app4web.asdzendo.todo.ui.todo
 
 
 import android.view.MenuItem
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -10,14 +9,17 @@ import com.app4web.asdzendo.todo.database.FactRepository
 import com.app4web.asdzendo.todo.database.FactTable
 import com.app4web.asdzendo.todo.launcher.PAEMI
 import com.app4web.asdzendo.todo.launcher.PAEMI.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
+import javax.inject.Inject
 
 // Стандартный класс ViewModel для фрагмента ToDoFragment через Hilt
-class ToDoViewModel @ViewModelInject internal constructor(
+@HiltViewModel
+class ToDoViewModel @Inject internal constructor(
     private val factRepository: FactRepository
 ) : ViewModel() {
 

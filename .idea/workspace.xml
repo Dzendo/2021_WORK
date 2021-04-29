@@ -28,10 +28,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="End ToDo Main SQL&#10;Start ToDo Sprav">
+    <list default="true" id="02f57b58-8d3f-4b70-b6bc-ada1af348fea" name="Default Changelist" comment="canary 14&#10;End ToDo Main SQL&#10;Start ToDo Sprav">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ToDo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ToDo/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +107,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617621131361</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="canary 14&#10;End ToDo Main SQL&#10;Start ToDo Sprav">
+      <created>1617914047925</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1617914047925</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -153,7 +158,8 @@
     <MESSAGE value="Start ToDo" />
     <MESSAGE value="End ToDo Main SQL&#10;Start ToDo Sprav" />
     <MESSAGE value="05042021 7.0.0 Canary 12 31.0.0 rc02" />
-    <option name="LAST_COMMIT_MESSAGE" value="05042021 7.0.0 Canary 12 31.0.0 rc02" />
+    <MESSAGE value="canary 14&#10;End ToDo Main SQL&#10;Start ToDo Sprav" />
+    <option name="LAST_COMMIT_MESSAGE" value="canary 14&#10;End ToDo Main SQL&#10;Start ToDo Sprav" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

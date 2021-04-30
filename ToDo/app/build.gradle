@@ -117,14 +117,14 @@ dependencies {
     // Тестовые библиотеки стандарт шаблона + room
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha05' //3.3.0'
-    implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0-alpha05' // '3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha06' //3.3.0'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0-alpha06' // '3.3.0'
     testImplementation 'androidx.room:room-testing:2.4.0-alpha01'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3"
 
     // AndroidX Test - JVM testing
     testImplementation "androidx.test.ext:junit-ktx:1.1.2"
-    testImplementation "androidx.test:core-ktx:1.4.0-alpha05"
+    testImplementation "androidx.test:core-ktx:1.4.0-alpha06"
     testImplementation 'org.robolectric:robolectric:4.5.1'  //'4.4'
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation "org.hamcrest:hamcrest-all:1.3"

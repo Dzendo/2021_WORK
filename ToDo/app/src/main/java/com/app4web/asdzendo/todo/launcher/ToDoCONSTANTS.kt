@@ -25,16 +25,16 @@ var COUNTSFact = 100   // пачка для дозаполнения базы п
 
 // отладочные settings:
 
-/*var BASE_IN_MEMORY = false  // база на HDD
+var BASE_IN_MEMORY = false  // база на HDD
 var FilterDateStart: Calendar = GregorianCalendar.getInstance().also {
     it.set(2020, 8, 1,0,0,0)}
 var FilterDateEnd:   Calendar = GregorianCalendar.getInstance().also {
     it.set(2020, 8, 31,23,59,59)}
-*/
-var BASE_IN_MEMORY = true   // база в RAM
+
+/*var BASE_IN_MEMORY = true   // база в RAM
 var FilterDateStart: Calendar = GregorianCalendar.getInstance().also {
     it.set(1900, 0, 0,0,0,0)}
 var FilterDateEnd:   Calendar = GregorianCalendar.getInstance().also {
     it.set(2100, 11, 31,23,59,59)}
-
+*/
 

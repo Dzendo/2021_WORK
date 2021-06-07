@@ -1,5 +1,5 @@
 package com.app4web.asdzendo.todo.ui.todo
-
+/*
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -65,3 +65,5 @@ class ToDoViewModelTest {
         // Вы можете узнать больше о событиях здесь .
         // https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
 }
+*/
+

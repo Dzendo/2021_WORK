@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package com.app4web.asdzendo.todo.util
-
+/*
 import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.idling.CountingIdlingResource
 
@@ -48,7 +48,7 @@ object EspressoIdlingResource {
         }
     }
 }
-
+*/
 /*
 Вот пример того, как вы бы использовали EspressoIdlingResource:
 
@@ -59,7 +59,7 @@ try {
     EspressoIdlingResource.decrement()
 }
  */
-
+/*
 // Вы можете упростить это, создав встроенную функцию с именем wrapEspressoIdlingResource.
 inline fun <T> wrapEspressoIdlingResource(function: () -> T): T {
     // Espresso does not work well with coroutines yet. See
@@ -72,6 +72,8 @@ inline fun <T> wrapEspressoIdlingResource(function: () -> T): T {
         EspressoIdlingResource.decrement() // Set app as idle.  Установите приложение в режиме ожидания.
     }
 }
+
+ */
 /**
  * wrapEspressoIdlingResource начинается с увеличения счетчика, запускает любой код, который он обернут, а затем уменьшает счетчик.
  * Вот пример того, как вы бы использовали wrapEspressoIdlingResource:

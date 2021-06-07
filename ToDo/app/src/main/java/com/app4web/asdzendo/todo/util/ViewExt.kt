@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.app4web.asdzendo.todo.ui
+package com.app4web.asdzendo.todo.util
 
 /**
  * Extension functions and Binding Adapters.
@@ -24,6 +24,7 @@ package com.app4web.asdzendo.todo.ui
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.app4web.asdzendo.todo.ui.Event
 import com.google.android.material.snackbar.Snackbar
 
 /**

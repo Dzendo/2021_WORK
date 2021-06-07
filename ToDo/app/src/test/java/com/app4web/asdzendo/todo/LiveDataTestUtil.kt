@@ -19,13 +19,14 @@ package com.app4web.asdzendo.todo
  * Совет. Когда вы пишете свои собственные тесты для тестирования LiveData,
  * вы можете аналогичным образом копировать и использовать этот класс в своем коде.
  */
+/*
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
-
+*/
 /**
  * Это довольно сложный метод.
  * Он создает вызываемую функцию расширения Kotlin, getOrAwaitValue которая добавляет наблюдателя,
@@ -43,6 +44,7 @@ import java.util.concurrent.TimeoutException
  *
  * функцию расширения, призванную LiveDataTestUtil упростить добавление наблюдателей
  */
+/*
 @VisibleForTesting(otherwise = VisibleForTesting.NONE)
 fun <T> LiveData<T>.getOrAwaitValue(
     time: Long = 2,
@@ -77,6 +79,8 @@ fun <T> LiveData<T>.getOrAwaitValue(
     @Suppress("UNCHECKED_CAST")
     return data as T
 }
+
+ */
 
 /**
    * в основном это короткая, многоразовая версия observeForever кода, показанного ниже.

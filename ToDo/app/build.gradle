@@ -21,7 +21,7 @@ android {
     // Включить Спецтехнологии:
     buildFeatures {
         // построит из xml спецклассы java см. java (generated)
-        dataBinding = true
+        dataBinding  true
         viewBinding true  // будем использовать для других
     }
     dataBinding {
@@ -48,8 +48,8 @@ android {
     }
     compileOptions {
         // Обязательно 1_8 для этой архитектуры
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility (JavaVersion.VERSION_11)
+        targetCompatibility (JavaVersion.VERSION_11)
     }
     kotlinOptions {
         // Обязательно для использования Room и др.
@@ -63,26 +63,26 @@ android {
     // Always show the result of every unit test when running via command line, even if it passes.
     // Всегда показывайте результат каждого модульного теста при запуске через командную строку, даже если он проходит.
     // избавиться от ошибки  No such manifest file: ./AndroidManifest.xml - НЕ работает дает ошибку ROBO
-    testOptions.unitTests {
+   /* testOptions.unitTests {
         includeAndroidResources = true
         // Robolectric
         // RuntimeException c причиной — method not mocked при попытке запустить тест кода вызывающего какой — либо метод фреймворка.
         // А если использовать следующую опцию в Gradle -
         returnDefaultValues = true
         // то, RuntimeException брошен не будет. Такое поведение может приводить к тяжело детектируемым ошибкам в тестах.
-    }
+    }*/
 }
 // Перечисление зависимостей от библиотек java/kotlin/androidx/google/...
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation 'androidx.core:core-ktx:1.6.0-beta01' //1.3.1'  // 1.5.0-alpha01 // идиомы
+    implementation 'androidx.core:core-ktx:1.6.0-beta02' //1.3.1'  // 1.5.0-alpha01 // идиомы
     implementation 'androidx.appcompat:appcompat:1.3.0'  // 1.3.0-alpha02 наследник активити
     implementation 'androidx.fragment:fragment-ktx:1.3.4'  // 1.3.0-alpha07
     implementation 'com.google.android.material:material:1.3.0'  // 1.3.0-alpha02'  // 1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "androidx.legacy:legacy-support-v4:1.0.0" //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout
-    implementation 'androidx.recyclerview:recyclerview:1.2.0' // 1.1.0
+    implementation 'androidx.recyclerview:recyclerview:1.2.1' // 1.1.0
 
     implementation 'androidx.paging:paging-runtime-ktx:3.0.0'
 
@@ -117,21 +117,25 @@ dependencies {
     // Тестовые библиотеки стандарт шаблона + room
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha06' //3.3.0'
-    implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0-alpha06' // '3.3.0'
-    testImplementation 'androidx.room:room-testing:2.4.0-alpha02'
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //implementation 'androidx.test.espresso:espresso-idling-resource:3.3.0'
+    //testImplementation 'androidx.room:room-testing:2.4.0-alpha02'
+    //testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0"
 
     // AndroidX Test - JVM testing
+    /*
     testImplementation "androidx.test.ext:junit-ktx:1.1.2"
-    testImplementation "androidx.test:core-ktx:1.4.0-alpha06"
+    testImplementation "androidx.test:core-ktx:1.4.0-beta01"
     testImplementation 'org.robolectric:robolectric:4.5.1'  //'4.4'
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation "org.hamcrest:hamcrest-all:1.3"
+     */
 }
-kapt {
+/*kapt {
     correctErrorTypes true
 }
+
+ */
 
 
 /*

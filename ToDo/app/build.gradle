@@ -13,10 +13,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 'android-S'
-    buildToolsVersion '31.0.0 rc4'
-    //compileSdkVersion 30 // классы и модули будут браться из Android 11
-    //buildToolsVersion "30.0.3" // Ревижн Android 11
+    //compileSdkVersion 'android-S'
+    //buildToolsVersion '31.0.0 rc5'
+    compileSdkVersion 30 // классы и модули будут браться из Android 11
+    buildToolsVersion "30.0.3" // Ревижн Android 11
 
     // Включить Спецтехнологии:
     buildFeatures {

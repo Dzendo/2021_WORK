@@ -93,7 +93,7 @@ dependencies {
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0-alpha02'  // liveData
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha02' // ViewModelScope,
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha02'
 
     // Room dependencies
     implementation 'androidx.room:room-runtime:2.4.0-alpha03'  // 2.3.0-alpha02

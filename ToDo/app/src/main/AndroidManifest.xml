@@ -21,6 +21,7 @@
         <!--NoActionBar Обязательно для включения материал appBarConfiguration -->
          <activity
              android:name=".launcher.ToDoActivity"
+             android:exported="true"
              android:theme="@style/Theme.ToDo.NoActionBar">
              <intent-filter>
                  <action android:name="android.intent.action.MAIN" />

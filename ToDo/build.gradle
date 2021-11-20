@@ -15,8 +15,9 @@ buildscript {
 
     dependencies {
         // Объявляются классы Gradle, которые нужны для сборки зависимостей
-        //classpath 'com.android.tools.build:gradle:7.2.0-alpha05'
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.android.tools.build:gradle:7.2.0-alpha05'
+        //classpath 'com.android.tools.build:gradle:7.1.0-beta03'
+        //classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Нужно для передачи параметров в навигации проекта
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
@@ -25,7 +26,7 @@ buildscript {
     }
 }
 
-
+// https://stackoverflow.com/questions/68021770/setonnavigationitemselectedlistener-deprecated
    allprojects {
    gradle.projectsEvaluated {
        tasks.withType(JavaCompile) {

@@ -6,7 +6,7 @@ buildscript {
     ext.kotlin_version = '1.6.0' //'1.5.31' //1.6.0-RC
     //ext.kotlin_version = '1.5.31' //1.6.0-RC
     //ext.hilt_version = '2.40.1' //'2.39.1'
-    ext.hilt_version = '2.40.2'
+    ext.hilt_version = '2.40.5'
     repositories {
         // Основные мировые репозитории откуда все берется - maven
         google()

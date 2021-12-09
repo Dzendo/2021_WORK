@@ -18,8 +18,8 @@ android {
     //buildToolsVersion '31.0.0 rc5'
    // compileSdkVersion '31-ext2' // классы и модули будут браться из Android 11
    // buildToolsVersion "32.0.0-rc1" // Ревижн Android 11
-    compileSdkVersion 31 // классы и модули будут браться из Android 11
-    buildToolsVersion "31.0.0" // Ревижн Android 11
+    compileSdkVersion 32 // классы и модули будут браться из Android 11
+    buildToolsVersion "32.0.0" // Ревижн Android 11
 
     // Включить Спецтехнологии:
     buildFeatures {
@@ -36,7 +36,7 @@ android {
         // !! Имя пакета !! оно в смарт уезжает и в Google play, Firebase, AdMob
         applicationId "com.app4web.asdzendo.todo"
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
         // ???
@@ -99,11 +99,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 
     // Room dependencies
-    implementation 'androidx.room:room-runtime:2.4.0-beta02'  // 2.3.0-alpha02
-    implementation 'androidx.room:room-ktx:2.4.0-beta02'
-    implementation 'androidx.room:room-paging:2.4.0-beta02'
+    implementation 'androidx.room:room-runtime:2.4.0-rc01'  // 2.3.0-alpha02
+    implementation 'androidx.room:room-ktx:2.4.0-rc01'
+    implementation 'androidx.room:room-paging:2.4.0-rc01'
     // 2.3.0-alpha02 // optional - Kotlin Extensions and Coroutines support for Room
-    kapt 'androidx.room:room-compiler:2.4.0-beta02'  // 2.3.0-alpha02
+    kapt 'androidx.room:room-compiler:2.4.0-rc01'  // 2.3.0-alpha02
 
     // Coroutines for getting off the UI thread
     // implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"

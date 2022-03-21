@@ -6,7 +6,8 @@ buildscript {
     ext.kotlin_version = "1.6.20-RC" //'1.6.10' //'1.5.31' //1.6.0-RC
     //ext.kotlin_version = '1.5.31' //1.6.0-RC
     //ext.hilt_version = '2.40.1' //'2.39.1'
-    ext.hilt_version = '2.41'
+    ext.hilt_version = '2.40.5'
+    //ext.hilt_version = '2.41'
     repositories {
         // Основные мировые репозитории откуда все берется - maven
         google()
@@ -15,7 +16,7 @@ buildscript {
 
     dependencies {
         // Объявляются классы Gradle, которые нужны для сборки зависимостей
-        classpath 'com.android.tools.build:gradle:7.3.0-alpha03'
+        classpath 'com.android.tools.build:gradle:7.3.0-alpha07'
         //classpath 'com.android.tools.build:gradle:7.1.0-beta03'
         //classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

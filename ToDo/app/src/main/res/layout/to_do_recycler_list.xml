@@ -56,10 +56,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="?android:attr/windowBackground"
-        app:OnNavigationItemSelectedListener = "@{viewmodel::onClickBottomNavView}"
+        app:OnItemSelectedListener = "@{viewmodel::onClickBottomNavView}"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:menu="@menu/bottom_nav_menu" />
-
+        <!-- app:OnNavigationItemSelectedListener = "@{viewmodel::onClickBottomNavView}" deprecate-->
 </FrameLayout>
 
 </layout>

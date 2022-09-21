@@ -1,13 +1,15 @@
 package com.app4web.asdzendo.todo.launcher
 
 
-import android.content.Intent
+
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -21,7 +23,7 @@ import timber.log.Timber
 // Создается новый класс ToDoActivity с родителем AppCompatActivity и внедрением зависимостей
 // Теперь с Hilt для этого надо аннотировать ToDoApplication и ToDoActitityViewModel :
 @AndroidEntryPoint
-class ToDoActivity : AppCompatActivity() {
+class ToDoActivity : AppCompatActivity(), MenuProvider {
     // Выделяется место под эти переменные в созданном классе
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mainBinding: ActivityToDoBinding
@@ -35,6 +37,7 @@ class ToDoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         mainBinding = ActivityToDoBinding.inflate(layoutInflater)
         // Надувает главный экран из своего activity_to_do.xml и запоминает адрес в переменной
         setContentView(mainBinding.root)
@@ -72,49 +75,34 @@ class ToDoActivity : AppCompatActivity() {
        // mainBinding.viewmodel = mainViewModel
         // Владельцем циклов жизни этого xml надутого буду Я - ToDoActivity.kt
         //mainBinding.lifecycleOwner = this
+
+        // https://stackoverflow.com/questions/71917856/sethasoptionsmenuboolean-unit-is-deprecated-deprecated-in-java
+        // Т.к. в onCreate мы сказали setSupportActionBar(mainBinding.toolbar), то
+        // Андроид вызовет onCreateOptionsMenu, а мы его здесь переопределим. - Deprecate
+        // Добавляет меню три точки для этого фрагмента
+        addMenuProvider(this) //, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
         // отправляет в логкат ToDoMainActivity onCreate
         Timber.i("ToDoMainActivity onCreate ")
     // onCreate закончен, все сделали отдаем управление Андроиду и он отдает юзеру
-
     }
-
-    /**
-     * onCreate надувает setContentView (вот этот макет: R.layout.activity_to_do.xml)
-     * По дороге он встречает View <fragment и он должен его надуть, а там есть менеджер фрагментов
-     * android:name="androidx.navigation.fragment.NavHostFragment"
-     * т.е. он должен надуть сюда что-то этим NavHostFragment, что он и делает вызывая его для надувания
-     * и отдает ему mobile_navigation.xml специальным образом подготовленный файл навигации из которого
-     * понятно, что надувать.
-     *
-     * NavHostFragment считывает mobile_navigation и запоминает навсегда.
-     * (Мы потом много раз к нему будем обращаться, перейти куда-нибудь)
-     * А сейчас он находит строчку app:startDestination="@id/todoFragment", т.е. ему сказано, что стартовым надувать
-     * фрагмент с этим имемнем в этом файле.
-     * Находит фрагмент с этим именем todoFragment и дает ему команду надуваться сюда:
-     * - находит файл kt этого фрагмента ui.todo.ToDoFragment.kt
-     * - стартует этот файл ToDoFragment.kt
-     * - передает управление этому файлу, а я пошел и больше не нужен, но буду за спиной
-     * А мы переходим к ToDoFragment.kt и начинаем с ним рисовать картину в уже подготовленной раме
-     */
-
+    // https://stackoverflow.com/questions/71917856/sethasoptionsmenuboolean-unit-is-deprecated-deprecated-in-java
     // Т.к. в onCreate мы сказали setSupportActionBar(mainBinding.toolbar), то
-    // Андроид вызовет onCreateOptionsMenu, а мы его здесь переопределим.
+    // Андроид вызовет onCreateOptionsMenu, а мы его здесь переопределим. - Deprecate
     // Добавляет меню три точки для этого фрагмента
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         // Раздуйте меню; это добавит элементы в панель действий, если она присутствует.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
+        inflater.inflate(R.menu.main, menu)
     }
     // Обрабатывает меню три точки для этого фрагмента при нажатии на элемент меню
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    // Меню MenuItem присылает имя поля из XML, которое нажали
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
+        // Меню MenuItem присылает имя поля из XML, которое нажали
         // По уму этот обработчик надо бы переместить в ToDoActivityViewModel, но технологии биндинг для меню не создано
         // Обещают сделать, тогда перемещу
         when (item.itemId) {
             R.id.action_settings -> Toast.makeText(applicationContext, "Settings", Toast.LENGTH_SHORT).show()
-            R.id.action_reboot -> startActivity(Intent(this, ToDoActivity::class.java))
-
+            //R.id.action_reboot -> startActivity(Intent(this, ToDoActivity::class.java))
             //R.id.main_action_base ->  BASE_IN_MEMORY = false
             R.id.main_action_base_in_memory -> BASE_IN_MEMORY = true
             R.id.main_action_base_on_disk -> BASE_IN_MEMORY = false
@@ -127,7 +115,8 @@ class ToDoActivity : AppCompatActivity() {
             R.id.main_action_constfact_100_000 -> COUNTSFact = 100_000
             R.id.main_action_constfact_1000_000 -> COUNTSFact = 1_000_000
             else -> {
-                super.onOptionsItemSelected(item); return false
+                //super.onOptionsItemSelected(item);
+                return false
             }
         }
         Toast.makeText(applicationContext, "base in memory = $BASE_IN_MEMORY COUNTSFact = $COUNTSFact", Toast.LENGTH_LONG).show()
@@ -144,3 +133,21 @@ class ToDoActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }*/
+/**
+ * onCreate надувает setContentView (вот этот макет: R.layout.activity_to_do.xml)
+ * По дороге он встречает View <fragment и он должен его надуть, а там есть менеджер фрагментов
+ * android:name="androidx.navigation.fragment.NavHostFragment"
+ * т.е. он должен надуть сюда что-то этим NavHostFragment, что он и делает вызывая его для надувания
+ * и отдает ему mobile_navigation.xml специальным образом подготовленный файл навигации из которого
+ * понятно, что надувать.
+ *
+ * NavHostFragment считывает mobile_navigation и запоминает навсегда.
+ * (Мы потом много раз к нему будем обращаться, перейти куда-нибудь)
+ * А сейчас он находит строчку app:startDestination="@id/todoFragment", т.е. ему сказано, что стартовым надувать
+ * фрагмент с этим имемнем в этом файле.
+ * Находит фрагмент с этим именем todoFragment и дает ему команду надуваться сюда:
+ * - находит файл kt этого фрагмента ui.todo.ToDoFragment.kt
+ * - стартует этот файл ToDoFragment.kt
+ * - передает управление этому файлу, а я пошел и больше не нужен, но буду за спиной
+ * А мы переходим к ToDoFragment.kt и начинаем с ним рисовать картину в уже подготовленной раме
+ */

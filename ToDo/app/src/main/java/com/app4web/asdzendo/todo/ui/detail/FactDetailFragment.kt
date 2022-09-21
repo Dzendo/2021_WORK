@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 // Вызывается NavHostFragment-ом  из ToDoFragment.kt при нажатии на строку или на fab
 // сюда передано управление, что бы разместить этот FactDetailFragment в отведенном ToDoActivity месте под фрагмент
 @AndroidEntryPoint
-class FactDetailFragment : Fragment() {
+class FactDetailFragment : Fragment(), MenuProvider {
 
     // Kotlin Android идиома, что бы поймать два аргумента: ID и букву.
     // Если ID не ноль, то буква нас не интерессует
@@ -39,7 +39,8 @@ class FactDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Сообщает, что надо добавить в меню три точки для этого фрагмента
-        setHasOptionsMenu(true) //deprecate перенесено см onViewCreated
+
+        //setHasOptionsMenu(true) //deprecate перенесено см onViewCreated
         Timber.i("ToDo FactDetailFragment onCreate ")
 
         // Пристроил временно пока не знаю как передавать параметры в ViewModel c Hilt
@@ -89,37 +90,9 @@ class FactDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Timber.i("ToDo FactDetailFragment onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-/*
-        // https://developer.android.com/jetpack/androidx/releases/activity#1.4.0-alpha01
-        // Using the addMenuProvider() API in a Fragment
-        // The usage of an interface lets you inject your own implementation
         val menuHost: MenuHost = requireActivity()
-        // Add menu items without using the Fragment Menu APIs
-        // Note how we can tie the MenuProvider to the viewLifecycleOwner
-        // and an optional Lifecycle.State (here, RESUMED) to indicate when
-        // the menu should be visible
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.detail, menu)
-            }
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Зовет функции из factDetailViewModel
-                when (menuItem.itemId) {
-                    R.id.Add_fact ->
-                        factDetailViewModel.insert()
-                    R.id.Update_fact ->
-                        factDetailViewModel.update()
-                    R.id.Delete_fact ->
-                        factDetailViewModel.delete()
-                    else -> return false
-                }
-                // По уму, когда нибудь будет команда в xml прямо вызвать эти функции обработки меню
-                return true
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
- */
         // Для возврата в таблицу по нажатию любой кнопки
         // Наблюдатель /ожидатель надо ли возвращаться назад (добавить / обновить / удалить, а стрелочки шли мимо)
         factDetailViewModel.backup.observe(viewLifecycleOwner) {
@@ -134,15 +107,16 @@ class FactDetailFragment : Fragment() {
             }
         }
     }
-
-
+//    https://stackoverflow.com/questions/71917856/sethasoptionsmenuboolean-unit-is-deprecated-deprecated-in-java
     // Добавляет в меню еще пункты
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    //override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.detail, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+        //super.onCreateOptionsMenu(menu, inflater)
     }
     // Обрабатывает нажатия на добавленные пункты меню
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    //override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
         // Зовет функции из factDetailViewModel
         when (item.itemId) {
             R.id.Add_fact ->
@@ -155,7 +129,7 @@ class FactDetailFragment : Fragment() {
         }
         return true
         // По уму, когда нибудь будет команда в xml прямо вызвать эти функции обработки меню
-    }
+    }  //, viewLifecycleOwner, Lifecycle.State.RESUMED)
 }
 /**
  * Все основное только начинается, здесь ничего нет во фрагменте

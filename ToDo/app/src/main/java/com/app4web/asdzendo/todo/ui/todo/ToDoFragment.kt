@@ -3,8 +3,11 @@ package com.app4web.asdzendo.todo.ui.todo
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.app4web.asdzendo.todo.R
@@ -25,7 +28,7 @@ import timber.log.Timber
  * Использует Paging 3.0 и HILT
  */
 @AndroidEntryPoint
-class ToDoFragment : Fragment() {
+class ToDoFragment : Fragment(), MenuProvider {
 
     private val todoViewModel: ToDoViewModel by viewModels()
     // Создаем todoViewModel без параметров + репо + dao + database и связывается с ними
@@ -45,7 +48,7 @@ class ToDoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Сообщает меню ... из ToDoActivity что надо будет Добавлять и обрабатывать доп меню три точки для этого фрагмента
-        setHasOptionsMenu(true)
+        //setHasOptionsMenu(true)
         Timber.i("ToDo Recycler Fragment onCreate")
     }
     // Стандартный вызов Fragment из Android для надувания макета и др.
@@ -107,6 +110,8 @@ class ToDoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Timber.i("ToDo Recycler Fragment onViewCreated")
         super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         // Он наблюдает когда поступит команда перехода на форму detail (тап в строчку или fab)
         todoViewModel.navigateToFactDetail.observe(viewLifecycleOwner) { factID ->
             // поле LiveData очень часто(почти всегда) null - и это нам не интересно - пропускаем
@@ -136,13 +141,13 @@ class ToDoFragment : Fragment() {
     }
 
     // Добавляет в меню три точки пункты для этого фрагмента из menu\to_do.xml
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.to_do, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
+
     //  обрабатывает в меню три точки свои добавленные для этого фрагмента пункты меню
     // хорошо бы научиться вызывать из XML прямо ViewModel, но пока не сделали - обещают
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.fact_base_creating -> {  // "Добавить пачку"
                 todoViewModel.addFactDatabase(COUNTSFact) // Дозаполнить заново базу данных
@@ -160,5 +165,5 @@ class ToDoFragment : Fragment() {
             else -> return false
         }
         return true
-    }
+    } // , viewLifecycleOwner, Lifecycle.State.RESUMED)
 }

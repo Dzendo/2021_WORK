@@ -110,7 +110,7 @@ class ToDoViewModel @Inject internal constructor(
     // подключено  вызов из XML нажатие на нижнее меню
     fun onClickBottomNavView(clickpaemi: MenuItem): Boolean {
         val oldPaemi = paemi.value
-        paemi.value = PAEMI.valueOf(clickpaemi.title.first().toString())
+        paemi.value = PAEMI.valueOf(clickpaemi.title?.first().toString())
 
         if (oldPaemi == paemi.value) paemi.value = N
         Timber.i("ToDoViewModel onClickBottomNavView ${paemi.value?.name}}")

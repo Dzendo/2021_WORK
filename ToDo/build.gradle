@@ -16,7 +16,7 @@ buildscript {
 
     dependencies {
         // Объявляются классы Gradle, которые нужны для сборки зависимостей
-        classpath 'com.android.tools.build:gradle:8.0.0-alpha02'
+        classpath 'com.android.tools.build:gradle:8.0.0-alpha03'
         //classpath 'com.android.tools.build:gradle:7.1.0-beta03'
         //classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -26,7 +26,7 @@ buildscript {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
-
+/*
 // https://stackoverflow.com/questions/68021770/setonnavigationitemselectedlistener-deprecated
    allprojects {
    gradle.projectsEvaluated {
@@ -41,3 +41,4 @@ buildscript {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+*/

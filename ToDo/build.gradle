@@ -1,8 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 // Файл сборки верхнего уровня, в который можно добавить параметры конфигурации,
 // общие для всех подпроектов/модулей.
-//ext.hilt_version = "2.44.2"
-// 17.01.2023
+// 20.01.2023
 plugins {
     // Объявляются классы Gradle, которые нужны для сборки зависимостей
     id 'com.android.application' version '8.1.0-alpha01' apply false
@@ -12,9 +11,4 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'  version '2.5.3' apply false   // 2.6.0-alpha04
     // Нужно для внедрения зависимостей hilt
     id 'com.google.dagger.hilt.android'  version '2.44.2' apply false
-}
-
-// Задача очистки проекта !Вызывается отдельно см. слева
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

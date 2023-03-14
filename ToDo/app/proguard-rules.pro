@@ -1,7 +1,7 @@
 # Add project specific ProGuard rules here.
 # Добавьте сюда правила ProGuard для конкретного проекта.
 # You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# proguardFiles setting in build.gradle.kts.
 # Вы можете управлять набором прикладных конфигурационных файлов с помощью
 # настройка proguardFiles в сборке.градля.
 # For more details, see

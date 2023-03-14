@@ -47,11 +47,11 @@ fun View.setupSnackbar(
     timeLength: Int
 ) {
 
-    snackbarEvent.observe(lifecycleOwner, { event ->
+    snackbarEvent.observe(lifecycleOwner) { event ->
         event.getContentIfNotHandled()?.let {
             showSnackbar(context.getString(it), timeLength)
         }
-    })
+    }
 }
 
 /*

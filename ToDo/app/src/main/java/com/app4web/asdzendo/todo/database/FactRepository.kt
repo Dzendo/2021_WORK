@@ -26,7 +26,6 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Repository module for handling data operations.

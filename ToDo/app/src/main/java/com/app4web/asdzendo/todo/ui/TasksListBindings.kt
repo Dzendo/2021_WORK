@@ -20,7 +20,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.app4web.asdzendo.todo.database.FactTable
-import com.app4web.asdzendo.todo.ui.todo.ToDoPageAdapterTable
+
 //  * Пока не встроена
 
 //  ^[WARN] Incremental annotation processing requested,

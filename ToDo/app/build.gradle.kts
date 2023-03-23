@@ -86,10 +86,10 @@ android {
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
     implementation ("org.jetbrains.kotlin:kotlin-reflect:1.8.20-RC")
-    implementation ("androidx.core:core-ktx:1.10.0-rc01")  // 1.10.0-alpha01
+    implementation ("androidx.core:core-ktx:1.10.0-rc01")  // 1.10.0-alpha01  1.10.0-rc01
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
     //implementation ("androidx.fragment:fragment-ktx:1.5.5")  // 1.6.0-alpha05
-    implementation ("com.google.android.material:material:1.9.0-alpha02")  // 1.9.0-alpha01
+    implementation ("com.google.android.material:material:1.9.0-beta01")  // 1.9.0-alpha01
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha08")   // 2.2.0-alpha07
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.0")  // 1.3.0-rc01
@@ -110,7 +110,7 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.5.0")
     implementation ("androidx.room:room-paging:2.5.0")
    // optional - Kotlin Extensions and Coroutines support for Room
-    kapt ("androidx.room:room-compiler:2.5.0")  //
+    ksp ("androidx.room:room-compiler:2.5.0")  //
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

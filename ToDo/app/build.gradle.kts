@@ -97,8 +97,8 @@ dependencies {
     implementation ("androidx.paging:paging-runtime-ktx:3.2.0-alpha04")   // 3.2.0-alpha04
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0-alpha08")  // 2.6.0-alpha05
-    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0-alpha08") // 2.6.0-alpha05
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0-alpha09")  // 2.6.0-alpha05
+    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0-alpha09") // 2.6.0-alpha05
 
     // ViewModel and LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")  // liveData       // 2.6.0-beta01

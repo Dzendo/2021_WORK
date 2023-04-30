@@ -17,6 +17,7 @@ plugins {
 
 android {
     compileSdk = 33
+    //targetSdkPreview = "UpsideDownCake"
 
     //https://developer.android.com/studio/build/configure-app-module#set-namespace
     namespace = "com.app4web.asdzendo.todo"
@@ -85,11 +86,11 @@ android {
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.8.20")  // 1.8.20-RC2
-    implementation ("androidx.core:core-ktx:1.9.0")  //  1.10.0-rc01 1.11.0-alpha01 1.12.0-alpha01
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.8.21")  // 1.8.20-RC2
+    implementation ("androidx.core:core-ktx:1.11.0-alpha03")  //  1.10.0-rc01 1.11.0-alpha01 1.12.0-alpha01
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
     //implementation ("androidx.fragment:fragment-ktx:1.5.5")  // 1.6.0-alpha05
-    implementation ("com.google.android.material:material:1.9.0-beta01")  // 1.9.0-alpha01
+    implementation ("com.google.android.material:material:1.9.0-rc01")  // 1.9.0-rc01  1.10.0-alpha01
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha09")   // 2.2.0-alpha07
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.0")  // 1.3.0-rc01
@@ -97,8 +98,8 @@ dependencies {
     implementation ("androidx.paging:paging-runtime-ktx:3.2.0-alpha04")   // 3.2.0-alpha04
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0-alpha09")  // 2.6.0-alpha05
-    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0-alpha09") // 2.6.0-alpha05
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0-beta01")  // 2.6.0-alpha05
+    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0-beta01") // 2.6.0-alpha05
 
     // ViewModel and LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")  // liveData       // 2.6.0-beta01
@@ -117,10 +118,10 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     // Hilt dependencies
-    implementation ("com.google.dagger:hilt-android:2.45")
+    implementation ("com.google.dagger:hilt-android:2.46")
     kapt ("com.google.dagger:hilt-android-compiler:2.45")  // ksp вылетает
     //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")  //??
-    kapt ("androidx.hilt:hilt-compiler:1.0.0")   // ??  May 05, 2021
+   // kapt ("androidx.hilt:hilt-compiler:1.0.0")   // ??  May 05, 2021
 
     // Logging
     implementation ("com.jakewharton.timber:timber:5.0.1")

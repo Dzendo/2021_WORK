@@ -90,12 +90,12 @@ dependencies {
     implementation ("androidx.core:core-ktx:1.11.0-alpha03")  //  1.10.0-rc01 1.11.0-alpha01 1.12.0-alpha01
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
     //implementation ("androidx.fragment:fragment-ktx:1.5.5")  // 1.6.0-alpha05
-    implementation ("com.google.android.material:material:1.9.0-rc01")  // 1.9.0-rc01  1.10.0-alpha01
+    implementation ("com.google.android.material:material:1.9.0")  // 1.9.0-rc01  1.10.0-alpha01
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha09")   // 2.2.0-alpha07
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.0")  // 1.3.0-rc01
 
-    implementation ("androidx.paging:paging-runtime-ktx:3.2.0-alpha04")   // 3.2.0-alpha04
+    implementation ("androidx.paging:paging-runtime-ktx:3.2.0-alpha05")   // 3.2.0-alpha04
 
     // Navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0-beta01")  // 2.6.0-alpha05
@@ -115,7 +115,7 @@ dependencies {
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0")
 
     // Hilt dependencies
     implementation ("com.google.dagger:hilt-android:2.46")

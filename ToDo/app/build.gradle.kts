@@ -111,15 +111,15 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.5.1")
     implementation ("androidx.room:room-paging:2.5.1")
    // optional - Kotlin Extensions and Coroutines support for Room
-    kapt ("androidx.room:room-compiler:2.5.1")  //
+    ksp ("androidx.room:room-compiler:2.5.1")  //
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
     // Hilt dependencies
-    implementation ("com.google.dagger:hilt-android:2.46")
-    kapt ("com.google.dagger:hilt-android-compiler:2.45")  // ksp вылетает
+    implementation ("com.google.dagger:hilt-android:2.46.1")
+    kapt ("com.google.dagger:hilt-android-compiler:2.46.1")  // ksp вылетает
     //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")  //??
    // kapt ("androidx.hilt:hilt-compiler:1.0.0")   // ??  May 05, 2021
 

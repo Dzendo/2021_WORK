@@ -87,7 +87,7 @@ android {
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
     implementation ("org.jetbrains.kotlin:kotlin-reflect:1.8.21")  // 1.8.20-RC2
-    implementation ("androidx.core:core-ktx:1.11.0-alpha03")  //  1.10.0-rc01 1.11.0-alpha01 1.12.0-alpha01
+    implementation ("androidx.core:core-ktx:1.11.0-alpha04")  //  1.10.0-rc01 1.11.0-alpha01 1.12.0-alpha01
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
     //implementation ("androidx.fragment:fragment-ktx:1.5.5")  // 1.6.0-alpha05
     implementation ("com.google.android.material:material:1.9.0")  // 1.9.0-rc01  1.10.0-alpha01
@@ -98,8 +98,8 @@ dependencies {
     implementation ("androidx.paging:paging-runtime-ktx:3.2.0-alpha05")   // 3.2.0-alpha04
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0-beta01")  // 2.6.0-alpha05
-    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0-beta01") // 2.6.0-alpha05
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0-rc01")  // 2.6.0-alpha05
+    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0-rc01") // 2.6.0-alpha05
 
     // ViewModel and LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")  // liveData       // 2.6.0-beta01

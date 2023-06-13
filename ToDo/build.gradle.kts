@@ -8,7 +8,7 @@ plugins {
     id ("com.android.library") version "8.2.0-alpha07" apply false
     id ("org.jetbrains.kotlin.android") version "1.9.0-Beta" apply false  // 1.9.0-Beta 1.8.21
     // Нужно для передачи параметров в навигации проекта
-    id ("androidx.navigation.safeargs.kotlin")  version "2.7.0-alpha01" apply false   //  2.7.0-alpha01 2.6.0-rc02
+    id ("androidx.navigation.safeargs.kotlin")  version "2.7.0-beta01" apply false   //  2.7.0-alpha01 2.6.0-rc02
     // Нужно для внедрения зависимостей hilt
     id ("com.google.dagger.hilt.android")  version "2.46.1" apply false  // 2.46.1
     id ("com.google.devtools.ksp") version "1.9.0-Beta-1.0.11" apply false  // 1.9.0-Beta-1.0.11 1.8.21-1.0.11

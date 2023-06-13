@@ -16,8 +16,9 @@ plugins {
 }
 
 android {
-    compileSdkPreview = "UpsideDownCake"
-//    compileSdk = 33
+//    compileSdkPreview = "UpsideDownCakePrivacySandbox"
+//    compileSdkPreview = "UpsideDownCake"
+    compileSdk = 34
     //targetSdkPreview = "UpsideDownCake"
 
     //https://developer.android.com/studio/build/configure-app-module#set-namespace
@@ -35,10 +36,11 @@ android {
 
     defaultConfig {
         // !! Имя пакета !! оно в смарт уезжает и в Google play, Firebase, AdMob
-        targetSdkPreview = "UpsideDownCake"
+//        compileSdkPreview = "UpsideDownCakePrivacySandbox"
+//        targetSdkPreview = "UpsideDownCake"
         applicationId = "com.app4web.asdzendo.todo"
         minSdk = 26     // Android 7.1.1
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         // ???
@@ -89,19 +91,19 @@ android {
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
     implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0-Beta")  // 1.9.0-Beta 1.8.21
-    implementation ("androidx.core:core-ktx:1.12.0-alpha04")  //  1.11.0-alpha04 1.11.0-alpha01 1.12.0-alpha04
+    implementation ("androidx.core:core-ktx:1.12.0-alpha05")  //  1.11.0-alpha04 1.11.0-alpha01 1.12.0-alpha04
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
-    implementation ("com.google.android.material:material:1.10.0-alpha03")  // 34== 1.10.0-alpha03  1.9.0
+    implementation ("com.google.android.material:material:1.9.0")  // 34== 1.10.0-alpha03  1.9.0
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha10")   //
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
-    implementation ("androidx.recyclerview:recyclerview:1.3.0")  //
+    implementation ("androidx.recyclerview:recyclerview:1.3.1-rc01")  //
 
-    implementation ("androidx.paging:paging-runtime-ktx:3.2.0-alpha06")   //
+    implementation ("androidx.paging:paging-runtime-ktx:3.2.0-beta01")   //
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.0-alpha01")  //2.7.0-alpha01
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.0-alpha01") // 2.7.0-alpha01
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.0-beta01")  //2.7.0-alpha01
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.0-beta01") // 2.7.0-alpha01
 
     // ViewModel and LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")  // liveData       //
@@ -130,16 +132,16 @@ dependencies {
 
     // Тестовые библиотеки стандарт шаблона + room
     testImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    //implementation ("androidx.test.espresso:espresso-idling-resource:3.5.1")
-    //testImplementation ("androidx.room:room-testing:2.5.1")
+    androidTestImplementation ("androidx.test.ext:junit:1.2.0-alpha01")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.6.0-alpha01")
+    //implementation ("androidx.test.espresso:espresso-idling-resource:3.6.0-alpha01")
+    //testImplementation ("androidx.room:room-testing:2.6.0-alpha01")
     //testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
 
     // AndroidX Test - JVM testing
     /*
-    testImplementation ("androidx.test.ext:junit-ktx:1.1.5")
-    testImplementation ("androidx.test:core-ktx:1.5.0")
+    testImplementation ("androidx.test.ext:junit-ktx:1.2.0-alpha01")
+    testImplementation ("androidx.test:core-ktx:1.6.0-alpha01")
     testImplementation ("org.robolectric:robolectric:4.10.3")
     testImplementation ("androidx.arch.core:core-testing:2.2.0")
     testImplementation ("org.hamcrest:hamcrest-all:1.3")

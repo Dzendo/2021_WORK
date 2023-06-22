@@ -90,7 +90,7 @@ android {
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0-Beta")  // 1.9.0-Beta 1.8.21
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0-RC")  // 1.9.0-Beta 1.8.21
     implementation ("androidx.core:core-ktx:1.12.0-alpha05")  //  1.11.0-alpha04 1.11.0-alpha01 1.12.0-alpha04
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
@@ -99,7 +99,7 @@ dependencies {
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.1-rc01")  //
 
-    implementation ("androidx.paging:paging-runtime-ktx:3.2.0-beta01")   //
+    implementation ("androidx.paging:paging-runtime-ktx:3.2.0-rc01")   //
 
     // Navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.0-beta01")  //2.7.0-alpha01
@@ -111,11 +111,11 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")                     //
 
     // Room dependencies
-    implementation ("androidx.room:room-runtime:2.6.0-alpha01")  // 2.6.0-alpha01
-    implementation ("androidx.room:room-ktx:2.6.0-alpha01")     // 2.5.1
-    implementation ("androidx.room:room-paging:2.6.0-alpha01")
+    implementation ("androidx.room:room-runtime:2.6.0-alpha02")  // 2.6.0-alpha01
+    implementation ("androidx.room:room-ktx:2.6.0-alpha02")     // 2.5.1
+    implementation ("androidx.room:room-paging:2.6.0-alpha02")
    // optional - Kotlin Extensions and Coroutines support for Room
-    ksp ("androidx.room:room-compiler:2.6.0-alpha01")  //
+    ksp ("androidx.room:room-compiler:2.6.0-alpha02")  //
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

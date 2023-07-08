@@ -90,7 +90,7 @@ android {
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0-RC")  // 1.9.0-Beta 1.8.21
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")  // 1.9.0-Beta 1.8.21
     implementation ("androidx.core:core-ktx:1.12.0-alpha05")  //  1.11.0-alpha04 1.11.0-alpha01 1.12.0-alpha04
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01

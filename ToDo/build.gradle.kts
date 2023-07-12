@@ -4,8 +4,8 @@
 // _14.03.2023 canary 8 + gradle 8.0.2
 plugins {
     // Объявляются классы Gradle, которые нужны для сборки зависимостей
-    id ("com.android.application") version "8.2.0-alpha11" apply false
-    id ("com.android.library") version "8.2.0-alpha11" apply false
+    id ("com.android.application") version "8.2.0-alpha12" apply false
+    id ("com.android.library") version "8.2.0-alpha12" apply false
     id ("org.jetbrains.kotlin.android") version "1.9.0" apply false  // 1.9.0-Beta 1.8.21
     // Нужно для передачи параметров в навигации проекта
     id ("androidx.navigation.safeargs.kotlin")  version "2.7.0-beta02" apply false   //  2.7.0-alpha01 2.6.0-rc02

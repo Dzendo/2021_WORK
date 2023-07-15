@@ -126,10 +126,9 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
 
     // Hilt dependencies
-    implementation ("com.google.dagger:hilt-android:2.46.1")
-    kapt ("com.google.dagger:hilt-android-compiler:2.46.1")  // ksp вылетает
+    implementation ("com.google.dagger:hilt-android:2.47")
+    kapt ("com.google.dagger:hilt-android-compiler:2.47")  // ksp вылетает
     //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")  //??
-   // kapt ("androidx.hilt:hilt-compiler:1.0.0")   // ??  May 05, 2021
 
     // Logging
     implementation ("com.jakewharton.timber:timber:5.0.1")

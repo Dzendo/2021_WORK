@@ -90,12 +90,11 @@ android {
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")  // 1.9.0-Beta 1.8.21
-    implementation ("androidx.core:core-ktx:1.12.0-alpha05")  //  1.11.0-alpha04 1.11.0-alpha01 1.12.0-alpha04
-    implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")  // 1.7.0-alpha02
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
+    implementation ("androidx.core:core-ktx:1.12.0-alpha05")
+    implementation ("androidx.appcompat:appcompat:1.7.0-alpha02")
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
 
-    // implementation ("com.google.android.material:material:1.9.0")  // 34== 1.10.0-alpha03  1.9.0   1.10.0-alpha04
     // https://mvnrepository.com/artifact/com.google.android.material/material
     runtimeOnly("com.google.android.material:material:1.10.0-alpha05")
 
@@ -106,17 +105,17 @@ dependencies {
     implementation ("androidx.paging:paging-runtime-ktx:3.2.0-rc01")   //
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.0-beta02")  //2.7.0-alpha01
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.0-beta02") // 2.7.0-alpha01
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.0-beta02")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.0-beta02")
 
     // ViewModel and LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")  // liveData       //
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // ViewModelScope, //
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")                     //
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")  // liveData
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // ViewModelScope,
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
     // Room dependencies
-    implementation ("androidx.room:room-runtime:2.6.0-alpha02")  // 2.6.0-alpha01
-    implementation ("androidx.room:room-ktx:2.6.0-alpha02")     // 2.5.1
+    implementation ("androidx.room:room-runtime:2.6.0-alpha02")
+    implementation ("androidx.room:room-ktx:2.6.0-alpha02")
     implementation ("androidx.room:room-paging:2.6.0-alpha02")
    // optional - Kotlin Extensions and Coroutines support for Room
     ksp ("androidx.room:room-compiler:2.6.0-alpha02")  //

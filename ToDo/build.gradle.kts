@@ -11,5 +11,5 @@ plugins {
     id ("androidx.navigation.safeargs.kotlin")  version "2.7.0-rc01" apply false
     // Нужно для внедрения зависимостей hilt
     id ("com.google.dagger.hilt.android")  version "2.47" apply false
-    id ("com.google.devtools.ksp") version "1.9.0-1.0.11" apply false 
+    id ("com.google.devtools.ksp") version "1.9.0-1.0.12" apply false
 }

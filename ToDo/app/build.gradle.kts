@@ -96,8 +96,7 @@ dependencies {
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
 
     // https://mvnrepository.com/artifact/com.google.android.material/material
-    runtimeOnly("com.google.android.material:material:1.10.0-alpha05")
-
+    runtimeOnly("com.google.android.material:material:1.11.0-alpha01")  // 1.10.0-alpha05
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha11")   //
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.1")  //
@@ -109,9 +108,9 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.0-rc01")
 
     // ViewModel and LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")  // liveData
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // ViewModelScope,
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-alpha01")  // liveData
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-alpha01") // ViewModelScope,
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-alpha01")
 
     // Room dependencies
     implementation ("androidx.room:room-runtime:2.6.0-alpha02")
@@ -126,7 +125,7 @@ dependencies {
 
     // Hilt dependencies
     implementation ("com.google.dagger:hilt-android:2.47")
-    kapt ("com.google.dagger:hilt-android-compiler:2.47")  // ksp вылетает
+    ksp ("com.google.dagger:hilt-android-compiler:2.47")  // ksp вылетает
     //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")  //??
 
     // Logging

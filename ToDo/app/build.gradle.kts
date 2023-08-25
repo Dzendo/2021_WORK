@@ -90,7 +90,7 @@ android {
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
     implementation ("androidx.core:core-ktx:1.12.0-rc01")
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha03")
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
@@ -104,8 +104,8 @@ dependencies {
     implementation ("androidx.paging:paging-runtime-ktx:3.2.0")   //
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.0")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.0")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.1")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.1")
 
     // ViewModel and LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-alpha01")  // liveData
@@ -113,11 +113,11 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-alpha01")
 
     // Room dependencies
-    implementation ("androidx.room:room-runtime:2.6.0-alpha03")
-    implementation ("androidx.room:room-ktx:2.6.0-alpha03")
-    implementation ("androidx.room:room-paging:2.6.0-alpha03")
+    implementation ("androidx.room:room-runtime:2.6.0-beta01")
+    implementation ("androidx.room:room-ktx:2.6.0-beta01")
+    implementation ("androidx.room:room-paging:2.6.0-beta01")
    // optional - Kotlin Extensions and Coroutines support for Room
-    ksp ("androidx.room:room-compiler:2.6.0-alpha03")  //
+    ksp ("androidx.room:room-compiler:2.6.0-beta01")  //
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

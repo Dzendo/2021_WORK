@@ -96,7 +96,7 @@ dependencies {
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
 
     // https://mvnrepository.com/artifact/com.google.android.material/material
-    runtimeOnly("com.google.android.material:material:1.11.0-alpha02")  // 1.10.0-alpha05
+    runtimeOnly("com.google.android.material:material:1.11.0-alpha03")  // 1.10.0-alpha05
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha12")   //
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.1")  //
@@ -104,8 +104,8 @@ dependencies {
     implementation ("androidx.paging:paging-runtime-ktx:3.2.1")   //
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.2")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.2")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.3")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.3")
 
     // ViewModel and LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-alpha02")  // liveData
@@ -113,11 +113,11 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-alpha02")
 
     // Room dependencies
-    implementation ("androidx.room:room-runtime:2.6.0-beta01")
-    implementation ("androidx.room:room-ktx:2.6.0-beta01")
-    implementation ("androidx.room:room-paging:2.6.0-beta01")
+    implementation ("androidx.room:room-runtime:2.6.0-rc01")
+    implementation ("androidx.room:room-ktx:2.6.0-rc01")
+    implementation ("androidx.room:room-paging:2.6.0-rc01")
    // optional - Kotlin Extensions and Coroutines support for Room
-    ksp ("androidx.room:room-compiler:2.6.0-beta01")  //
+    ksp ("androidx.room:room-compiler:2.6.0-rc01")  //
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

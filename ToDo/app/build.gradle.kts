@@ -101,7 +101,7 @@ dependencies {
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.1")  //
 
-    implementation ("androidx.paging:paging-runtime-ktx:3.2.1")   //
+    implementation ("androidx.paging:paging-runtime-ktx:3.3.0-alpha02")   //
 
     // Navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.3")

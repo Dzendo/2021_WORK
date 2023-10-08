@@ -97,15 +97,15 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.android.material/material
     runtimeOnly("com.google.android.material:material:1.11.0-alpha03")  // 1.10.0-alpha05
-    implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha12")   //
+    implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")   //
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.3.1")  //
 
     implementation ("androidx.paging:paging-runtime-ktx:3.3.0-alpha02")   //
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.3")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.3")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.4")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.4")
 
     // ViewModel and LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-alpha02")  // liveData
@@ -124,8 +124,8 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     // Hilt dependencies
-    implementation ("com.google.dagger:hilt-android:2.48")
-    ksp ("com.google.dagger:hilt-android-compiler:2.48")  // ksp вылетает
+    implementation ("com.google.dagger:hilt-android:2.48.1")
+    ksp ("com.google.dagger:hilt-android-compiler:2.48.1")  // ksp вылетает
     //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")  //??
 
     // Logging

@@ -90,16 +90,16 @@ android {
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.20-Beta2")
-    implementation ("androidx.core:core-ktx:1.12.0")
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.20-RC2")
+    implementation ("androidx.core:core-ktx:1.13.0-alpha01")
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha03")
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
 
     // https://mvnrepository.com/artifact/com.google.android.material/material
-    runtimeOnly("com.google.android.material:material:1.11.0-alpha03")  // 1.10.0-alpha05
+    runtimeOnly("com.google.android.material:material:1.11.0-beta01")  // 1.10.0-alpha05
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")   //
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
-    implementation ("androidx.recyclerview:recyclerview:1.3.1")  //
+    implementation ("androidx.recyclerview:recyclerview:1.4.0-alpha01")  //
 
     implementation ("androidx.paging:paging-runtime-ktx:3.3.0-alpha02")   //
 
@@ -108,16 +108,16 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.4")
 
     // ViewModel and LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-alpha02")  // liveData
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-alpha02") // ViewModelScope,
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-alpha02")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-alpha03")  // liveData
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-alpha03") // ViewModelScope,
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-alpha03")
 
     // Room dependencies
-    implementation ("androidx.room:room-runtime:2.6.0-rc01")
-    implementation ("androidx.room:room-ktx:2.6.0-rc01")
-    implementation ("androidx.room:room-paging:2.6.0-rc01")
+    implementation ("androidx.room:room-runtime:2.6.0")
+    implementation ("androidx.room:room-ktx:2.6.0")
+    implementation ("androidx.room:room-paging:2.6.0")
    // optional - Kotlin Extensions and Coroutines support for Room
-    ksp ("androidx.room:room-compiler:2.6.0-rc01")  //
+    ksp ("androidx.room:room-compiler:2.6.0")  //
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

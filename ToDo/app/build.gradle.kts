@@ -90,7 +90,7 @@ android {
 // Они все берутся из repositories проекта: сейчас - google() и jcenter()
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.20-RC2")
+    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.9.20")
     implementation ("androidx.core:core-ktx:1.13.0-alpha01")
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha03")
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
@@ -104,13 +104,13 @@ dependencies {
     implementation ("androidx.paging:paging-runtime-ktx:3.3.0-alpha02")   //
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.4")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.5")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.5")
 
     // ViewModel and LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-alpha03")  // liveData
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-alpha03") // ViewModelScope,
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-alpha03")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-beta01")  // liveData
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-beta01") // ViewModelScope,
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-beta01")
 
     // Room dependencies
     implementation ("androidx.room:room-runtime:2.6.0")

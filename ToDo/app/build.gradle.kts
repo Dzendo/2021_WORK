@@ -57,8 +57,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
         //sourceCompatibility sourceCompatibility(JavaVersion.VERSION_11)
 
         // Обязательно 1_8 для этой архитектуры
@@ -66,7 +66,7 @@ android {
     }
     kotlinOptions {
         // Обязательно для использования Room и др.
-        jvmTarget = "1.8"
+        jvmTarget = "17"
         // ??? Переписал откуда-то зачем не помню
         // freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
         // Enable Coroutines and Flow APIs из sunflowers

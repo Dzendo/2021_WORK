@@ -96,7 +96,7 @@ dependencies {
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
 
     // https://mvnrepository.com/artifact/com.google.android.material/material
-    runtimeOnly("com.google.android.material:material:1.11.0-beta01")  // 1.10.0-alpha05
+    runtimeOnly("com.google.android.material:material:1.11.0-rc01")  // 1.10.0-alpha05
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")   //
     implementation ("androidx.legacy:legacy-support-v4:1.0.0") //  обратное API от 14 android 4 - ScrollChildSwipeRefreshLayout 1.1.0
     implementation ("androidx.recyclerview:recyclerview:1.4.0-alpha01")  //
@@ -108,9 +108,9 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.5")
 
     // ViewModel and LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-beta01")  // liveData
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-beta01") // ViewModelScope,
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-beta01")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0-rc01")  // liveData
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-rc01") // ViewModelScope,
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-rc01")
 
     // Room dependencies
     implementation ("androidx.room:room-runtime:2.6.0")

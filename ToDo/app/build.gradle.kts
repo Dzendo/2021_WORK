@@ -91,7 +91,7 @@ android {
 dependencies {
     // Стандарт для Android Kotlin; Если есть -ktx, ставить ее (там плюс идиомы)
     implementation ("org.jetbrains.kotlin:kotlin-reflect:2.0.0-Beta1")
-    implementation ("androidx.core:core-ktx:1.13.0-alpha01")
+    implementation ("androidx.core:core-ktx:1.13.0-alpha02")
     implementation ("androidx.appcompat:appcompat:1.7.0-alpha03")
     //implementation ("androidx.fragment:fragment-ktx:1.5.7")  // 1.6.0-rc01
 
@@ -113,11 +113,11 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-rc01")
 
     // Room dependencies
-    implementation ("androidx.room:room-runtime:2.6.0")
-    implementation ("androidx.room:room-ktx:2.6.0")
-    implementation ("androidx.room:room-paging:2.6.0")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    implementation ("androidx.room:room-paging:2.6.1")
    // optional - Kotlin Extensions and Coroutines support for Room
-    ksp ("androidx.room:room-compiler:2.6.0")  //
+    ksp ("androidx.room:room-compiler:2.6.1")  //
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
@@ -133,8 +133,8 @@ dependencies {
 
     // Тестовые библиотеки стандарт шаблона + room
     testImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("androidx.test.ext:junit:1.2.0-alpha01")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.6.0-alpha01")
+    androidTestImplementation ("androidx.test.ext:junit:1.2.0-alpha02")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.6.0-alpha02")
     //implementation ("androidx.test.espresso:espresso-idling-resource:3.6.0-alpha01")
     //testImplementation ("androidx.room:room-testing:2.6.0-alpha01")
     //testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")

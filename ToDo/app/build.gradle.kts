@@ -121,7 +121,7 @@ dependencies {
 
     // Coroutines for getting off the UI thread
     // implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0-RC2")
 
     // Hilt dependencies
     implementation ("com.google.dagger:hilt-android:2.50")
